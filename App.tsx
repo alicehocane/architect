@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
@@ -11,7 +10,6 @@ import AboutPage from './pages/AboutPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import CalculatorPage from './pages/CalculatorPage';
-import AIChat from './components/AIChat';
 import SearchPalette from './components/SearchPalette';
 import { Architect } from './types';
 
@@ -231,8 +229,6 @@ const App: React.FC = () => {
         onSelectArchitect={handleArchitectClick}
         onSelectCity={(slug) => navigateTo({ type: 'city', slug })}
       />
-
-      <AIChat />
     </div>
   );
 };
