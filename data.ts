@@ -1,0 +1,16703 @@
+
+import { Architect, CityInfo, BranchLocation } from './types';
+
+export const slugify = (text: string): string => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-');
+};
+
+// Simulated new consolidated raw data
+const rawData = [
+    {
+        "Shop Name": "1x1 Design Studios",
+        "Category": "Architectural designer",
+        "Website": "http://www.instagram.com/1x1designstudios",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0307 5493070",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//1x1+Design+Studios,+Kamra+Rd,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df1992e8ab83d5:0xabfecb1613640728?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0307 5493070",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//1x1+Design+Studios,+Kamra+Rd,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df1992e8ab83d5:0xabfecb1613640728?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "3D Home Designers ( Architect & Builders)",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0301 4300363",
+                "Rating": 5.0,
+                "Reviews": 16.0,
+                "Map URL": "https://www.google.com/maps/dir//3D+Home+Designers+(+Architect+%26+Builders),+Sadar+Puli,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9123304cf1c3:0x7e542cbc0dac0ab5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "3DX Design Studio (Architect)",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0305 1718342",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//3DX+Design+Studio+(Architect),+Ideal+Bakery,+Ansar+Gali,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7f791a4d819:0x64b991aa7db5a7c5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "3G Arch & Graphics",
+        "Category": "Architect",
+        "Website": "https://sites.google.com/view/3garchgraphics/home",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0346 5411751",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.+06,+3G+Arch+%26+Graphics,+Idrees+Plaza,+Range+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df9410c218e953:0xd6e96bc43f2f1a9c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0346 5411751",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.+06,+3G+Arch+%26+Graphics,+Idrees+Plaza,+Range+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df9410c218e953:0xd6e96bc43f2f1a9c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "3P Design House",
+        "Category": "Architecture firm",
+        "Website": "https://wa.me/message/GBOQ4TLSAAOBI1",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0300 1018920",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//3P+Design+House,+Hajipura,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebd02841b52b:0x2761da5c1225141?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "3dFrontElevation.co",
+        "Category": "Architecture firm",
+        "Website": "https://www.artstation.com/frontelevation3d",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0313 7748494",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//3dFrontElevation.co,+CCA,+77,+Sector+C+Phase+5+D.H.A,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918ff8e3c836879:0x80cd7120f919fff9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "4th Dimension architecture & Designers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0301 3941431",
+                "Rating": 3.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//C8H3%2B998+4th+Dimension+architecture+%26+Designers,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b9127d86709:0x434a2a1b41aab829?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0301 3941431",
+                "Rating": 3.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//C8H3%2B998+4th+Dimension+architecture+%26+Designers,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b9127d86709:0x434a2a1b41aab829?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "5AB Grand Linez by Ch Shoaib Khan Shariq Architect",
+        "Category": "Construction company",
+        "Website": "https://www.facebook.com/profile.php?id=100086773577053&mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8418518",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//H3MG%2BJXH+5AB+Grand+Linez+by+Ch+Shoaib+Khan+Shariq+Architect,+City+Plaza,+Jail+Chowk,+Rehman+Shaheed+Rd,+Gharibpura,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b29d3ef1961:0x63d9d3d10ef45067?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A & R Architect & Builder",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0341 1513164",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Q9Q6%2B626+A+%26+R+Architect+%26+Builder,+Darul+Islam+Colony+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19b0230d5835:0x9f3a1a939f012a43?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A J Architects",
+        "Category": "Architect",
+        "Website": "http://www.ajarchitects.co.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//A+J+Architects,+SHUBH+UNIVERSAL,+207+-+208,+Vesu+Main+Road,+opp.+VIJYA+LAXMI+HALL,+Vesu,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04d89dcf3bdc5:0x8cdfa829b6d14005?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//A+J+Architects,+SHUBH+UNIVERSAL,+207+-+208,+Vesu+Main+Road,+opp.+VIJYA+LAXMI+HALL,+Vesu,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04d89dcf3bdc5:0x8cdfa829b6d14005?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A Qayyum Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0332 8481199",
+                "Rating": 4.6,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//A+Qayyum+Associates,+1-ASHRAFIA+PARK,+Lahore+%E2%80%93+Kasur+Rd,+opp.+Wapda+Hospital,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190546fe9c691d:0xfa27f083153946e0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A&S Architects and Consultants",
+        "Category": "Architecture firm",
+        "Website": "https://theasarchitects.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6306541",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//A%26S+Architects+and+Consultants,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b353118329331:0x15f5342b5631092a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A+ Architecture",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 9643247",
+                "Rating": 4.7,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//A%2B+Architecture,+43+jinnah+super+market,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2ba538339a13:0x6c3e8ea6f1e7f8b9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 9643247",
+                "Rating": 4.7,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//A%2B+Architecture,+43+jinnah+super+market,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2ba538339a13:0x6c3e8ea6f1e7f8b9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A-line Architects",
+        "Category": "Architecture firm",
+        "Website": "http://instagram.com/aline_architects",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0340 9783553",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//A-line+Architects,+E-155,A%2F5+Ghazni+lane,+D.H.A.+Main+Blvd,+New+Super+Town,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905d31c867f6b:0x1d570f4e4c8abdf5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A.K Bukhari Associates Builders and Developers",
+        "Category": "Architect",
+        "Website": "https://bukhariassociates.com/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 9686292",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//OFFICE+71,+A.K+Bukhari+Associates+Builders+and+Developers,+FATIMAH+COMMERCIAL+CENTER,+74+Airport+Road,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91572a255feb:0x6810a8652e63f5b6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A.N Associates",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 5529849",
+                "Rating": 4.4,
+                "Reviews": 26.0,
+                "Map URL": "https://www.google.com/maps/dir//1st+Floor,+A.N+Associates%D8%8C+18%2F62+Rafique+Center,+Adam+Jee+Rd,+Saddar,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df949da55d9939:0x711a5f5b9fa64b32?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 5529849",
+                "Rating": 4.4,
+                "Reviews": 26.0,
+                "Map URL": "https://www.google.com/maps/dir//1st+Floor,+A.N+Associates%D8%8C+18%2F62+Rafique+Center,+Adam+Jee+Rd,+Saddar,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df949da55d9939:0x711a5f5b9fa64b32?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A.R Designers & Builders",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0306 3521273",
+                "Map URL": "https://www.google.com/maps/dir//A.R+Designers+%26+Builders,+Abu+Dhabi+Rd,+near+Muzammil+Hardware,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375ddd66c030d5:0x2e308bb2b321f16d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A.R HOME DESIGNER(نقشہ نویس)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 7024555",
+                "Map URL": "https://www.google.com/maps/dir//A.R+HOME+DESIGNER(%D9%86%D9%82%D8%B4%DB%81+%D9%86%D9%88%DB%8C%D8%B3),+TRADE,+NEAR+RAILWAY+PHATTAK+SATTAR,+CENTER,+Li%C4%81qatpur,+64000%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393a259fb5373ea5:0xe91af5429c353d1b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "A.R Line Studio",
+        "Category": "Architect",
+        "Website": "http://www.behance.net/ARYaqoot",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0322 5600430",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//A.R+Line+Studio,+Office+%23+28-C,+Block-G,+GT+Rd,+near+SME+Bank,+Trust+Plaza,+Model+Town,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29a2f77bba99:0x570e728717a49b73?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AA ARCHITECTS",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0346 9680809"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AA Architects",
+        "Category": "Architecture firm",
+        "Website": "http://aaarchitects.site/",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0300 4001629",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//3PF2%2BFRM+AA+Architects,+Qazipura,+Hafizabad,+52110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4d8aa3ebefc7:0xfb5ca966e405618c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AA Home Interior",
+        "Category": "Interior designer",
+        "Website": "https://aahomeinterior.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0325 0762130",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//AA+Home+Interior,+Office+%2356A+56B+Mezzanine+floor+Mediacom+plaza+Kohinoor+Chowk,+Jaranwala+Rd,+Kohinoor+City,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922698d41bd6adf:0x2e8e7f18a0d37382?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AAMIR ASSOCIATES",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0322 2248000",
+                "Rating": 4.0,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//94V8%2BV4F+AAMIR+ASSOCIATES,+Satayana+Rd,+Burhan+Mohalla,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392267c89746829f:0x85f1779cdc7841a4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AAQ ARCHITECT & ENGINEER'S",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0301 4502827",
+                "Rating": 5.0,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//AAQ+ARCHITECT+%26+ENGINEER'S,+Shahzad+Market,+Circular+Rd,+near+Khushali+Bank+Chowk,+Sadiqpura,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919551f9bbe4945:0x8f9ac73b087e368f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0301 4502827",
+                "Rating": 5.0,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//AAQ+ARCHITECT+%26+ENGINEER'S,+Shahzad+Market,+Circular+Rd,+near+Khushali+Bank+Chowk,+Sadiqpura,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919551f9bbe4945:0x8f9ac73b087e368f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0301 4502827",
+                "Rating": 5.0,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//AAQ+ARCHITECT+%26+ENGINEER'S,+Shahzad+Market,+Circular+Rd,+near+Khushali+Bank+Chowk,+Sadiqpura,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919551f9bbe4945:0x8f9ac73b087e368f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AAS Engineering Solutions",
+        "Category": "Architect",
+        "Website": "http://www.aasengrsolutions.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//AAS+Engineering+Solutions,+Infront+Royal+Orchard,+Multan+Public+School+Road,+Royal+Orchard+Mulan,+opposite+Shangrilla+Marquee,+Green+Fort+Housing+Scheme,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b357a7cbb7ffb:0x9edbc489193ec99e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ABC Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0304 1752748",
+                "Rating": 4.9,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//ABC+Architect,+District+and+tehsil+Gujrat,+Karianwala,+50830/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eff7e625c7203:0xd26fd06c18f2ff21?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ABCD Architecture Design Studio",
+        "Category": "Architect",
+        "Website": "https://www.linkedin.com/in/waheed-ahmad-00965649/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0300 8891080",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ABCD+Architecture+Design+Studio,+Madni+Rd,+R-Block+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19eee72b932d:0x69c79bc4d9e2ba76?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ABDUL HADDI ASSOCIATE",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0333 8987007",
+                "Map URL": "https://www.google.com/maps/dir//ABDUL+HADDI+ASSOCIATE,+MAKKA+PLAZA+SHOP+NO%2322,+Multan+Road,+opp.+SOHAIL+PETROL+PUMP,+Muzaffargarh,+34200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b29f734cc1503:0x6e2f9e55bdeeb17c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Muzaffargarh",
+                "Phone Number": "0333 8987007",
+                "Map URL": "https://www.google.com/maps/dir//ABDUL+HADDI+ASSOCIATE,+MAKKA+PLAZA+SHOP+NO%2322,+Multan+Road,+opp.+SOHAIL+PETROL+PUMP,+Muzaffargarh,+34200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b29f734cc1503:0x6e2f9e55bdeeb17c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ABDUL MOEEZ Architects & Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0310 4122443",
+                "Rating": 4.9,
+                "Reviews": 37.0,
+                "Map URL": "https://www.google.com/maps/dir//ABDUL+MOEEZ+Architects+%26+Associates,+service+mor+GT+Rd,+near+swaad+restaurant,+Servis+Industries+Gujrat,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b00100c41d1:0x5c3acc95de5b5102?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ABODE CLIME ARCHITECTS",
+        "Category": "Architecture firm",
+        "Website": "http://www.abodeclime.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0331 4290121",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+ABODE+CLIME+ARCHITECTS,+9A,+Abu+Bakar+Block+Garden+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190306956cb3f7:0x2c682330613a07d2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ACCESS ARCHITECTS PK | Best Construction & Architect Company in Sahiwal",
+        "Category": "Architecture firm",
+        "Website": "https://facebook.com/Accessarchitect.swl/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 2561834",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//office+%23.15+Basement+Floor,+ACCESS+ARCHITECTS+PK+%7C+Best+Construction+%26+Architect+Company+in+Sahiwal,+Super+Market,+Church+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b77422d63047:0xa127b8b30b1833?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ACCESS ARCHITECTS Site",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 2561834",
+                "Rating": 3.3,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//M3WF%2BCM3+ACCESS+ARCHITECTS+Site,+jeewan+City+phase-v+Madhali+Road,+Phase+IV+Jeewan+City+Phase+IV,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c79fafeccfe5:0x6edef51496916cc0?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 2561834",
+                "Rating": 3.3,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//M3WF%2BCM3+ACCESS+ARCHITECTS+Site,+jeewan+City+phase-v+Madhali+Road,+Phase+IV+Jeewan+City+Phase+IV,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c79fafeccfe5:0x6edef51496916cc0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ACME Engineering Application Services.",
+        "Category": "Engineering consultant",
+        "Website": "http://www.flowcreteasia.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0334 7711188",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//4GRF%2BF3G+ACME+Engineering+Application+Services.,+Icon+Villas,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b370985555521:0xb18a712c36580b29?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AD Architect & Construction Services",
+        "Category": "Construction company",
+        "Website": "http://www.facebook.com/Adcss.rwp",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0347 2835455",
+                "Map URL": "https://www.google.com/maps/dir//JJ59%2BVW3+AD+Architect+%26+Construction+Services,+Mandi+Bahauddin+-+Sarai+Alamgir+Rd,+Chak+No.+1/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7bb3c005f4a3:0x57f544e9ae2b6c77?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0347 2835455",
+                "Map URL": "https://www.google.com/maps/dir//JJ59%2BVW3+AD+Architect+%26+Construction+Services,+Mandi+Bahauddin+-+Sarai+Alamgir+Rd,+Chak+No.+1/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7bb3c005f4a3:0x57f544e9ae2b6c77?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AD Architect & Home Designer",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0303 0510078",
+                "Rating": 3.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0303 0510078",
+                "Rating": 3.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0303 0510078",
+                "Rating": 3.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "ADVOCATE ALI RAZA KAHLOON",
+        "Category": "Interior designer",
+        "Website": "https://www.facebook.com/profile.php?id=100007644420652&mibextid=LQQJ4d",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0308 6488143",
+                "Map URL": "https://www.google.com/maps/dir//ADVOCATE+ALI+RAZA+KAHLOON,+Main+Lahore+road,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919530973cfd41f:0xc6d7bc9ad3d399a7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Narowal",
+                "Phone Number": "0308 6488143",
+                "Map URL": "https://www.google.com/maps/dir//ADVOCATE+ALI+RAZA+KAHLOON,+Main+Lahore+road,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919530973cfd41f:0xc6d7bc9ad3d399a7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AESP (Architectural and Engineering Services of Pakistan)",
+        "Category": "Civil engineering company",
+        "Website": "https://www.linkedin.com/company/architectural-and-engineering-services-of-pakistan-aesp/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4789087",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//82+MZ,+AESP+(Architectural+and+Engineering+Services+of+Pakistan),+defense+shopping+mall,+D.H.A.+Main+Blvd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919058896f3f90d:0x46c6b8d1fb9a458c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AFHAM CIVIL & ARCHITECTURE SMC PVT LTD",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0342 9061884",
+                "Rating": 4.9,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.31,+AFHAM+CIVIL+%26+ARCHITECTURE+SMC+PVT+LTD,+Abdullah+Medical+center,+Afham+Architecture,+South+Circular+Road,+opp.+Bisaki+Ground,+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266f04968c8b99:0xfcf2d1d299eb214f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AFNAN ARCHITECTS & INTERIORS",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 7470526",
+                "Rating": 4.4,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//AFNAN+ARCHITECTS+%26+INTERIORS,+Canal+Road,+opposite+Master+city,+ppls+colony+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b88dc968f53:0xaeac69992c12dcbc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AG architects & engineers",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0316 7086785",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//HFJJ%2BV7H+AG+architects+%26+engineers,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d311fbebe89:0xf5fb5db0fafd3279?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0316 7086785",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//HFJJ%2BV7H+AG+architects+%26+engineers,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d311fbebe89:0xf5fb5db0fafd3279?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AGRSoft - Website Design, Graphics Design & SEO Agency",
+        "Category": "Software company",
+        "Website": "https://agrsoft.com/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0316 6000801",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//AGRSoft+-+Website+Design,+Graphics+Design+%26+SEO+Agency,+House+%23239+Street+No+5+Abubakar+Block,+Shadab+Town,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7bb0b7b7019:0x96c6b77965d6ede4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AH Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0334 9513580"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AHA ASSOCIATES",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0300 4547413",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//X6VM%2B22V+AHA+ASSOCIATES,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6fa4c8d36285:0xcbeed3fa98a86db7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AHD DesignStudio (Interior & Exterior)",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0313 3130002",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//AHD+DesignStudio+(Interior+%26+Exterior)+Deals+in+Architecture+Design+CEO:Bilal+Mehar,+Umar+Farooq+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2aeaa70f5bc5:0xad8b3f4adb67a0e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AI architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0324 6611116"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AILIYA ARCHITECT",
+        "Category": "Architect",
+        "Website": "https://ailiyaarch.blogspot.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0305 7155571",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//G-23,+AILIYA+ARCHITECT,+Royal+Plaza,+6th+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95cc2d3cebbd:0x446db8c07c3c07b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AK Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0336 8000925",
+                "Rating": 5.0,
+                "Reviews": 74.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No:203,+First+Floor,+AK+Architects,+Top,+Prime+Mall,+Kunwar+Block,+City-l,+Islamabad,+43701/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df950dde08d48b:0xcea6a475fdb92908?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AK Associates",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 7419227",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//4622%2BW59+AK+Associates,+Main+gate,+G+Magnolia+Park,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b0a07e3393f:0x88634c1628bbccf6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL HARMAIN ASSOCIATES ENGINEER & CONSULTANT",
+        "Category": "Construction company",
+        "Website": "https://alharmainassociates.pk/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 9676908",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//C89J%2BCMP+AL+HARMAIN+ASSOCIATES+ENGINEER+%26+CONSULTANT,+Canal+Rd,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b4acfe10341:0x31a72c9999a2ddbb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL JABBAR ARCHITECTS & CONSTRUCTION",
+        "Category": "Architect",
+        "Website": "https://aljabbararchitects.com/",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0324 7818808",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+14,+First+Floor,+AL+JABBAR+ARCHITECTS+%26+CONSTRUCTION,+Abdullah+Trade+Center,+Kachehri+Rd,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ee91dc3651db1:0x128e12343d73994?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0324 7818808",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+14,+First+Floor,+AL+JABBAR+ARCHITECTS+%26+CONSTRUCTION,+Abdullah+Trade+Center,+Kachehri+Rd,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ee91dc3651db1:0x128e12343d73994?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0324 7818808",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+14,+First+Floor,+AL+JABBAR+ARCHITECTS+%26+CONSTRUCTION,+Abdullah+Trade+Center,+Kachehri+Rd,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ee91dc3651db1:0x128e12343d73994?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL Jannat Architecture services",
+        "Category": "Real estate agent",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0315 5139183",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0315 5139183",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL Kareem Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0339 0015830",
+                "Rating": 4.8,
+                "Reviews": 29.0,
+                "Map URL": "https://www.google.com/maps/dir//2JXQ%2BGG8+AL+Kareem+Architects,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1003fb7e8af:0xe7729c41485d3d84?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0339 0015830",
+                "Rating": 4.8,
+                "Reviews": 29.0,
+                "Map URL": "https://www.google.com/maps/dir//2JXQ%2BGG8+AL+Kareem+Architects,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1003fb7e8af:0xe7729c41485d3d84?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL Madina Interiors",
+        "Category": "Interior designer",
+        "Website": "https://almadinainterior.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0333 6568155",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//AL+Madina+Interiors,+213+Main+Susan+Road,+opp.+Zong+Office%D8%8C+Madina+Town,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226812cdb13b27:0x9e3c1002e08694c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL Rafay Farmhouses",
+        "Category": "Landscape designer",
+        "Website": "https://www.alrafayfarms.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 8216060",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//AL+Rafay+Farmhouses,+On+Canal+Main+Samundri+Road,+Faisalabad,+37430/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d7efd8a2ec1:0xea4aa3c3323f85f8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL WALEED ASSOCIATES",
+        "Category": "Architecture firm",
+        "Website": "https://youtube.com/c/WaleedVoice",
+        "Locations": [
+            {
+                "City": "Pakpattan",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//AL+WALEED+ASSOCIATES+-+%D9%86%D9%82%D8%B4%DB%81+%D8%AC%D8%A7%D8%AA+%D8%A2%D9%81%D8%B3,+Green+Town+chok+(Bukhtar+Kaki+Chok)+kachehri+Road,+near+DPO+office,+P%C4%81kpattan%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d59166dbf1ca3:0xb8559d8b7f71b2ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL-FURQAN ARCHITECT & BUILDERS",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6235940",
+                "Rating": 3.9,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//H3VG%2BJ6Q+AL-FURQAN+ARCHITECT+%26+BUILDERS,+Taimoor+Chowk,+Jail+Road,+Marghzar+Colony,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f052a92a9c9c3:0xdc08d83ae9887904?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL-Mumtaz Associates And Construction",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 9543062",
+                "Rating": 4.8,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//AL-Mumtaz+Associates+And+Construction,+Unnamed+Road,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b04f3b010db:0xdd8dda1bcea8899b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AL-Zayed Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 9644656",
+                "Map URL": "https://www.google.com/maps/dir//AL-Zayed+Associates,+4-D+SHOP+BLOCK+W+ST.+1,+Gulshan+e+Usman+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b0076447315:0x99999d6503f172c9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AM Architect & Consultants",
+        "Category": "Architect",
+        "Website": "https://am-architects.com.pk/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0323 4545450",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//AM+Architect+%26+Consultants,+AM.Architect+%26+Consultant's+Iqbal+Chowk,+Muslim+Abad+Rd,+Muslimabad,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bca3f7c9d25:0x8615a63fdd60442a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AMBALA ENGINEERING WORKSHOP",
+        "Category": "Architecture firm",
+        "Website": "http://www.ambalaengineering.com/",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0320 4023700",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//AMBALA+ENGINEERING+WORKSHOP,+P2H2%2BQ8F+1.5+km+Main,+Gujranwala+Rd,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3ea2e4b37c3:0xe8749e3b0cd6fd42?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AMCO-Integrated Facility Management",
+        "Category": "Construction company",
+        "Website": "http://amcoifm.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0317 1117990",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//House+%23+114.C,+AMCO-Integrated+Facility+Management,+Ghous+Ul+Azam+Rd,+Colony+Gulberg+2,+Lahore,+00966/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905f996805239:0x7c0cbf09a0a3a680?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AMFAH",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "(061) 6537188",
+                "Rating": 3.6,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//4CX2%2B92R+AMFAH,+Industrial+Estate,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31cf324d087f:0x7e8923d53d4d2f99?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AMK ARCHITECTURAL & DESIGN",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Mianwali",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//HG8F%2BQ6+AMK+ARCHITECTURAL+%26+DESIGN,+Mianwali/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392719001223ccbd:0x4428a5615222d6c9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AN Developers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "(062) 2886667",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//AN+Developers,+29+Ghaznavi+Road,+Model+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9700722fad53:0x130a1f162b2a7e43?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "(062) 2886667",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//AN+Developers,+29+Ghaznavi+Road,+Model+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9700722fad53:0x130a1f162b2a7e43?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ANU Architects (Aakif & Usama Architects)",
+        "Category": "Architect",
+        "Website": "http://www.anuarchitect.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0302 8733326",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//ANU+Architects+(Aakif+%26+Usama+Architects),+Level+2+of+Building,+Commercial+Block+next+to+Fort+Avenue+Society+Gate,+Multan+Public+School+Road,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e601584c4b:0xf50bae70e807137e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AR Studio of Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0346 6868505",
+                "Map URL": "https://www.google.com/maps/dir//AR+Studio+of+Architect,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f774c37069697:0x50e334080749c3f8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0346 6868505",
+                "Map URL": "https://www.google.com/maps/dir//AR+Studio+of+Architect,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f774c37069697:0x50e334080749c3f8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARA Design Studio",
+        "Category": "Architecture firm",
+        "Website": "https://www.aradesign.net.pk/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0300 8567040",
+                "Rating": 5.0,
+                "Reviews": 9.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARB Tiles sanitary & PPRC",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0345 8147473",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//ARB+Tiles+sanitary+%26+PPRC,+by+pass+road,+near+New+Nadra+office,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b06a082329b:0xf66584ce4ac1cc8c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARC VISION ARCHITECTS & DESIGENERS",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0345 7007282",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//ARC+VISION+ARCHITECTS+%26+DESIGENERS,+Khansaman+Mohallah+Road,+Railway+Road,+Khansaman+Mohalla,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f912d5200a987:0x372391e1ad053273?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCA - Architectural Consultancy by Ali Akbar",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0305 1008111",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCH HOME Architects & Builders - Best Architects & Builders in Pakistan",
+        "Category": "Architect",
+        "Website": "https://thearchhome.com/",
+        "Locations": [
+            {
+                "City": "Pakpattan",
+                "Phone Number": "0309 6856800",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//ARCH+HOME+Architects+%26+Builders+-+Best+Architects+%26+Builders+in+Pakistan,+Girls+College+Rd,+opposite+Batala+School,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b9d9680d68ef:0x2f1430f38a670283?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0309 6856800",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//ARCH+HOME+Architects+%26+Builders+-+Best+Architects+%26+Builders+in+Pakistan,+Girls+College+Rd,+opposite+Batala+School,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b9d9680d68ef:0x2f1430f38a670283?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHIST DESIGN SOLUTION",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 2165978",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//47B,+ARCHIST+DESIGN+SOLUTION,+Saleem+Mall,+Golbagh+Gulgasht+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b330000162019:0x853c68a82027d468?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHITECT",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0332 8678108",
+                "Map URL": "https://www.google.com/maps/dir//ARCHITECT,+Sipra+Market+Sargodha+Road+opposite+Dar-e-Arqam+School+Sargodha,+Road,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b21ab165edd:0x8d5993c988c48cc6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHITECTS WORLD",
+        "Category": "Building materials market",
+        "Website": "https://architectsworld.com.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0329 0083244",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//ARCHITECTS+WORLD%D8%8C+155+-+E+Main+Blvd,+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190597746d65ef:0x95455be9ca3cbeaf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHITECTURAL CONSULTANTS",
+        "Category": "Architectural designer",
+        "Website": "https://architectureconsultant99.blogspot.com/",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Phone Number": "0300 2467999",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Office+99,+ARCHITECTURAL+CONSULTANTS,+Block+B+Satellite+Town,+Jhang,+35200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3923a33da28d695d:0x48bb3368095ace8f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHITECTURAL FIRM",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0313 3940555",
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+ARCHITECTURAL+FIRM,+35,+A+Northern+Byp,+Block+A+Model+Town,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b353940cb41d5:0xa9e2a97de30c7a5f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHITECTURE SHAHBAZ SAGHAR",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0300 7713301",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//PX9P%2B3RQ+ARCHITECTURE+SHAHBAZ+SAGHAR,+Ali+Hospital+Rd,+Muqeet+Town+Chiniot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b67523eceef:0xd1926ce024c90ab1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCHİTECT ABDUL QADİR",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//5CPP%2BW8X+ARCH%C4%B0TECT+ABDUL+QAD%C4%B0R,+Aziz+Bhati+Rd,+Multan+Cantt+Residential+Area,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31ff760a4709:0x99ab5211641f5ef7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARCQUB DESIGN STUDIO",
+        "Category": "Architect",
+        "Website": "https://www.arcqub.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//ARCQUB+DESIGN+STUDIO,+506,+North+Plaza,+B%2Fs+4D+Square+Mall+Visat+Gandhinagar,+Road,+Motera,+Gujarat+380005,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e83c894eaa979:0x755abdd9d37dbe00?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARK Designers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0308 6133712",
+                "Rating": 4.8,
+                "Reviews": 16.0,
+                "Map URL": "https://www.google.com/maps/dir//ARK+Designers,+A,+Fawad+Villas,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a761a37375a9:0x615aea172bad13c7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ARKA SERVICES PVT LTD",
+        "Category": "Architectural designer",
+        "Website": "https://arka.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35707821",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//E-100%2F14,+ARKA+SERVICES+PVT+LTD,+Lower+Ground,+aijaz+chambers,+D.H.A.+Main+Blvd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905dd6dee32a3:0x86e680bf801ca6ee?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AS ASSOCIATES",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "(055) 4284015",
+                "Rating": 5.0,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//35XQ%2BM7H+AS+ASSOCIATES,+Mohafiz+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b5e213a28ab:0xf1ad5191eae325e4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AS Architecture",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0317 1447135"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ASArchitects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 2913417"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AXIS ARCHITECTS",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0307 7213938",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//G3Q7%2BH97+AXIS+ARCHITECTS,+Harya+Wala,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b0035164c2d:0x5a5265aae7a053c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aak Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0321 5201830",
+                "Rating": 5,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Aak+Architects,+Peshawar+Rd,+Friends+Colony,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df969f5594e70d:0x4772db485b5c9431?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aangan Architects",
+        "Category": "Architectural designer",
+        "Website": "http://aanganarchitects.org/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Aangan+Architects,+Patel+Faliyu,+Pal+-+Umra+Bridge,+opposite+Karuna+Sagar+Temple,+near+Umrigar+School,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e7b1ab86513:0xe9e031496a981540?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Aangan+Architects,+Patel+Faliyu,+Pal+-+Umra+Bridge,+opposite+Karuna+Sagar+Temple,+near+Umrigar+School,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e7b1ab86513:0xe9e031496a981540?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Abbas Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 6610235",
+                "Map URL": "https://www.google.com/maps/dir//93QF%2BJXH+Abbas+Architect,+Samundri+Road,+Allama+Iqbal+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d4fcee51ee3:0xce5db76f6c811241?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Abdullah Khan Architects - Top Architects in Islamabad, Pakistan",
+        "Category": "Architect",
+        "Website": "https://ak-architects.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "(051) 8487799",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Abdullah+Khan+Architects+-+Top+Architects+in+Islamabad,+Pakistan,+180%2F82+sunset+boulevard,+SCHS+E+11%2F2+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbdc62c2cb87f:0x34b4e7eb99da382c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Abdullah's Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0324 7245630",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Abdullah's+Architect,+AL+Mubashir+plaza,+Gol+Chowk,+near+Irfan+Super+Market,+Waris+Pura,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226787a7ebdecd:0x271b5a30e9250b06?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Abre Karam",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0311 1885011",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Plot+no+34+C,+Abre+Karam,+Punjab+Govt+Servants+Housing+Foundation,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b4b9da8a44cbb:0x6a86f38bfd395050?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Abu Zawar Architect & Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0300 7747286",
+                "Map URL": "https://www.google.com/maps/dir//HFPV%2BJPF+Abu+Zawar+Architect+%26+Associates,+Usmania+Mohallah+Usmani+Mohalla,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d6cf69d0803:0x2f0a0bf011586064?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ace Associates",
+        "Category": "Architectural designer",
+        "Website": "http://www.aceassociates.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Ace+Associates,+B%2Fh.+Zydus+Hospital,+Lambhvel+Rd,+Anand,+Gujarat+388001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e4e89e5c379f5:0x7ae5ee04c60736f2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ad Guru Marketing",
+        "Category": "Corporate office",
+        "Website": "https://adgurumarketing.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Ad+Guru+Marketing,+372,+Block+A+Fatima+Jinnah+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3705b3b2b169:0x944e35a1e8b55786?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Adeel Ehsan Architects",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/AdeelEhsan.Architects11",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0306 3990909",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+3,+Adeel+Ehsan+Architects,+Al-Rehman+Complex,+Ibn+e+Sina+Market,+near+Qainchi+Mor,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217786b77dd04d:0xb52d12e2bd6f6df2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0306 3990909",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+3,+Adeel+Ehsan+Architects,+Al-Rehman+Complex,+Ibn+e+Sina+Market,+near+Qainchi+Mor,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217786b77dd04d:0xb52d12e2bd6f6df2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Adil Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 9628001",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Adil+Associates,+Madni+Plaza,+10,+Rehman+Shaheed+Rd,+Adowal+Khurd,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1ad134fec8b5:0x3c24c01b55c7453f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Adiz Consultancy",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0321 6952668",
+                "Map URL": "https://www.google.com/maps/dir//Adiz+Consultancy,+Khushi+Trade+Centre,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a70b14df4cc9:0x5dda24e8825d47b7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "0321 6952668",
+                "Map URL": "https://www.google.com/maps/dir//Adiz+Consultancy,+Khushi+Trade+Centre,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a70b14df4cc9:0x5dda24e8825d47b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Adnan Khurshid Architects",
+        "Category": "Architect",
+        "Website": "https://adnankhurshid.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0333 5213796",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Adnan+Khurshid+Architects,+Plaza+no+18,+Westeria+Road,,+Downtown+Giga+DHA,+PHASE+II,+Islamabad,+45730/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed137ec8a3bd:0xe72048abbb727fa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Adore Architecture Studio",
+        "Category": "Interior designer",
+        "Website": "https://www.adorestudio.net/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0302 2973333",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+1+,+Third+Floor,+Adore+Architecture+Studio,+Executive)+Kohinoor+One+Plaza,+Jaranwala+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922695f31894a4b:0x7b67586e4f5a70fd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AenZay",
+        "Category": "Architecture firm",
+        "Website": "http://www.aenzay.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 0607705",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//AenZay,+59-U+New,+Aibak+Block+Garden+Town,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904596dd2b2d9:0xfca23b4c28857700?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aesthetic Design Consultants",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0314 5504584",
+                "Rating": 5.0,
+                "Reviews": 41.0,
+                "Map URL": "https://www.google.com/maps/dir//Block+F,+Aesthetic+Design+Consultants,+Kohistan+Enclave,+Vin+Tower+Plaza,+Office+%23+4+Lower+Ground+Floor,+Kohistan,+Enclave,+Wah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfa7f52495a2d9:0x9bb24b3a8d021506?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aesthetic Engineering Consultants & Constructors Int'l",
+        "Category": "Construction company",
+        "Website": "http://www.consultaesthetic.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0321 7730772",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Aesthetic+Engineering+Consultants+%26+Constructors+Int'l,+Suite+No.+41+%26+42,+First+Floor,+B-Block,+B%2FS+Haq+Shinwari+Restaurant+Haseeb+Street,+Model+Town+B,+Northern+Byp,+B-Block+Block,+Commercial+Area+Multan,+60800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35d893e8975b:0x852f7bdd9a54a274?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aesthetic House",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0307 4205906",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Aesthetic+House,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b6f5ab3f94d:0xaea4791739b23cf0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Afroze Shoaib Design Consultants \"A.S.D.C\"",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4323733",
+                "Rating": 4.5,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//Afroze+Shoaib+Design+Consultants+%22A.S.D.C%22%D8%8C+79+C+1,+Gulberg+3,,+Block+C+1+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190457257de9d1:0x4bb3128bc47bb6fa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aftab Architect and Professional education center",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0306 3262632",
+                "Map URL": "https://www.google.com/maps/dir//Aftab+Architect+and+Professional+education+center,+main+street+qadir+abad,+near+new+judicial+complex,+Farrukh+Town,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b358b34765da5:0x1566f631781500bf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aftab Associates",
+        "Category": "Architecture firm",
+        "Website": "https://www.aftab-associates.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "(061) 4232410",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//5FCH%2BVPQ+Aftab+Associates,+Vehari+Rd,+New+Shah+Shams+Colony+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3700161815dd:0x8f83fb6b2b6cbff5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Afzal Designs | Consultant Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4266512",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Afzal+Designs+%7C+Consultant+Architect,+314+MB,+DHA+Phase+6,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391909d126f69ef7:0x34656523d76fc565?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Afzal Taj Naqsha Navees",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0300 7766551",
+                "Rating": 4.1,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Afzal+Taj+Naqsha+Navees,+Kachehri+Rd+Old+Kachehri+Chowk,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919538c82c13f53:0xb9ec3471532ebf58?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahmad Architect and construction",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 8894415",
+                "Map URL": "https://www.google.com/maps/dir//C837%2B3VP+Ahmad+Architect+and+construction,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375de36d776707:0x7b51f0df8f194c06?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 8894415",
+                "Map URL": "https://www.google.com/maps/dir//C837%2B3VP+Ahmad+Architect+and+construction,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375de36d776707:0x7b51f0df8f194c06?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahmad Riaz & Associates",
+        "Category": "Architecture firm",
+        "Website": "https://aradesign.net.pk/",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Phone Number": "(051) 5567685",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ahmad+Riaz+%26+Associates,+84+Main+Peshawar+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95f575827833:0xd897ca3b4aa850c2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "(051) 5567685",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ahmad+Riaz+%26+Associates,+84+Main+Peshawar+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95f575827833:0xd897ca3b4aa850c2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "(051) 5567685",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ahmad+Riaz+%26+Associates,+84+Main+Peshawar+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95f575827833:0xd897ca3b4aa850c2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 5567685",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ahmad+Riaz+%26+Associates,+84+Main+Peshawar+Rd,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95f575827833:0xd897ca3b4aa850c2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahmad Zaka & associates",
+        "Category": "Architect",
+        "Website": "http://ahmadzaka.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "(051) 2273401",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Suite+3,+5th+Floor,+Building,+Ahmad+Zaka+%26+associates,+75,+phase+4+Block+B+Civic+Center+Bahria+Town,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed04c2f49d5f:0x567097f0e5f338b7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 2273401",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Suite+3,+5th+Floor,+Building,+Ahmad+Zaka+%26+associates,+75,+phase+4+Block+B+Civic+Center+Bahria+Town,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed04c2f49d5f:0x567097f0e5f338b7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 2273401",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Suite+3,+5th+Floor,+Building,+Ahmad+Zaka+%26+associates,+75,+phase+4+Block+B+Civic+Center+Bahria+Town,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed04c2f49d5f:0x567097f0e5f338b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahmed Construction Company (ACCO Pakistan)",
+        "Category": "Architecture firm",
+        "Website": "http://www.acco.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 8000190",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//office+2,+3rd+Floor,+Ahmed+Construction+Company+(ACCO+Pakistan),+BigCity+Plaza,+Block+E+Gulberg+III,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919031a9499128f:0xd619a58768c24872?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahsan Baig ( Interior Designer)",
+        "Category": "Interior designer",
+        "Website": "https://www.facebook.com/ahsan.baig.16",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0323 6567207",
+                "Rating": 3.3,
+                "Map URL": "https://www.google.com/maps/dir//Ahsan+Baig+(+Interior+Designer),+Madni+Rd,+Mustafabad,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905fdfe11d905:0x39003c257adbfbf7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahsan.Design Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Map URL": "https://www.google.com/maps/dir//G9C5%2B5G4+Ahsan.Design+Studio,+Street+1,+Lahore,+25000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905e1ef8c8b27:0xb64acf696af56abb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ahtisham Architect & Associates (AAA) Best Architect in Faisalabad Pakistan",
+        "Category": "Architecture firm",
+        "Website": "https://ahtishamarchitects.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0316 8840305",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ahtisham+Architect+%26+Associates+(AAA)+Best+Architect+in+Faisalabad+Pakistan,+at+Ittefaq+Commercial+Market,+Chak+208+Rd,+opposite+Model+City+1,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922430cdac6327d:0x43edeb7ab08bed6b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aiwa City - Head Office",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0309 3335417",
+                "Rating": 5.0,
+                "Reviews": 38.0,
+                "Map URL": "https://www.google.com/maps/dir//Aiwa+City+-+Head+Office,+Kamra+Rd,+Attock,+43570/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19c2ccab564f:0x11eada50fd4f2b3f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aiwan-e-Shah Jahan Marriage Hall",
+        "Category": "Event venue",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0323 4119555",
+                "Rating": 4.3,
+                "Reviews": 616.0,
+                "Map URL": "https://www.google.com/maps/dir//Aiwan-e-Shah+Jahan+Marriage+Hall,+near+awan+e+shah+jahan,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919bbcd8e57ae6f:0x6e153feab2373da4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Akhtar Rasool Architects",
+        "Category": "Architecture firm",
+        "Website": "https://akhtarrasool.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Map URL": "https://www.google.com/maps/dir//First+floor,+Akhtar+Rasool+Architects,+39B,+commercial+area+Model+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35db54cee841:0x24a118e287f383d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Akhtar Rasool Architects and Interior Studio-DHA Lahore Pakistan",
+        "Category": "Architect",
+        "Website": "https://www.akhtarrasool.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0311 1418111",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//4th+Floor+CCA,+Akhtar+Rasool+Architects+and+Interior+Studio-DHA+Lahore+Pakistan,+176,+Sector+C+DHA+Phase+6,+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190926aaaaaaab:0xef04fa700c084abd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0311 1418111",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//4th+Floor+CCA,+Akhtar+Rasool+Architects+and+Interior+Studio-DHA+Lahore+Pakistan,+176,+Sector+C+DHA+Phase+6,+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190926aaaaaaab:0xef04fa700c084abd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0311 1418111",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//4th+Floor+CCA,+Akhtar+Rasool+Architects+and+Interior+Studio-DHA+Lahore+Pakistan,+176,+Sector+C+DHA+Phase+6,+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190926aaaaaaab:0xef04fa700c084abd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Baqi Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0305 5981981",
+                "Rating": 4.8,
+                "Reviews": 19.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Buraq Builders & Real Estate.",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "(0546) 512066",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Al+Buraq+Builders+%26+Real+Estate.,+Sufi+City+City+Arcade,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d6e5c45ae3d:0x3f8560e76fd13b88?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Dahar Architects & Engineers",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0345 5753557",
+                "Rating": 4.9,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//HFCX%2B834+Al+Dahar+Architects+%26+Engineers,+Khuda+Bakhsh+Rd,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dfd43b06967:0x394025901757e6a9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Farooq Interior",
+        "Category": "Interior designer",
+        "Website": "https://youtube.com/@alfarooqinterior6968?si=mgShV4iY9Q40IRK-",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0304 4337183",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Al+Farooq+Interior,+shesh+mahal,+road,+chowk+Gujran+wala,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c33db68b6c97:0x77aff29abc1c37c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0304 4337183",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Al+Farooq+Interior,+shesh+mahal,+road,+chowk+Gujran+wala,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c33db68b6c97:0x77aff29abc1c37c5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Haram City Sahiwal",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0327 6901100",
+                "Rating": 4.0,
+                "Reviews": 70.0,
+                "Map URL": "https://www.google.com/maps/dir//M38C%2BCVC+Al+Haram+City+Sahiwal,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c9ebaeb4f0fb:0xcbdf7d32bb28ad6c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Imam Enterprises",
+        "Category": "Corporate office",
+        "Website": "http://www.alimam.biz/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35164262",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Al+Imam+Enterprises,+47,+Block+L+Model+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919038f13f72c9d:0xe5e04307395bcc6c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Maaz Architects & Engineers",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/Al-Maaz-Architects-Engineers-1944597222523042/?epa=SEARCH_BOX",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0308 7791818",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//Al+Maaz+Architects+%26+Engineers,+Women+University+Road+opposite+Allied+School+near+Dewan+Wali+Pulli,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91fec0b0564f:0x45c6d72bdeabb1e2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Madina Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0309 6640661",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//M4H5%2BRXF+Al+Madina+Architect,+Fateh+Sher+Colony,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7007893ad9b:0x5759aaffdcf2d341?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0309 6640661",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//M4H5%2BRXF+Al+Madina+Architect,+Fateh+Sher+Colony,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7007893ad9b:0x5759aaffdcf2d341?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Madina Construction",
+        "Category": "Construction company",
+        "Website": "http://www.almadinaconstructions.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0301 8775656",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Al+Madina+Construction,+Canal+Rd,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b96fb103699:0x94d90ba9dde4b1f5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Munir Design Studio",
+        "Category": "Interior architect office",
+        "Website": "https://www.facebook.com/Al.munir.desinger/",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0309 9077578",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//WPP7%2B5QF+Al+Munir+Design+Studio,+Sub+branch+:+Al+Sayed+Market,+Rohtas+Rd,+near+Lahore+morr,+Jinnah+Colony,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91ac2917cf25:0x70e2987d2180818b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Noor Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//J3QX%2B954+Al+Noor+Architects,+Inayat+Elahi+Colony,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7f28262e65b:0xc8a09ad6998bfd09?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//J3QX%2B954+Al+Noor+Architects,+Inayat+Elahi+Colony,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7f28262e65b:0xc8a09ad6998bfd09?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Noor Interiors",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6752383",
+                "Map URL": "https://www.google.com/maps/dir//Al+Noor+Interiors,+Market+Aman+Garh,+Sheikh+Zayed+Rd,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375f7d53627feb:0xbca8c6b95a0a3058?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Noor Sons Furniture",
+        "Category": "Furniture store",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0314 0415959",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//XX8F%2BH5Q+Al+Noor+Sons+Furniture,+Gillani+Mor,+Layyah+-+Chowk+Azam+Rd,+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a73cb45eb963:0xebe149a7c3e4e6e4?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Layyah",
+                "Phone Number": "0314 0415959",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//XX8F%2BH5Q+Al+Noor+Sons+Furniture,+Gillani+Mor,+Layyah+-+Chowk+Azam+Rd,+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a73cb45eb963:0xebe149a7c3e4e6e4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Qaim Architect & Construction",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0301 4448216",
+                "Map URL": "https://www.google.com/maps/dir//Al+Qaim+Architect+%26+Construction,+Street+38,+Tajpura,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190f3ebcc15947:0xfcde8878adb6ca52?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Rahman House",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Map URL": "https://www.google.com/maps/dir//Al+Rahman+House,+House+No+40%2FB+Street+No+01+Hameed+Town,+near+Ittehad+Town,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b47821f08cd:0xe356607e1ebfd05f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Rehman Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0307 8724977",
+                "Map URL": "https://www.google.com/maps/dir//Al+Rehman+Architect,+689+Street+11,+Sector+W+DHA+Phase+3,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919052e2a0648b9:0x475d4aab80035f20?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Shahab Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 7972999",
+                "Map URL": "https://www.google.com/maps/dir//Al+Shahab+Associates,+Jugno+Chowk,+Jinnah+Park,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d0650d6c693:0x58dee0d8131e99dc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al Shahbaz Builders and Architects",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Map URL": "https://www.google.com/maps/dir//HFJP%2B54F+Al+Shahbaz+Builders+and+Architects,+Jail+Rd,+School+Mohalla+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d001c9b8f7b:0x20b781ae9c6e684f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al musavir Consultants",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 3113333",
+                "Map URL": "https://www.google.com/maps/dir//Al+musavir+Consultants,+Liaqat+Shaheed+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b773ba07c451:0x3edd93be5e4e0910?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 3113333",
+                "Map URL": "https://www.google.com/maps/dir//Al+musavir+Consultants,+Liaqat+Shaheed+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b773ba07c451:0x3edd93be5e4e0910?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al- Mudassar Architect & Consultants",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0346 3579056",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-+Mudassar+Architect+%26+Consultants,+Al+Noor+plaza,+1st+floor+office+No.+2,+Sargodha+Road,+near+Bank+Al+Habib,+Mangowal,+50640/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f13386031c9ff:0xa985c7d90614df2d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0346 3579056",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-+Mudassar+Architect+%26+Consultants,+Al+Noor+plaza,+1st+floor+office+No.+2,+Sargodha+Road,+near+Bank+Al+Habib,+Mangowal,+50640/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f13386031c9ff:0xa985c7d90614df2d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0346 3579056",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-+Mudassar+Architect+%26+Consultants,+Al+Noor+plaza,+1st+floor+office+No.+2,+Sargodha+Road,+near+Bank+Al+Habib,+Mangowal,+50640/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f13386031c9ff:0xa985c7d90614df2d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Ahad Construction",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0312 7191727",
+                "Rating": 5.0,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-Ahad+Construction,+near+Mukaram+Masjid,+Model+Town,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29b8849048e5:0xb3588c13b61fab87?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Awan Architect & interior designer",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0326 6106295",
+                "Map URL": "https://www.google.com/maps/dir//Al-Awan+Architect+%26+interior+designer,+Tanda+road+Karianwala,+near+NADRA+office,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391effd7c7b68c87:0x8bf5a3d1fcbbb01a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Aziz Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mianwali",
+                "Phone Number": "0311 4321999",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//HHJ6%2BFFG+Al-Aziz+Architects,+PAF+Road,+Residential+Colony+PAF+Base,+Mianwali/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39271900719d58c1:0x36d8649b39433e1f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Badar Real estate & Architecture",
+        "Category": "Real estate agency",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0331 9847547",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//WPXJ%2BW2X+Al-Badar+Real+estate+%26+Architecture,+Karimpura+Road,+Iqbal+Town,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91007f4a6739:0x732387a49dc8a200?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Damma Architects",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/Al-Dammam-ArchiTect-106468107451639/?modal=admin_todo_tour",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0307 8653746",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Al-Damma+Architects,+Bypass+Road,+Dina,+49400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f8dac1c52f785:0x56a4ec9ff9da57aa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Eman Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Pakpattan",
+                "Phone Number": "0300 8756505",
+                "Rating": 4.0,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//994J%2BPGR+Al-Eman+Associates,+Depalpur+-+Pakpattan+Rd,+P%C4%81kpattan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d59f00b15ec8d:0x6303d99d99fad544?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Karim Architects & Builders",
+        "Category": "Architecture firm",
+        "Website": "https://www.alkarimbuilders.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0329 1205621",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-Karim+Architects+%26+Builders,+M+A+Jinnah+Rd,+opposite+PSIC+phase+1,+nagana+chowk,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3500070e5be1:0x152c62119c6a098b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Madina Home Designer",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0307 4975531",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//X6QG%2BWGJ+Al-Madina+Home+Designer,+Bahawalnagar+-+Chishtian+Rd,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6fa5d52e573b:0xa4b52d59eb0f030e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Maskan Map Designers",
+        "Category": "Architect",
+        "Website": "https://www.instagram.com/almaskanmap/profilecard/?igsh=d3E2NGdheGhmZXNx",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0300 8897467",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-Maskan+Map+Designers,+University+Rd,+opposite+Ambala+Hotel+in+basement+Al-Maskan+Map+Designers,+Farooq+Colony,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217743aa9f63a5:0x628d9731abcd9a0e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Raheem Architect & Builder's",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0322 3293592",
+                "Map URL": "https://www.google.com/maps/dir//3VV8%2BPQ9+Al-Raheem+Architect+%26+Builder's,+near+Fasial+Bank,+Narowal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39195336b41e15ef:0xca504d6e75a88a46?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Rasheed Architectures & Contractors Lahore",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0301 7865898",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0301 7865898",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-Riyyan Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Pakpattan",
+                "Map URL": "https://www.google.com/maps/dir//995J%2BVXM+Al-Riyyan+Associates,+Farid+Nagar+Road,+P%C4%81kpattan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d59505baf12e7:0xcb9c90d217e14464?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al-jannat hosiery",
+        "Category": "Manufacturer",
+        "Website": "http://www.aljannatkidswear.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0331 3337734",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Al-jannat+hosiery,+SA+hameed+wala+gala,+Jinnah+Rd,+near+islamia+college,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2be323df5965:0x2464a2a5b51aee0d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Al.Riaz Engineering Services",
+        "Category": "Architect",
+        "Website": "http://www.facebook.com/al.riazengineeringservices",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 6608301",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Al.Riaz+Engineering+Services,+Block+C+Al+Noor+Garden,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269facd1f1c61:0xb0f1c9c82a987576?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Alam Architects & Builders",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0331 7341899",
+                "Rating": 4.9,
+                "Reviews": 20.0,
+                "Map URL": "https://www.google.com/maps/dir//3J3V%2B2X7+Alam+Architects+%26+Builders,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1eb311916b1:0x27b21b944a2d22bd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0331 7341899",
+                "Rating": 4.9,
+                "Reviews": 20.0,
+                "Map URL": "https://www.google.com/maps/dir//3J3V%2B2X7+Alam+Architects+%26+Builders,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1eb311916b1:0x27b21b944a2d22bd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aleemi Architectures",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0307 6655559",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Aleemi+Architectures,+Chak+Shahana+Road,+Khanewal,+58150/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b55feddef0b07:0xfeafc495f2b63ea4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Alhadiint construction company in lahore",
+        "Category": "Construction company",
+        "Website": "https://alhadiint.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0331 3339093",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Alhadiint+construction+company+in+lahore,+office+no+19+2nd+floor+khawaja+arcade+wahdat+road+Wahdat,+Road,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905d1ce96a1fb:0xed4f5030ec0556ad?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ali Arshad Associates",
+        "Category": "Architect",
+        "Website": "http://www.aliarshadassociates.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(021) 35822901",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//7C%D8%8C+Ali+Arshad+Associates,+Nishat+Commercial%D8%8C+Nishat+Lane+2,+D.H.A+Phase+6+Defence+Housing+Authority,+Karachi,+75500/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3eb33da6dc068bff:0x355366428d3fa120?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ali Cheema Web Developer & Software Architect",
+        "Category": "Website designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0331 6284811",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H3WG%2B4CR+Ali+Cheema+Web+Developer+%26+Software+Architect,+Jail+Rd,+Marghzar+Colony,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f05f5c25bb989:0x590a362eb6262009?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Alif Architect & Design Studio",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/profile.php?id=61554829446745",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0305 4046306",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Alif+Architect+%26+Design+Studio,+Girls+College+Rd,+near+Dewaan+Puli,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91a7c92422e1:0x460f81d2438943fb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Allied Engineering Consultants (Pvt) Ltd.",
+        "Category": "Architecture firm",
+        "Website": "http://www.alliedengr.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8473767",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Allied+Engineering+Consultants+(Pvt)+Ltd.,+19-A+Hali+Rd,+Block+A+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904f70956ef9d:0x777f1a7d4e25a12c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Almas Interior",
+        "Category": "Wallpaper store",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0306 3154477",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//P239%2B4RM+Almas+Interior,+bypass+sargodha+road+opp.,+Khan+Colony,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c2a88b832ea3:0x7509176e14ec5555?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0306 3154477",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//P239%2B4RM+Almas+Interior,+bypass+sargodha+road+opp.,+Khan+Colony,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c2a88b832ea3:0x7509176e14ec5555?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Alra Architect & Construction [pvt]ltd",
+        "Category": "Architecture firm",
+        "Website": "http://www.alraarchi.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0311 1911188",
+                "Map URL": "https://www.google.com/maps/dir//Alra+Architect+%26+Construction+%5Bpvt%5Dltd,+Zone,+Office+%23+28+Mian+Plaza+Johar+Town,+Lahore+Commercial,+34-Civic+Center,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919011ead17a9ef:0xea784e103a56e2ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Altaf Khan Architect SOMiC 3D Home and Animation Global studio for Architecture, Engineering Exterior and Interior Designs",
+        "Category": "Model design company",
+        "Website": "http://somic3d.unaux.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Altaf+Khan+Architect+SOMiC+3D+Home+and+Animation+Global+studio+for+Architecture,+Engineering+Exterior+and+Interior+Designs,+somic+pakistan+alkaram+palaza,+Haider+Rd,+Saddar,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95c82479b8d9:0x54145230a7b3b778?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Amani Designs – Architect Fazal Subhan",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/amanidzn?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 2536389",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//B2,+Amani+Designs+%E2%80%93+Architect+Fazal+Subhan,+Mian+Mehmood+Ali+Kasoori+Rd,+Gulberg+III,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905b3bbb8c76f:0xf7961b975d18f828?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ameen Architects & Consultants Sukkur",
+        "Category": "Architectural designer",
+        "Website": "http://www.facebook.com/architectameen",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0312 3250300",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Ameen+Architects+%26+Consultants+Sukkur,+Plot+No.+A%2F22+Sukkur+Co-operative+Housing+Society,+100+feet+Road,+near+Pizza+hut,+Delhi+Muslim+Housing+Society,+Sukkur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3935d5e1aab7ce21:0x9dba5d9313507997?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Amer Adnan Associates",
+        "Category": "Architect",
+        "Website": "http://www.ameradnan.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35774353",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Amer+Adnan+Associates,+24A,+Block+E2+Gulberg+III,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905b886847021:0xe0b1c8106066630d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Amer Shahab Architect's",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0313 9837880"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Amir Architects",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 6085268",
+                "Rating": 5.0,
+                "Reviews": 54.0,
+                "Map URL": "https://www.google.com/maps/dir//Amir+Architects,+Lyallpur+Avenue+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922690bc92cf187:0x9a6a568361ca2ede?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Amir Hamza Architects by Voxel Waves",
+        "Category": "Architecture firm",
+        "Website": "https://voxelwaves.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0332 1923134",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Amir+Hamza+Architects+by+Voxel+Waves,+Markaz+near+bank+of+punjab+(Taqwa+bank+Sub+office,+inside+Almaskan+estate+and+builders,+F-17,+Islamabad,+45230/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df99ebdfc406a3:0xff9795be8e359a9d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Amk architectural & design",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Mianwali",
+                "Map URL": "https://www.google.com/maps/dir//House+no+26%2F37,+Amk+architectural+%26+design,+Mohalla+Miana+new+abadi,+Mianwali/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3927190029488655:0x45985f3c892cbed9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mianwali",
+                "Map URL": "https://www.google.com/maps/dir//HG8F%2BR6+Amk+architectural+%26+design,+Mianwali/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39271900584c6c99:0x3794c648ea69417f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ammar House Designs",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0308 5958512"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0308 5958512"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Anwar Ali Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4429487",
+                "Rating": 4.7,
+                "Reviews": 57.0,
+                "Map URL": "https://www.google.com/maps/dir//F8G3%2B9RC+Anwar+Ali+Architects,+F8M3%2B92J+House+%23+06-HBFC,+Block+A+Faisal+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391903f1a5858157:0x4fae5b9de7c39019?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Apnahouse.pk",
+        "Category": "Architecture firm",
+        "Website": "https://apnahouse.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 7400725",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Apnahouse.pk,+Arfa+Software+Kareem+Tower,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919050d95bbc619:0x40a6590a879a5181?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aqeel Accossiate & Architecture",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0307 8507628",
+                "Rating": 5.0,
+                "Reviews": 9.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aqeel Associate",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0336 7748792",
+                "Map URL": "https://www.google.com/maps/dir//P32J%2BM36+Aqeel+Associate,+Al-Razzaq+Excutive,+Madhali+Road,+AL+Razzaq+Roayals,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c7adf31c4bf9:0x67b54fcc3fee6a9c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ar Nilesh Bhayani",
+        "Category": "Architect",
+        "Website": "https://architectnileshbhayani.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//313,+Ar+Nilesh+Bhayani,+Golden+square,+near+Dmart,+Mota+Varachha,+Surat,+Gujarat+394105,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04f007280864b:0x44c53e2184f75f8b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ar. Syed Tulaib Noman",
+        "Category": "Architect",
+        "Website": "https://be.net/syedtulaibnoman",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0330 2050055",
+                "Rating": 5.0,
+                "Reviews": 4.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArcScape Architectural & Construction Services",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 0750468",
+                "Map URL": "https://www.google.com/maps/dir//5G4F%2BXXM+ArcScape+Architectural+%26+Construction+Services,+Hamid+Commercial+Centre,+Fatima+Jinnah+Town,+Multan,+60600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3756c195f6cb:0x1a73d7da95fa5361?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arch Design",
+        "Category": "Architect",
+        "Website": "https://instagram.com/arch.designofficial?utm_medium=copy_link",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Map URL": "https://www.google.com/maps/dir//55FM%2BJF4+Arch+Design,+Model+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f297b69a3f99f:0xa2e0308f5217fd32?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arch Lattice (PVT) Limited",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8542997",
+                "Rating": 4.5,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Arch+Lattice+(PVT)+Limited,+Block+D+People's+Colony+No+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922680bc00001d1:0x431b770a04a68085?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arch Line",
+        "Category": "Association / Organization",
+        "Website": "http://www.archlineassociate.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0307 7732618",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Arch+Line,+Qamar+Garden,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269f3c60d522f:0x98a4a27120ca2e32?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arch Uprise",
+        "Category": "Architectural designer",
+        "Website": "https://archuprise.com/",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0307 1048040"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arch Vision (Design & Construction)",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/Archvision.sgd/",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0305 5149940",
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+47,+Arch+Vision+(Design+%26+Construction),+Al+Rehman+Complex,+St+1,+near+Hotel,+Sargodha/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217749dcdc7537:0x8c07e7119515dfe0?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0305 5149940",
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+47,+Arch+Vision+(Design+%26+Construction),+Al+Rehman+Complex,+St+1,+near+Hotel,+Sargodha/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217749dcdc7537:0x8c07e7119515dfe0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arch paltform",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0318 4052062"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArchXStudio (Pvt) Ltd.",
+        "Category": "Architecture firm",
+        "Website": "https://www.archxstudio.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 1023009",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ArchXStudio+(Pvt)+Ltd.,+CCA+Commercial+33P,+Ex+Air+Avenue+DHA+Phase+8,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39191bce44112081:0x90cda0ebae195160?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archcon Studio",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 9321620",
+                "Rating": 4.9,
+                "Reviews": 12.0,
+                "Map URL": "https://www.google.com/maps/dir//Archcon+Studio,+79-H,+Model+Town,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190545d0fa2d17:0x6b90e60698dc8e20?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archcreativ",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0336 2424707",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//H3GC%2B4C9+Archcreativ,+Alhussain+plaza,+Qamar+Sialvi+Rd,+near+AFC,+Qamar+Sialvi,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1be5a48d2739:0x82bfbfca8aaaaf91?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archenzo Architect",
+        "Category": "Architect",
+        "Website": "https://archenzo.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0336 7879798",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Archenzo+Architect,+near+Masjid+Sumaiya+Street,+Kamra+Rd,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19fa0372e93b:0x343b483ee1d7f785?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archern Architecture and Design",
+        "Category": "Architect",
+        "Website": "https://al-nafi.odoo.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0332 1400077"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archi Clouds",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 2677712",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Archi+Clouds,+Tahir+Colony,+Khanpur+Rd,+near+Usman+e+Ghani+Masjid,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b003399563d:0x8cd58eec08780094?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archi Cubes Architects & Interior Designer",
+        "Category": "Architecture firm",
+        "Website": "https://www.archi-cubes.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(042) 35771464",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Archi+Cubes+Architects+%26+Interior+Designer,+45-D1+MM+Alam+Rd,+near+Blue+Mall,+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190456ca706ddb:0xd9e968572d774150?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35771464",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Archi+Cubes+Architects+%26+Interior+Designer,+45-D1+MM+Alam+Rd,+near+Blue+Mall,+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190456ca706ddb:0xd9e968572d774150?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35771464",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Archi+Cubes+Architects+%26+Interior+Designer,+45-D1+MM+Alam+Rd,+near+Blue+Mall,+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190456ca706ddb:0xd9e968572d774150?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35771464",
+                "Rating": 4.6
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35771464",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Archi+Cubes+Architects+%26+Interior+Designer,+45-D1+MM+Alam+Rd,+near+Blue+Mall,+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190456ca706ddb:0xd9e968572d774150?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35771464",
+                "Rating": 4.6
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archi Design 54",
+        "Category": "Interior designer",
+        "Website": "https://www.behance.net/8223c1be",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0340 4994021",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//GH84%2BFRV+Archi+Design+54,+GH73%2B585,+Lane+No+1,+Sadar+Bazar+Saddar+Cantt+Sialkot+Cantonment,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ebf443efc5141:0x84713530e9919897?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archi Designo Construction Services",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0321 5024469",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//GL-3,+Ground+Floor,+Archi+Designo+Construction+Services,+Ammar+Arcade,+Main+Blvd,+City+Housing,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918d557c9138b53:0x65237ec96d806605?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archi Point",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0301 7530195",
+                "Rating": 5.0,
+                "Reviews": 16.0,
+                "Map URL": "https://www.google.com/maps/dir//Archi+Point,+160-A,+Block+A+Model+Town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35d5b3084681:0x2ead7823023880b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archi-Tex",
+        "Category": "Architecture firm",
+        "Website": "http://archi-tex.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 6887528",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Archi-Tex,+Office%23+804,+8th+Floor,+GTC,+8-F,+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190445b521ba41:0xa71f79be7cfe3cdb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArchiReno",
+        "Category": "Construction company",
+        "Website": "https://web.facebook.com/profile.php?id=61573443723774",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 1447987",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//P2+Floor,+ArchiReno,+Lahore+Jeff+Heights,+Main+Boulevard,+near+Hafeez+Center,+block+n+Gulberg+III,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x2a4866e9bb6c2885:0xccbb7a8472ae06a9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArchiSense Atelier",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 0433318",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ArchiSense+Atelier,+Extension+Cavalry+Ground,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190522f258d257:0x99b092b2da4e22dc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArchiSmart - Floor Plan, AutoCad drafting, 3d rendering, Landscaping, Interior designing, town planning",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0304 0642036",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+At,+ArchiSmart+-+Floor+Plan,+AutoCad+drafting,+3d+rendering,+Landscaping,+Interior+designing,+town+planning,+Medical+City,+Jalwala+Rd,+Bahawalnagar,+62300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d714e4d8863a9:0x4e7adf5336d4d3ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archinter",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0343 4256212",
+                "Rating": 4.9,
+                "Reviews": 46.0,
+                "Map URL": "https://www.google.com/maps/dir//Archinter,+Basement+Floor,+12-D+Commercial+Area,+EME+Sector,+DHA,+Street+12,+Canal+Road,+Lahore,+53710/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190348de8f752d:0x476637bd2c7c5772?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archisketch Design Studio",
+        "Category": "Architecture firm",
+        "Website": "https://g.page/r/CX-p8xz_wYScEBI/review",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0344 9604025",
+                "Rating": 5.0,
+                "Reviews": 10.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect",
+        "Category": "Architect",
+        "Website": "https://ahtechnologists.blogspot.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0303 9639742"
+            },
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0340 7145012"
+            },
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0340 7145012"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 6049151",
+                "Map URL": "https://www.google.com/maps/dir//Architect,+Nalka+khola+stop,+Sargodha+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224111fb0c5eab:0x7583cec62a7c6e0f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//94P3%2B875+Architect,+Karim+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392267b6166376e1:0x9d171856238c068f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0335 9411993",
+                "Map URL": "https://www.google.com/maps/dir//Architect,+City,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed38f20509339:0x9737fc10b086c04e?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0307 6220042",
+                "Map URL": "https://www.google.com/maps/dir//Architect,+Rehman+Shaheed+Rd,+Shadman+Colony,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f051751300a2b:0x13f693b43328e452?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 8470138"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect & Builder's",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0302 6464531"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect & Builders",
+        "Category": "Real estate agency",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8PH3%2BW67+Architect+%26+Builders,+New+Cantt+Bahawalpur,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b934885d77721:0xdfa122e9d6d187d4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect & Construction Consultant,",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0316 4558984",
+                "Map URL": "https://www.google.com/maps/dir//Architect+%26+Construction+Consultant,,+Stitlite+town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f294c954db199:0xcf40f68949255349?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect (Nakshajaat)",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0343 1755967",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//57RX%2BFVX+Architect+(Nakshajaat),+Unnamed+Road,+Talwandi+Musa+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed7ee1cd8cabf:0xaaa9d761aad5477e?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0343 1755967",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//57RX%2BFVX+Architect+(Nakshajaat),+Unnamed+Road,+Talwandi+Musa+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed7ee1cd8cabf:0xaaa9d761aad5477e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect AdiL",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4259473",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//H99H%2BHV4+Architect+AdiL,+Shalimar+Larechs+Colony,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39191b0054018c73:0x7c32f2e3b816f013?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Ahmad Shahbaz",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 9865205",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//F6X9%2BJM2+Architect+Ahmad+Shahbaz,+Block+H+Wapda+City,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226f9f45fcd15b:0xcdab7eea2730ae84?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect And Interior Design",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4998012"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Bilal Asif",
+        "Category": "Architects association",
+        "Website": "http://www.facebook.com/archcreatv/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0309 8622233",
+                "Rating": 3.7,
+                "Map URL": "https://www.google.com/maps/dir//H3G9%2BGQW+Architect+Bilal+Asif,+Qamar+Sialvi+Rd,+Gulberg+Colony,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1adbb921bf65:0x2af45cd581d3b066?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Danish Defence Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0321 7431674",
+                "Map URL": "https://www.google.com/maps/dir//Architect+Danish+Defence+Associates,+No+1,+1+Main+Boulevard+Gate,+Phase+1+Citi+Housing,+Gujranwala,+52200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918d5a7d29d40e5:0x827834354b854673?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0321 7431674"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Dreams",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0326 0646252",
+                "Map URL": "https://www.google.com/maps/dir//Architect+Dreams,+Sitara+valley+Lahore,+sheikhupara,+rode,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269929c877ddd:0x59aa4ed8cebbae6d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Engineer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0317 1878103",
+                "Rating": 4.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//23V4%2B838+Architect+Engineer,+Garha+More/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ca38a8c673763:0x4297b6c4dfe2cd3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Engineering Housing Society",
+        "Category": "Housing society",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6659029",
+                "Map URL": "https://www.google.com/maps/dir//Plot+138-A,+Architect+Engineering+Housing+Society,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922433a0d3143d1:0x4ce1acc0737c7f82?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0344 7660594",
+                "Rating": 4.5,
+                "Reviews": 64.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Engineering+Housing+Society,+Plot+111,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391901c85b90b2d9:0x2007ccfc68568ba3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0344 7660594",
+                "Map URL": "https://www.google.com/maps/dir//J4RX%2BGJ8+Architect+Engineering+Housing+Society,+CUI,+Comsats+University+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7ad1a80b22d:0xfbf4fe529715e1c4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Engr Fiaz Hussain Warya",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 3498335"
+            },
+            {
+                "City": "Muzaffargarh",
+                "Phone Number": "0300 3498335"
+            },
+            {
+                "City": "Muzaffargarh",
+                "Map URL": "https://www.google.com/maps/dir//35HX%2BVVR+Architect+Engr+Fiaz+Hussain+Warya,+Qaimabad,+Muzaffargarh/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b290053965469:0x1544fee4e4e51530?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Hamza Subhani",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0308 6065493",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//6G58%2BJH2+Architect+Hamza+Subhani,+Piran+Ghaib+Rd,+Block+U+New+Multan+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e11649026d:0x11c00c6e0cf465ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Nasir",
+        "Category": "Architecture firm",
+        "Website": "https://www.tiktok.com/@design.studio82/video/7563373007842921736?_r=1&u_code=eemh4j62immlbf&preview_pb=0&sharer_language=en&_d=ee0j6e6e3c7dm9&share_item_id=7563373007842921736&source=h5_m&timestamp=1761765307&user_id=7384988587890246661&sec_user_id=MS4wLjABAAAAVjj7oDCYWk8ytB5w1U3GjLxwwYeaeX7NudffMyAXOBSSx7bAmNrqgPO17TY8bYZ9&item_author_type=1&social_share_type=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7565554077872195336&share_link_id=6addc5c2-206a-4528-b219-8f9f4ce7faaf&share_app_id=1233&ugbiz_name=MAIN&ug_btm=b8727%2Cb2878&link_reflow_popup_iteration_sharer=%7B%22click_empty_to_play%22%3A1%2C%22dynamic_cover%22%3A1%2C%22follow_to_play_duration%22%3A-1.0%2C%22profile_clickable%22%3A1%7D&enable_checksum=1",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0346 0968795",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Nasir,+6th+Rd,+near+commerial+Market,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df954016987e41:0x278ac6ec1380adf7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0346 0968795",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Nasir,+6th+Rd,+near+commerial+Market,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df954016987e41:0x278ac6ec1380adf7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Naveed",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0313 5950194",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//J33F%2BHFX+Architect+Naveed,+Tipu+Rd,+Chaklala+Cantt.,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95003d17da41:0x63ea2b1e16dd6f7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Office",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0333 6699314",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//9399%2B277+Architect+Office,+Pepsi+Rd,+Satellite+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225da68d0ad08f:0x22f24e3eac9f1c89?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Riaz Developers DHA Lahore",
+        "Category": "Architect",
+        "Website": "https://riazdevelopers.com/contact-us/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4256996",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Riaz+Developers+DHA+Lahore,+293+CC2,+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919060e5a2715b5:0x7d6608305c301760?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4256996",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Riaz+Developers+DHA+Lahore,+293+CC2,+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919060e5a2715b5:0x7d6608305c301760?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Saif",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//C444%2BGQV+Architect+Saif,+D+Ground+People's+Colony+No+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269006dc2987b:0xa38c78197fc73aeb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Services",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 7773561",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Services,+Main+Blvd,+Airline+Society,+Lahore,+76000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919035e0c1ac20d:0xa969d86e3fa6ccf2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Sulman Khalid",
+        "Category": "Architecture firm",
+        "Website": "https://facebook.com/architect.sulman/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 9645592",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Sulman+Khalid,+99-Commercial,+Yousaf,+Street+C,+Dc+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f290efaf9724b:0x1ef1814fc2abd394?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 9645592",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Sulman+Khalid,+99-Commercial,+Yousaf,+Street+C,+Dc+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f290efaf9724b:0x1ef1814fc2abd394?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Turab Ali Khan",
+        "Category": "Architect",
+        "Website": "http://www.turabalikhan.wordpress.com/",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0321 4928859",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Turab+Ali+Khan,+C,+Askari+11+Bedian+Road,+Sector+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190613a06f6ab3:0x5db0e593fd288c7a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0321 4928859",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Turab+Ali+Khan,+C,+Askari+11+Bedian+Road,+Sector+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190613a06f6ab3:0x5db0e593fd288c7a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0321 4928859",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Turab+Ali+Khan,+C,+Askari+11+Bedian+Road,+Sector+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190613a06f6ab3:0x5db0e593fd288c7a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4928859",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Turab+Ali+Khan,+C,+Askari+11+Bedian+Road,+Sector+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190613a06f6ab3:0x5db0e593fd288c7a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0321 4928859",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Turab+Ali+Khan,+C,+Askari+11+Bedian+Road,+Sector+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190613a06f6ab3:0x5db0e593fd288c7a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect Usman",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0301 8612155",
+                "Rating": 4.7,
+                "Reviews": 12.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Usman,+127-C,+Citi+Housing+Society,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeaed455f9aff:0xd96e702da913985?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0301 8612155",
+                "Rating": 4.7,
+                "Reviews": 12.0,
+                "Map URL": "https://www.google.com/maps/dir//Architect+Usman,+127-C,+Citi+Housing+Society,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeaed455f9aff:0xd96e702da913985?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect and Interior designer",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0301 7074404",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 7074404",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 7074404",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect point",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8712606",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C464%2B9P4+Architect+point,+Block+B+People's+Colony+No+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226905737c2b55:0xdfd4cc8f60ebfbe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect's, Engineer's, Designer Okara City / Professional Designer's Of Bahira Town Islamabad.",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0345 8584340",
+                "Map URL": "https://www.google.com/maps/dir//Architect's,+Engineer's,+Designer+Okara+City+%2F+Professional+Designer's+Of+Bahira+Town+Islamabad.,+Pvt,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a78d9ab633d7:0xb0f904f95c1d60d1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect- Engr Fiaz Hussain Warya",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Muzaffargarh",
+                "Phone Number": "0300 3498335",
+                "Map URL": "https://www.google.com/maps/dir//35HX%2BVVR+Architect-+Engr+Fiaz+Hussain+Warya,+Street+no+3,+Muzaffargarh/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b294671f62d4f:0x892232e6c39af11d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architect: Ibrar Ul Hassan",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//7554%2BWW+Architect:+Ibrar+Ul+Hassan,+Sethi+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2700030e6ad5:0xd60af3938c4673cc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//4th+Floor,+Apartment,+Architects,+Royal+Orchard,+Main+Commercial+Plaza,+Street+No.+1,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b354d5a7cf8e1:0x9ea93c7f6d6a3e06?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects Atelier",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 7807777",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Architects+Atelier,+2nd+Floor,+Nooreen+Plaza,+New+Super+Town,+Walton+Rd,+Walton+Cantt,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190584e067a0dd:0xeb91b1331356d78c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects Cube",
+        "Category": "Architecture firm",
+        "Website": "http://www.architectscube.net/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0343 3378000",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Architects+Cube%D8%8C+201,+2nd+floor,+Riaz+Arcade,+Bahria+Enclave+Rd,+Jinnah+Ave,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfeb596397e86f:0xf9db9645508ae57?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0343 3378000",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Architects+Cube%D8%8C+201,+2nd+floor,+Riaz+Arcade,+Bahria+Enclave+Rd,+Jinnah+Ave,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfeb596397e86f:0xf9db9645508ae57?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects DHA",
+        "Category": "Architecture firm",
+        "Website": "http://www.acco.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0311 1749849",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architects+DHA,+Office+2,+3rd+Floor+BigCity+Plaza,+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190508a7fc8fcf:0xae72b5db8c157409?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects Envision Office",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0321 5052530",
+                "Rating": 4.8,
+                "Reviews": 42.0,
+                "Map URL": "https://www.google.com/maps/dir//Architects+Envision+Office,+House%23+3+Street+47,+Korang+Town,+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed2c92e0fc1d:0x1032e64a4789a9ad?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0321 5052530",
+                "Rating": 4.8,
+                "Reviews": 42.0,
+                "Map URL": "https://www.google.com/maps/dir//Architects+Envision+Office,+House%23+3+Street+47,+Korang+Town,+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed2c92e0fc1d:0x1032e64a4789a9ad?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects InDesign",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 8775066",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Architects+InDesign,+46,+Block+C+1+Gulberg+III,+Lahore,+56400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919052312c81d21:0xbdfc72169fc98225?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects Inc",
+        "Category": "Home goods store",
+        "Website": "http://www.architectsinc.org/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35701177",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Architects+Inc%D8%8C+26+A-Street+No.+4,+K.B+Colony,New+Airport+Road,,+KB+Society,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190f4fd7550ed7:0x4437800f2ad9bcc2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects in Lahore - Adnan Mirza",
+        "Category": "Architecture firm",
+        "Website": "https://adnanmirzaarchitects.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0322 4039426",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Building+No.+92,+Architects+in+Lahore+-+Adnan+Mirza,+%7C+Basement,+Punjab,+Defence+Raya+Golf+Resort+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905a389fd6b6b:0xa45cd46bd4bcb8be?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4039426",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Building+No.+92,+Architects+in+Lahore+-+Adnan+Mirza,+%7C+Basement,+Punjab,+Defence+Raya+Golf+Resort+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905a389fd6b6b:0xa45cd46bd4bcb8be?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4039426",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Building+No.+92,+Architects+in+Lahore+-+Adnan+Mirza,+%7C+Basement,+Punjab,+Defence+Raya+Golf+Resort+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905a389fd6b6b:0xa45cd46bd4bcb8be?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architects in Narowal | ArcoDesk Pakistan",
+        "Category": "Architecture firm",
+        "Website": "https://www.arcodesk.com/",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0333 8890670",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architects+in+Narowal+%7C+ArcoDesk+Pakistan,+Circular+Rd,+near+Punjab+Advertising+Agency,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391953fbefff8b43:0x64eb57700e267ded?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architectural Designer Anwar Ali Haider",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Phone Number": "0314 3014107",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Architectural+Designer+Anwar+Ali+Haider,+Dhup+sari,+Jhang,+35200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392399dae5a6a12d:0x53ab25a162879747?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architectural Firm",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Map URL": "https://www.google.com/maps/dir//P83H%2B4FX+Architectural+Firm,+Sadda/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38d77ba4af157557:0xcb1c243b625dfce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architectural Vision",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0300 7531313",
+                "Rating": 4.3,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//Architectural+Vision%D8%8C+60+Nadeem+Park%D8%8C+M.+A+Muhammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a728ecc1a185:0xb07508a7e2ff5d96?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architectural custom studio",
+        "Category": "Architecture firm",
+        "Website": "https://www.customstudio.site/",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0313 9366676"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0311 8540005",
+                "Map URL": "https://www.google.com/maps/dir//VC6G%2B33F+Architecture,+32%2F2-R+Road,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a1ad20bfbfc9:0xfb95f2b492c9eda8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0320 4430795",
+                "Map URL": "https://www.google.com/maps/dir//Architecture,+Tariq+Rd,+Street+No+3+Tup+Dar,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c34facfde84f:0x8b425491581ff7f6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0320 4430795",
+                "Map URL": "https://www.google.com/maps/dir//Architecture,+Tariq+Rd,+Street+No+3+Tup+Dar,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c34facfde84f:0x8b425491581ff7f6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture & Designhome",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0344 6084309",
+                "Map URL": "https://www.google.com/maps/dir//Architecture+%26+Designhome,+Mandi+Bahauddin+Rd,+Kehwa+pul/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921d50014f28ad7:0x900e098f1d7b905e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture & Graphics",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0346 5411751",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//P2G7%2B237+Architecture+%26+Graphics,+Ouch+West+Road,+Ouch/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dc070047fea8b9:0xdc97c90fc4733f8f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture Design",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0306 9302099",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Architecture+Design,+Shangra+Bazar,+Pir+Sohawa+Road,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfc7438a219a71:0x6cd6ae2b64cc1ba?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0306 9302099",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Architecture+Design,+Shangra+Bazar,+Pir+Sohawa+Road,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfc7438a219a71:0x6cd6ae2b64cc1ba?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0306 9302099",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Architecture+Design,+Shangra+Bazar,+Pir+Sohawa+Road,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfc7438a219a71:0x6cd6ae2b64cc1ba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture Engineering Services",
+        "Category": "Architecture firm",
+        "Website": "https://thearchitectureengineering.com/",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Phone Number": "0342 7002728",
+                "Rating": 4.8,
+                "Reviews": 8.0
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0342 7002728",
+                "Rating": 4.8,
+                "Reviews": 8.0
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0342 7002728",
+                "Rating": 4.8,
+                "Reviews": 8.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture Services By Ch. Hassan Razzaq",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/alphaarchitect.pk",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0304 3332299",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Architecture+Services+By+Ch.+Hassan+Razzaq,+Jora,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f056950019d1f:0xb7668c1605c51b4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture and consultant",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Map URL": "https://www.google.com/maps/dir//house+no+57,+Architecture+and+consultant,+Chinar+bag+society,+extension+block+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f910058be7291:0x39eaca5d253a70c5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architecture wattu office",
+        "Category": "Manufacturer",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Map URL": "https://www.google.com/maps/dir//X6MP%2BWC+Architecture+wattu+office,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d71006178e539:0xfb170b0efd423ff9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalnagar",
+                "Map URL": "https://www.google.com/maps/dir//X6MP%2BWC+Architecture+wattu+office,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d71006178e539:0xfb170b0efd423ff9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architorque",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0332 4224009",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Architorque,+316+MB,+DHA+Phase+6,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919039bf4c7685f:0xe3fb9e33d66ca6ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Architude",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 8665933",
+                "Rating": 4.8,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//C483%2B522+Architude,+Unnamed+Road,+Block+A+People's+Colony+No+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226811aabd3385:0x520a9b3e2be8c0bb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archiwaiz",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0325 8586000",
+                "Rating": 5.0,
+                "Reviews": 49.0,
+                "Map URL": "https://www.google.com/maps/dir//Archiwaiz,+Block+29+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177585929d897:0x3b38d3798bc1eb21?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archndesignstudio Architects & Interior Designers | Top Architect | Best Architect in Lahore | Best Interior Designer",
+        "Category": "Architect",
+        "Website": "http://www.ands.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 1447987",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//P2+Floor,+Archndesignstudio+Architects+%26+Interior+Designers+%7C+Top+Architect+%7C+Best+Architect+in+Lahore+%7C+Best+Interior+Designer,+Jeef+Heights,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919058f598ffe6b:0x2f4939b961942ed0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archtech",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35752102",
+                "Rating": 4.8,
+                "Reviews": 44.0,
+                "Map URL": "https://www.google.com/maps/dir//Archtech%D8%8C+9+scotch+corner+upper+mall,+Street+P,+Upper+Mall+Scheme,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904de7b50c19b:0x92b60108314d9358?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Archtect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Map URL": "https://www.google.com/maps/dir//RWF2%2BX75+Archtect,+South+Circular+Road,+Dera+Ismail+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266de87f38c20b:0xcfcb68628307d7df?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arco Designers (Faisalabad Branch)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 8452398",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Arco+Designers+(Faisalabad+Branch),+Kamal+Pur,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392241303a8944f5:0x7168b9448c6ffcf3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArcoDesk Pakistan | Architectural Design Services",
+        "Category": "Architect",
+        "Website": "https://www.arcodesk.com/",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ArcoDesk+Pakistan+%7C+Architectural+Design+Services,+Old+Kutchery+Road,+near+Faysal+Bank,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919532d8a31225b:0xe11f621290adb94e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArcoDesk Pakistan | Best Architectural Services in Gujranwala",
+        "Category": "Architect",
+        "Website": "http://www.arcodesk.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0339 2292786",
+                "Rating": 3.8,
+                "Map URL": "https://www.google.com/maps/dir//65H2%2BJ53+ArcoDesk+Pakistan+%7C+Best+Architectural+Services+in+Gujranwala,+Dc+Colony,+Rahwali+Cantonments/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f288ca6568cf1:0x3bc75f9e69ef0b5b?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0339 2292786",
+                "Rating": 3.8,
+                "Map URL": "https://www.google.com/maps/dir//65H2%2BJ53+ArcoDesk+Pakistan+%7C+Best+Architectural+Services+in+Gujranwala,+Dc+Colony,+Rahwali+Cantonments/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f288ca6568cf1:0x3bc75f9e69ef0b5b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ArcoDesk | Architectural Design Services | Best Architects in Islamabad",
+        "Category": "Architect",
+        "Website": "https://www.arcodesk.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0339 2292786",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Apartment+%23+317,+3rd+Floor,+ArcoDesk+%7C+Architectural+Design+Services+%7C+Best+Architects+in+Islamabad,+Khudadad+Heights,+E-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df952867ea7107:0x78351e0fbc794f6c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0339 2292786",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Apartment+%23+317,+3rd+Floor,+ArcoDesk+%7C+Architectural+Design+Services+%7C+Best+Architects+in+Islamabad,+Khudadad+Heights,+E-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df952867ea7107:0x78351e0fbc794f6c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0339 2292786",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Apartment+%23+317,+3rd+Floor,+ArcoDesk+%7C+Architectural+Design+Services+%7C+Best+Architects+in+Islamabad,+Khudadad+Heights,+E-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df952867ea7107:0x78351e0fbc794f6c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0339 2292786",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Apartment+%23+317,+3rd+Floor,+ArcoDesk+%7C+Architectural+Design+Services+%7C+Best+Architects+in+Islamabad,+Khudadad+Heights,+E-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df952867ea7107:0x78351e0fbc794f6c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0339 2292786",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Apartment+%23+317,+3rd+Floor,+ArcoDesk+%7C+Architectural+Design+Services+%7C+Best+Architects+in+Islamabad,+Khudadad+Heights,+E-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df952867ea7107:0x78351e0fbc794f6c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0339 2292786",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Apartment+%23+317,+3rd+Floor,+ArcoDesk+%7C+Architectural+Design+Services+%7C+Best+Architects+in+Islamabad,+Khudadad+Heights,+E-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df952867ea7107:0x78351e0fbc794f6c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arcon Associates Architects & Engineers",
+        "Category": "Architect",
+        "Website": "https://www.arcon.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0333 4444555",
+                "Rating": 3.9,
+                "Map URL": "https://www.google.com/maps/dir//Arcon+Associates+Architects+%26+Engineers,+Office+No+1+First+Floor+Nehal+Plaza+Khuda+Baksh+Housing+Society,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919007085533c1d:0xe362bbacdeb0e945?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4444555",
+                "Rating": 3.9,
+                "Map URL": "https://www.google.com/maps/dir//Arcon+Associates+Architects+%26+Engineers,+Office+No+1+First+Floor+Nehal+Plaza+Khuda+Baksh+Housing+Society,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919007085533c1d:0xe362bbacdeb0e945?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arena Architecture & Design",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/ArenaArchitectureDesign/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0315 8193229",
+                "Map URL": "https://www.google.com/maps/dir//Arena+Architecture+%26+Design,+Aimnabad,Road,+Mohalla+Marrian,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb58de9dec33:0x3901dcb7389b9ffc?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0315 8193229",
+                "Map URL": "https://www.google.com/maps/dir//Arena+Architecture+%26+Design,+Aimnabad,Road,+Mohalla+Marrian,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb58de9dec33:0x3901dcb7389b9ffc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arkaa Consultants",
+        "Category": "Real estate consultant",
+        "Website": "https://arkaaconsultants.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0311 1127522",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Arkaa+Consultants,+Latif+Center,+Office+%23+7+5th,+3+Main+Boulevard+Gulberg,+Block+D1+Gulberg+III,+Lahore,+54500/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919057becd6fc75:0x9cf14fee786bfdd8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arkan Architects",
+        "Category": "Architecture firm",
+        "Website": "http://arkanarchitect.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//303-MB,+3rd+Floor,+Arkan+Architects,+Street+11,+Sector+H+DHA+Phase+6,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8ee8020a4b864547:0xd9569298cb67482c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arkitekton Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 6421608",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//35XQ%2BW6Q+Arkitekton+Associates,+Mohafiz+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b229ff0e97b:0xf246c31d8bd02396?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arrange Construction & Engineering Solutions",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0306 7770800",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//9MV9%2BW57+Arrange+Construction+%26+Engineering+Solutions,+Eid+Gah+Chowk,+Railway+Rd,+Model+Town+B,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9141cc917999:0x5ec5e38f18b53c42?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0306 7770800",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//9MV9%2BW57+Arrange+Construction+%26+Engineering+Solutions,+Eid+Gah+Chowk,+Railway+Rd,+Model+Town+B,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9141cc917999:0x5ec5e38f18b53c42?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arsalan Design",
+        "Category": "Architectural designer",
+        "Website": "https://www.youtube.com/channel/UCspLD0Imf8cw-E8hUkanM_g?sub_confirmation=1",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0341 5164623",
+                "Map URL": "https://www.google.com/maps/dir//Arsalan+Design,+3+Meela+Chock,+Kamra+Rd,+near+Tahir+CNG,+Kamra,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df195d2b76855b:0x2be51967827963d1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arsh Arc Associates - Best Architects in Islamabad & Rawalpindi, Pakistan",
+        "Category": "Architect",
+        "Website": "http://www.arsharcassociates.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 9437949",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Arsh+Arc+Associates+-+Best+Architects+in+Islamabad+%26+Rawalpindi,+Pakistan,+Office+6,+1st+Floor,+Ginza+Center,+G+7%2F2+Blue+Area,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbfc569a0684b:0x5dfc74e99ce75960?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 9437949",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Arsh+Arc+Associates+-+Best+Architects+in+Islamabad+%26+Rawalpindi,+Pakistan,+Office+6,+1st+Floor,+Ginza+Center,+G+7%2F2+Blue+Area,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbfc569a0684b:0x5dfc74e99ce75960?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0333 9437949",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Arsh+Arc+Associates+-+Best+Architects+in+Islamabad+%26+Rawalpindi,+Pakistan,+Office+6,+1st+Floor,+Ginza+Center,+G+7%2F2+Blue+Area,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbfc569a0684b:0x5dfc74e99ce75960?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0333 9437949",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Arsh+Arc+Associates+-+Best+Architects+in+Islamabad+%26+Rawalpindi,+Pakistan,+Office+6,+1st+Floor,+Ginza+Center,+G+7%2F2+Blue+Area,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbfc569a0684b:0x5dfc74e99ce75960?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0333 9437949",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Arsh+Arc+Associates+-+Best+Architects+in+Islamabad+%26+Rawalpindi,+Pakistan,+Office+6,+1st+Floor,+Ginza+Center,+G+7%2F2+Blue+Area,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbfc569a0684b:0x5dfc74e99ce75960?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arshad Design Commune",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 5586431",
+                "Rating": 4.6,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Arshad+Design+Commune,+Computer+Market,+Bank+Rd,+Saddar,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df949cdc7c8a2b:0xd2bc686588eb83ce?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 5586431",
+                "Rating": 4.6,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Arshad+Design+Commune,+Computer+Market,+Bank+Rd,+Saddar,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df949cdc7c8a2b:0xd2bc686588eb83ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arslan Architect Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0331 5270515",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Arslan+Architect+Studio,+Shop-22+Usman+Block,+Main+Fawara+Chowk,+Abbasia+Town+Main+Road,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b2f20806559:0x13fb8a9e58d4ca9d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arslan Ejaz Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0334 0005727",
+                "Rating": 5.0,
+                "Reviews": 33.0,
+                "Map URL": "https://www.google.com/maps/dir//Arslan+Ejaz+Architects,+7+view+plaza+1+Hub,+commercial+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff2b6c9d1197d:0x4f7328abad73f999?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0334 0005727",
+                "Rating": 5.0,
+                "Reviews": 33.0,
+                "Map URL": "https://www.google.com/maps/dir//Arslan+Ejaz+Architects,+7+view+plaza+1+Hub,+commercial+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff2b6c9d1197d:0x4f7328abad73f999?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0334 0005727",
+                "Rating": 5.0,
+                "Reviews": 33.0,
+                "Map URL": "https://www.google.com/maps/dir//Arslan+Ejaz+Architects,+7+view+plaza+1+Hub,+commercial+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff2b6c9d1197d:0x4f7328abad73f999?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Art Interior Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4285475",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//H846%2B7J9+Art+Interior+Architect,+Babar+St,+Mozang+Chungi,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190360470c71e7:0x6333a704e3fb6e55?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Artcor interior",
+        "Category": "Interior designer",
+        "Website": "https://artcorinterior.com/",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0321 2016484",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Artcor+interior,+Allama+iqbal+town+Near+78+NB+house,+15+number,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x801c1b7dac157121:0xec4cb50c3c93359b?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0321 2016484",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Artcor+interior,+Allama+iqbal+town+Near+78+NB+house,+15+number,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x801c1b7dac157121:0xec4cb50c3c93359b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Arth Design",
+        "Category": "Architect",
+        "Website": "http://arthdisign.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//110,+Arth+Design,+Maruti+Titanium,+Sardar+Patel+Ring+Rd,+near+Galaxy+Business+park,+opp.+Torrent+substation+On,+Nikol,+Ahmedabad,+Gujarat+380049,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e87134aee6aab:0x9a97216d418ac1b3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aryan Studios & Developers",
+        "Category": "Architecture firm",
+        "Website": "http://www.aryanstudios.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0304 8095198",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Aryan+Studios+%26+Developers,+Liberty+Market+Gulberg+III,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919056646df340d:0x4d743d4d35ecb1b4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "As Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0309 7245086"
+            }
+        ]
+    },
+    {
+        "Shop Name": "As architect &real estate",
+        "Category": "Housing development",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+no+4,+As+architect+%26real+estate,+Lower+Canal+Rd,+Gulberg+Valley+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392267006e108ce5:0xbd31884ea67a4c63?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Asad Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0308 7737177",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Asad+Associates,+Main+Sharqi+Colony+Road,+near+Quaid+e+Azam+Park,+Vehari,+61100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ceb4d2226bea5:0x741b42f8298513d3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Asia interiors",
+        "Category": "Interior architect office",
+        "Website": "https://www.haiderfarooq226.com.pk/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0334 6672552"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Asif Anjum Associates",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 8668623",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//C4C8%2BHP4+Asif+Anjum+Associates,+Officer+Colony+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269f8757d98f7:0xd9772ecbc9eed2ca?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Asif Associate Architect and Engineer",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0345 7665458",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//GFXC%2BGQG+Asif+Associate+Architect+and+Engineer,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d00777eb727:0xac4f39ec734897e5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Asquare Builders & Developers",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 9637691",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Asquare+Builders+%26+Developers,+Asquare+Builders+and+Developers,+Northern+Byp,+New+Shalimar+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35005f21e529:0x1455bcd66cca0d2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Assistant Commissioner House, Chakwal",
+        "Category": "Housing complex",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Rating": 4.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//WVM5%2B5M7+Assistant+Commissioner+House,+Chakwal,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205de6d61162b3:0xd1f6f138f3247e5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Rating": 4.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//WVM5%2B5M7+Assistant+Commissioner+House,+Chakwal,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205de6d61162b3:0xd1f6f138f3247e5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Astitva Construction and P. M. C",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Astitva+Construction+and+P.+M.+C,+Sun+Graviats,+Jivrajpark+Rd,+near+Shyamal+Cross+Road,+Shyamal,+Ahmedabad,+Gujarat+380015,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e85283b9280db:0x16b2c4a468c56a5b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Atelier D35",
+        "Category": "Architect",
+        "Website": "http://www.atelierd35.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4692692",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+5,+Third+Floor,+Atelier+D35,+Zohra+Heights,+Main+Market,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904be0492ed2f:0xff07763d06be9405?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Aura Architect & Interiors",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0320 4329876"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Auto Electronics (Outdoor & Indoor SMD Screens)",
+        "Category": "Manufacturer",
+        "Website": "https://autoelectronics.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0312 4807800",
+                "Map URL": "https://www.google.com/maps/dir//Auto+Electronics+(Outdoor+%26+Indoor+SMD+Screens),+Nayab+Grace+City,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37001fa4d727:0xee072c48fb0163c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "AutoCaad",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0324 6161609"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Autocad Draftsman /Architectural 2D Drawing for Residential and Commercial Projects",
+        "Category": "Drafting service",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0317 5970963",
+                "Map URL": "https://www.google.com/maps/dir//Autocad+Draftsman+%2FArchitectural+2D+Drawing+for+Residential+and+Commercial+Projects,+Khokar+plaza,+main+Talagang+Hwy,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205df651483ed9:0xa8c3d3d9772a4e0d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Avasiti Design",
+        "Category": "Architect",
+        "Website": "http://www.avasiti.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Avasiti+Design,+401+Shastra,+Opp+Drive+in+Petrol+Pump,+Drive-In+Road,,+Ahmedabad,+Gujarat+380054,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e84ae13a8e7cd:0x596b350085f20e07?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Avenzaland Marketing & Real Estate Sale Agency",
+        "Category": "Real estate consultant",
+        "Website": "http://www.avenzaland.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//OFFICE:+%23+3-B,+Avenzaland+Marketing+%26+Real+Estate+Sale+Agency,+along+MCB+Islamic+Bank,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b355ebbbc20a7:0x6cc51551ae3ea7c5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Awais Rasheed & Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0324 9619693",
+                "Rating": 4.7,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//Awais+Rasheed+%26+Associates,+Warriach+Plaza,+Muslim+Town,+Rahwali,+Rahwali+Cantonments/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29e340ebca37:0x9ad34872bb8b503a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0324 9619693",
+                "Rating": 4.7,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//Awais+Rasheed+%26+Associates,+Warriach+Plaza,+Muslim+Town,+Rahwali,+Rahwali+Cantonments/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29e340ebca37:0x9ad34872bb8b503a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Awan design architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//FFPW%2B886+Awan+design+architect,+Ugoki+Rd,+Bilal+pura+Muzaffarpur,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ee9cf3d7bb193:0xe1a5068ddcb27f12?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//FFPW%2B886+Awan+design+architect,+Ugoki+Rd,+Bilal+pura+Muzaffarpur,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ee9cf3d7bb193:0xe1a5068ddcb27f12?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Axiz Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35876140",
+                "Rating": 4.7,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//6-C,+Axiz+Architects,+3,+6-C%2F3+Block+C+3+Gulberg+III,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190567c9bc54f3:0xe0ab174dd2562237?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ayaz Ahmed",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Phone Number": "0321 5201830",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Ayaz+Ahmed%D8%8C+Muhallah+Rehman+Pura+Hafiz+Electronic+zafarwal+road+near+faizan+e+madina+masjid,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919538099978ecd:0x9839dee68d2d75d8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ayaz Syed Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0322 5996883",
+                "Map URL": "https://www.google.com/maps/dir//Ayaz+Syed+Architect,+House+%23+43,+Gandhra,+Road,+Madina+Syedan,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f05b0665a2be1:0x42b1cf4401cc980d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ayesha Azaz Architects & Engineers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 6211527",
+                "Rating": 4.5,
+                "Reviews": 32.0,
+                "Map URL": "https://www.google.com/maps/dir//Ayesha+Azaz+Architects+%26+Engineers,+Service+Road+1st+Floor,+Al-fajar+Estate,+Main+Quaid-Azam+Avenue,+Allama+Iqbal+Town,+Rahwali+Cantonments/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29d913f61825:0x5d648082abcb379a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Azam Construction Company and Architects",
+        "Category": "Architect",
+        "Website": "https://web.facebook.com/profile.php?id=100093341863797",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8442835",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Azam+Construction+Company+and+Architects,+Gondal+Chok,+Kunjah,+50620/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f110a3ee02af5:0x586c8b546fef141b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Azeem Engineering and architect Consultant",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Map URL": "https://www.google.com/maps/dir//XMW7%2B7HJ+Azeem+Engineering+and+architect+Consultant,+Satellite+Town+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f93007b370d75:0xa7a2475687fcfa43?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "B.Design24Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Reviews": 73.0,
+                "Map URL": "https://www.google.com/maps/dir//B.Design24Studio,+9,+Nevil+Park,+Opp+China+Town+Gayatri+Mandir+Road,+near+Spring+Valley,+New+City+Light,+Althan,+Surat,+Gujarat+395017,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04dfc09ee9ac3:0xa881ec95e528e864?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "B.M.Architect & Interior",
+        "Category": "Wallpaper store",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 6221188",
+                "Map URL": "https://www.google.com/maps/dir//B.M.Architect+%26+Interior,+Karbala+Road,+Dawood+Chowk+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b74f661279b5:0x9ab6e22b1fab4911?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "B.S Architecture",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Nankana Sahib",
+                "Phone Number": "0331 4501080",
+                "Map URL": "https://www.google.com/maps/dir//B.S+Architecture,+Shahkot+Rd,+opposite+zila+katchery,+Nankana+Sahib,+39100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39188f5158879e51:0xa78a9688604e5e07?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BA Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0306 6000106",
+                "Rating": 4.1,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//BA+Associates,+MA+Jinnah+Rd,+behind+State+Bank+of+Pakistan,+faisalabad%D8%8C,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922693aef9e2ef7:0x13e5a0068666c5c2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BAHAUDDIN SADDIQUI & PARTNERS",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//FIRST+FLOOR,+BAHAUDDIN+SADDIQUI+%26+PARTNERS,+PLAZA+%23+5,+W+Canal+Rd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226f951f0eac63:0x21be148dbff21a31?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BARKAT ASSOCIATE",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0301 4464808",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//BARKAT+ASSOCIATE,+Bahawalnagar+-+Chishtian+Rd,+Bahawalnagar,+62300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6fb647f91dc3:0xe73ca0168a68e8bc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BASHIR SON'S BUILDERS AND ARCHITECT",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 0684994",
+                "Map URL": "https://www.google.com/maps/dir//C2R9%2BF93+BASHIR+SON'S+BUILDERS+AND+ARCHITECT,+Street+No.+3,+WALI+PURA+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922430039b9d46f:0x52756350bbc8c2f2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BB Architects & Home Design",
+        "Category": "Construction company",
+        "Website": "https://www.facebook.com/BB-Architects-Home-Design-111824483873885",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0334 2711116",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//BB+Architects+%26+Home+Design,+Block+No+:+11,+near+PIA+Office+Road,+Dera+Ghazi+Khan,+32200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e00b53d43f:0xbbecd541262f2a91?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0334 2711116",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//BB+Architects+%26+Home+Design,+Block+No+:+11,+near+PIA+Office+Road,+Dera+Ghazi+Khan,+32200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e00b53d43f:0xbbecd541262f2a91?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0334 2711116",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//BB+Architects+%26+Home+Design,+Block+No+:+11,+near+PIA+Office+Road,+Dera+Ghazi+Khan,+32200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e00b53d43f:0xbbecd541262f2a91?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BHSP Architects",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 8717393",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//BHSP+Architects,+Wapda+City,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226fe5b14fae91:0xcda0583b08aed8ec?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BILALBINTAHIR",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0307 6626629",
+                "Map URL": "https://www.google.com/maps/dir//BILALBINTAHIR,+Markazi+Masjid+Rd,+Jalil+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2bad73b0c355:0x1c9af9689905cb5e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BIN ADAM Architect",
+        "Category": "Architect",
+        "Website": "http://www.binadamgroup.wixsite.com/website",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0334 4098962",
+                "Map URL": "https://www.google.com/maps/dir//BIN+ADAM+Architect,+37+Km+Feroz+pur+road%D8%8C+Kasur,+55050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9f3f0f3c38d:0x4aa6a87777648456?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BIN ZAHOOR (Architectural design services)",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0306 1736043",
+                "Map URL": "https://www.google.com/maps/dir//BIN+ZAHOOR+(Architectural+design+services),+155-A+Model+Town+Commercial+Area,+Northern+Byp,+Block+A+Model+Town,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b350a244f9fa1:0x493fb9b83a62f9c9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BINT-E-YOUSAF ARCHITECT AND CONSULTANT)",
+        "Category": "Interior designer",
+        "Website": "https://api.whatsapp.com/message/JFNRKDIG4S74K1?autoload=1&app_absent=0",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0316 4714493",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//BINT-E-YOUSAF+ARCHITECT+AND+CONSULTANT),+Fasial,+House+%23+179,+street+%23+5,+colony%232,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918ffd591a94947:0x28da23e06c1d604e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BK Design Studio",
+        "Category": "Architect",
+        "Website": "http://bkdesignstudios.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0344 9164698",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//1block,+BK+Design+Studio%D8%8C+117+ijaz+ahmed+avenue+b,+Multi+Gardens+B-17,+Islamabad,+44010/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbda939bd8d15:0xba1bd950d9a83155?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0344 9164698",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//1block,+BK+Design+Studio%D8%8C+117+ijaz+ahmed+avenue+b,+Multi+Gardens+B-17,+Islamabad,+44010/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbda939bd8d15:0xba1bd950d9a83155?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BLUE ARC Design & Development (Architect & Construction Company)",
+        "Category": "Construction company",
+        "Website": "http://www.bluearc.com.pk/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0331 1110272",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//BLUE+ARC+Design+%26+Development+(Architect+%26+Construction+Company),+BlueArc,+Bahria+Eiffel+Tower,+Commercial+Main+Expressway,+Bahria+Greens,+Phase+7+Sector+1+Bahria+Town,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff3c17929b23b:0x229abf6b024b1257?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Baab Architecture Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0311 7193365",
+                "Map URL": "https://www.google.com/maps/dir//Baab+Architecture+Studio,+81-A+Model,+town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35b24857d233:0xc67eaf4bda321fc1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bab-e-Chakwal",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0311 0569942",
+                "Rating": 4.4,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//WVM5%2B28M+Bab-e-Chakwal,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dd22a4441a3:0xf3532b6d9ac658fd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0311 0569942",
+                "Rating": 4.4,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//WVM5%2B28M+Bab-e-Chakwal,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dd22a4441a3:0xf3532b6d9ac658fd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Babur and Associates",
+        "Category": "Architecture firm",
+        "Website": "http://baburandassociates.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 36605523",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Babur+and+Associates,+house%2380+Street%2302+cavalry+ground+cantt,+Cavalry+Ground,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905b7c1b7d119:0xb48011a40a7c4576?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bahawalpur Light Tower",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//CMJ2%2BHM4+Bahawalpur+Light+Tower,+Light+Tower,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9931ad07e955:0x2b100232ce5abbd2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bahoo architect",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//6X9X%2B2Q7+Bahoo+architect,+Faisalabad+Road,+Dijkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225fa01f40a70d:0xef2ddb2d41beea69?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Baig Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0342 6664383"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Baig Architecture",
+        "Category": "Place of worship",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//HFVV%2BJ89+Baig+Architecture,+Old+Rasul+Rd,+Mohalla+Sufipura,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7ddc925e019b:0x4265c603fffcf302?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Baig Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 6049151",
+                "Map URL": "https://www.google.com/maps/dir//Baig+Associates,+House%231+P-64,+Taj+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269fa5bb06e5f:0x75741bbf6261985b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Baig constrution and architecture",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0307 5963976",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Baig+constrution+and+architecture,+near+children+hospital,+Sultan+Colony,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3e52f326b71:0x686aa260ea3a9ddc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Baroon Outdoor Comfort",
+        "Category": "Architect",
+        "Website": "https://www.baroon.pk/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 3201201",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Baroon+Outdoor+Comfort,+1ST+FLOOR+CHAUDHARY+PLAZA+NEAR+GENERAL+BUS+STAND,+Grand+Trunk+Road%D8%8C+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f298f57574245:0xf3f953c4785f3f3d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bauen Studio of Architecture",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0336 4143072",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C,+Bauen+Studio+of+Architecture,+64,+Extension+Cavalry+Ground,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919053681e345a5:0xc17ed6b510ffa012?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bawa khan design studio bahawalnagar",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Bawa+khan+design+studio+bahawalnagar,+Bahawalnagar,+62300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6ff9694ae145:0x9b6207ff4460469e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bawali Consultants (Pvt) Ltd",
+        "Category": "Architect",
+        "Website": "http://www.bawali.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0321 4381518",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//H3JM%2BJQP+Bawali+Consultants+(Pvt)+Ltd,+B2+Mulim+Abad+Rd,+Muslimabad,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b2608e74b8f:0xd66b519205cabf5e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Best Builders & Interior",
+        "Category": "Interior architect office",
+        "Website": "http://bestbuildersandinteriors.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0311 0731111",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//C5XC%2B8QW+Best+Builders+%26+Interior,+Street+5,+Abdullah+Gardens+Abdullah+Garden,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922691029581c13:0x1b3ff9d4247b4509?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Best Home Design",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0308 2367302",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//77QP%2B4XP+Best+Home+Design,+4+Block+Jauharabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213d63542f8687:0x16068c4e8b3df9c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Betterhomes",
+        "Category": "Construction company",
+        "Website": "https://www.facebook.com/betterhomespk/",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Map URL": "https://www.google.com/maps/dir//3J2V%2BXXW+Betterhomes,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab161e65a815d:0xb4e41c0ddbad52a1?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Map URL": "https://www.google.com/maps/dir//3J2V%2BXXW+Betterhomes,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab161e65a815d:0xb4e41c0ddbad52a1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bhati estate and Ans architect and consultant Engineering university road sargodha",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0300 6030464",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Bhati+estate+and+Ans+architect+and+consultant+Engineering+university+road+sargodha,+University+Rd,+Muradabad+Colony,+Sargodha/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177a4d2c6fd35:0x18a63a9988fc55fb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bhatti Architect And Construction Company",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0312 6102937",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8FWX%2B9Q2+Bhatti+Architect+And+Construction+Company,+Tender+Maqbool+Wala+Rd,+90+Morr/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ccde728c5bca7:0x831de68d25ea95e2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bilal Architects & Consulting Engineers (Pvt) Ltd.",
+        "Category": "Architecture firm",
+        "Website": "http://www.bilalarchitects.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 6802319",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bilal+Architects+%26+Consulting+Engineers+(Pvt)+Ltd.,+Civil+Hospital,+Near+Data+Bakery,+Jhangi+Wala+Rd,+Rd,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9142b7abeb89:0x2e74a6ab2cdf49c5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bin Abdullah Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6202725",
+                "Map URL": "https://www.google.com/maps/dir//H34F%2B8QQ+Bin+Abdullah+Architect,+Rajput+Plaza,+Shadiwal+Rd,+Green+Town+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1afda98db341:0xcc2de5bc164e640f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bin Amanat Builders",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0308 5097209",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+200,+Bin+Amanat+Builders,+orchard,+Eden,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922436897729595:0x859278efa3e612ed?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bin Arif Architects",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/ArkDesign52?mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0303 9331230",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Bin+Arif+Architects,+ziad,+Plot%23192,+Allam+iqbal+block,+Tariq+bin,+Colony,+Vehari,+61100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cebc9eb8e0ee5:0x1037b1f62272b61f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bin Hassan Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//7FFV%2B2QH+Bin+Hassan+Architects,+Opp.+Main+Gate+Bahuddin+Zakariya+Univertiy,+Bosan+Rd,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b350c73bb52a7:0x8f971a7fea3293ec?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bizzon Plaza",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0333 5986559",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//MXMQ%2B74W+Bizzon+Plaza,+V+chowk,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cebcfe1c75b55:0x631e3fa6da14c3f0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Blooms by lee",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0308 9188701",
+                "Map URL": "https://www.google.com/maps/dir//Blooms+by+lee,+Mohallah+Ali+Jah,+Street+No.+2,+Attock,+43260/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df1916877b020f:0x937972444b7a6f84?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Blue Line Architecture",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0300 9414615",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8X85%2B4FV+Blue+Line+Architecture,+Unnamed+Road,+Zahoorabad+Khanewal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cabe33d42316d:0xb0235c5f2e03fafd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 9414615",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8X85%2B4FV+Blue+Line+Architecture,+Unnamed+Road,+Zahoorabad+Khanewal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cabe33d42316d:0xb0235c5f2e03fafd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "BplusK Architects",
+        "Category": "Architect",
+        "Website": "http://www.bplusk.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//BplusK+Architects,+15,+Vimalnagar+society,+Near+Meerabai+Garden+Sagar+Dairy+Lane,+Road,+opp.+Jin+Petrol+Pump,+Jahangir+Pura,+Rander,+Surat,+Gujarat+395005,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04dd83268f0c5:0x2c56e9ee9785cc0f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Brick Layer Builders",
+        "Category": "Construction company",
+        "Website": "http://www.bricklayerbuilders.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0320 7330731",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Brick+Layer+Builders,+Office+no.38,+First+floor+Chenab+commercial+Area,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375bf9b78d24df:0x92708e5dad87e0f8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Brothers Construction & Developers",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0312 7418676",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Brothers+Construction+%26+Developers,+Z,+29,+near+Mujahid+Hospital,+Block+Z+Madina+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226984d37c7257:0x2b5abad52c1fa361?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Builtron Associates",
+        "Category": "Architecture firm",
+        "Website": "https://builtronassociates.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "(055) 3894580",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Builtron+Associates,+Office+12+First+Floor,+Main+Boulevard,+Phase+3+Garden+Town,+Gujranwala,+50250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f294e161d8a01:0xad4e8c2356f9591?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "(055) 3894580",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Builtron+Associates,+Office+12+First+Floor,+Main+Boulevard,+Phase+3+Garden+Town,+Gujranwala,+50250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f294e161d8a01:0xad4e8c2356f9591?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bukhari Associates International",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0307 0860692",
+                "Rating": 4.4,
+                "Reviews": 84.0,
+                "Map URL": "https://www.google.com/maps/dir//Bukhari+Associates+International,+Head+Office,+Prism+Arcade,+3+Hub+Commercial,+opposite+Bahria+Head+Office,+Phase+8+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff2b5d7ca5fcb:0x5d5c876e5535e94e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bunyaad Builder's & Architecture",
+        "Category": "Construction company",
+        "Website": "http://www.bunyaadbuilders.com/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0300 0030099",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Bunyaad+Builder's+%26+Architecture,+Chenab+Rangers+Rd,+Langeriali,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391e95f95dd19f0d:0x134f5ce885655ad5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Bytes Lead Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0325 6181947",
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Bytes+Lead+Architects,+Ahmad+Glass+%26+Premium+Aluminum,+Farhan+Plaza,+near+Al-Fateh+Shopping+Mall,+47+Pull+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177ab027424db:0xea42e325fcaccdfa?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0325 6181947",
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Bytes+Lead+Architects,+Ahmad+Glass+%26+Premium+Aluminum,+Farhan+Plaza,+near+Al-Fateh+Shopping+Mall,+47+Pull+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177ab027424db:0xea42e325fcaccdfa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CADVIEW ARCHITECT",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6712992",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C7CP%2BPQ3+CADVIEW+ARCHITECT,+Main+St,+Gulshan+e+Usman+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b86d9a34697:0xdb329ab71e8a4a4b?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6712992",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C7CP%2BPQ3+CADVIEW+ARCHITECT,+Main+St,+Gulshan+e+Usman+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b86d9a34697:0xdb329ab71e8a4a4b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CFJ Architects",
+        "Category": "Architecture firm",
+        "Website": "http://www.cfjarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4466558",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//CFJ+Architects,+3rd+Floor,+312+MB,+Phase+6+DHA,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190988d250188b:0x62f473106f6ba216?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4466558",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//CFJ+Architects,+3rd+Floor,+312+MB,+Phase+6+DHA,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190988d250188b:0x62f473106f6ba216?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CITI Housing Jhelum Head Office",
+        "Category": "Corporate office",
+        "Website": "https://www.citihousing.com.pk/",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0322 4408667",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//CITI+Housing+Jhelum+Head+Office,+Satellite+Town+Banquet+Hall,+Dina+to+Malot+Bypass,+Satellite+Town,+Satellite+Town+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9395a861e239:0xdf93fdb8c78ec524?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CITY NAQSHAH NAVEES (CNN)",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0313 7576502",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//HFVP%2BRX6+CITY+NAQSHAH+NAVEES+(CNN),+Saim+Nallah+(Zibbah,+New+Rasool+Rd,+Khana)Link+Road/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7de0a493da17:0x761eaf93f52fbbc5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CREATIVE DEVELOPERS",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 2395054",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//CREATIVE+DEVELOPERS,+Abasia+town+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375bc744382695:0xa0562800f5c6c608?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CUBE DESIGNERS",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0321 7953526",
+                "Rating": 4.9,
+                "Reviews": 44.0,
+                "Map URL": "https://www.google.com/maps/dir//CUBE+DESIGNERS,+Jinnah+Chowk,+Gujranwala+Rd,+opposite+Ripah+International+College,+Hafizabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4d332f4989c5:0xfac4a839d415c427?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Cantilevers Architecture",
+        "Category": "Architecture firm",
+        "Website": "https://web.facebook.com/cantilevers/?ref=br_rs",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0322 2288299",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Cantilevers+Architecture,+Office+412+Street+09,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b74ea5967a8b:0x9c41df6d813e25f9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0322 2288299",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Cantilevers+Architecture,+Office+412+Street+09,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b74ea5967a8b:0x9c41df6d813e25f9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Capital Architect",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0321 5871090",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Capital+Architect,+Shop%232+M.Commitee+Plaza,+Attock+City/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df198adc79b40f:0x80fcbe0a5507bf88?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chakwal Architect , real estate and civil survey",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0330 3574457",
+                "Rating": 4.8,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Chakwal+Architect+,+real+estate+and+civil+survey,+1st+floor+ijaza+plaza,+Talagang+Hwy,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d0f8e0554d9:0x51f82d655f995a90?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Char Diwari Architects",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0333 6930488",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Char+Diwari+Architects,+Al+Razzaq+Royal,+187+H+Valley+block,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c9128a306623:0x55de8b456548d10c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0333 6930488",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Char+Diwari+Architects,+Al+Razzaq+Royal,+187+H+Valley+block,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c9128a306623:0x55de8b456548d10c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chiltan Architects and Designers",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 7825651",
+                "Rating": 4.8,
+                "Reviews": 116.0,
+                "Map URL": "https://www.google.com/maps/dir//mezzanine+floor,+Chiltan+Architects+and+Designers,+10-A+D.H.A.+Main+Blvd,+Eden+city+DHA+phase+8,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190588fc0c8249:0xba1f6fb2d99cf3b2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0333 7825651",
+                "Rating": 4.8,
+                "Reviews": 116.0,
+                "Map URL": "https://www.google.com/maps/dir//mezzanine+floor,+Chiltan+Architects+and+Designers,+10-A+D.H.A.+Main+Blvd,+Eden+city+DHA+phase+8,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190588fc0c8249:0xba1f6fb2d99cf3b2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chiltan Architects and Developers-Best Architects in Multan, Pakistan",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/chiltanarchitects.developers",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//5CPF%2BP4X+Chiltan+Architects+and+Developers-Best+Architects+in+Multan,+Pakistan,+Club+Road,+Multan+Cantt+Residential+Area,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3126f5cb00c5:0x674ceb695e59525b?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//5CPF%2BP4X+Chiltan+Architects+and+Developers-Best+Architects+in+Multan,+Pakistan,+Club+Road,+Multan+Cantt+Residential+Area,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3126f5cb00c5:0x674ceb695e59525b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chishty Brothers - Architects & Engineers",
+        "Category": "Architecture firm",
+        "Website": "https://www.chishtybros.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35882158",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Chishty+Brothers+-+Architects+%26+Engineers,+3RD+Floor,+Lahore+Tower,+Barkat+Market,+New,+Garden+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391901b6d6b4b59b:0xf6d783de54dcbc38?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chohan Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0332 4329072",
+                "Rating": 5.0,
+                "Reviews": 34.0,
+                "Map URL": "https://www.google.com/maps/dir//Chohan+Associates,+near+KHAWAR+HOSPITAL,+Civil+Lines,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c266fcc37d1b:0x37108e64f6b4a3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chughtai Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4838646",
+                "Rating": 4.3,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Chughtai+Associates%D8%8C+107-A,+HBFC,+Block+A+Faisal+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391903f1e6007947:0x1eb460f95dae2415?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chughtai Builder's & Associates",
+        "Category": "Lodging",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//4F93%2B5VC+Chughtai+Builder's+%26+Associates,+Naseem+Hayat+Rd,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9dcfc9a9edf:0x218b6b0b817cc5a5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Chughtaiz Architects & Builders",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0315 7147330",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Chughtaiz+Architects+%26+Builders,+Mall+of,+Dera+Ghazi+Khan,+32200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1679b594b95:0x57f981e15edbd172?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Citi Housing Design Studio",
+        "Category": "Architect",
+        "Website": "http://www.citihousing.pk/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8459514",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//G3Q9%2B95X+Citi+Housing+Design+Studio,+City+Housing+Society,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392240370285c171:0x244a6c4aaf907a2e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "City Architect & Consultant",
+        "Category": "Architectural designer",
+        "Website": "http://www.facebook.com/PunjabsindhArchitect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6746898",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//City+Architect+%26+Consultant,+Khanpur+Rd,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3937590113213ff5:0x75d523fad2f3979?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "City Architects Jhelum",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/cityarchitect.jhelum/",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0300 9522987",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//City+Architects+Jhelum,+2nd+floor+sultan+skander+plaza,+GT+Rd,+Jada,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392009710ef436ef:0xec02ffa435ef7f32?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0300 9522987",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//first+floor,+City+Architects+Jhelum,+civil+Jhelum,+Soldier+Plaza,+office+%2313+civil,+line,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91055ba57e31:0x195ff786c79fb3c2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "City Centre of Architect",
+        "Category": "Architecture school",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0331 5891843",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//City+Centre+of+Architect,+Mian+Mohammad+Bakhsh+Rd,+Machine+Mohalla+3,+Machine+Mohalla,+Machine+Mohalla+3,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f90e05e65f9bd:0xaf44da29b1be6653?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0331 5891843",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//City+Centre+of+Architect,+Mian+Mohammad+Bakhsh+Rd,+Machine+Mohalla+3,+Machine+Mohalla,+Machine+Mohalla+3,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f90e05e65f9bd:0xaf44da29b1be6653?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "City Consultants",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 8691657",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//City+Consultants,+91%2F9L+Sahiwal+Arifwala+Bahawalnagar+Rd/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b618dad0ab13:0x5b69521e24abe826?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "City Line art",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//9387%2BMXJ+City+Line+art,+Abdullah+Colony,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d54efc1a9f3:0x6693566c0b873085?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Climate Smart Architecture Design Studio",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0309 3593690",
+                "Map URL": "https://www.google.com/maps/dir//Climate+Smart+Architecture+Design+Studio,+Architecture,+Layyah,+31200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a782abc01ebb:0x444e66080f7d17e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Clock Tower Gujranwala",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0304 9457899",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Clock+Tower+Gujranwala,+555J%2BF49+%DA%AF%DA%BE%D9%86%D9%B9%DB%81+%DA%AF%DA%BE%D8%B1,+%D8%B1%D9%88%DA%88%D8%8C,+Gujranwala%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2bc57a890467:0xaff456057d0cf728?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Cnc Cutting Master Fsd",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/CNCMachine.CuttingMaster?mibextid=LQQJ4d",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0317 7057373",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Cnc+Cutting+Master+Fsd,+Samundri+Road,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922690874d95fa7:0xdd080c62c03d96e4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Collage Consultants Pvt. Ltd.",
+        "Category": "Architecture firm",
+        "Website": "http://www.collage.com.bh/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35777841",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//9%2F69,+Collage+Consultants+Pvt.+Ltd.,+Green+Villas,+Syed+Maratib+Ali+Road,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905f8cfee1589:0xd9127dac6001b6fc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Concept Architect",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/NakshaNavees.Consultants?mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0334 5390395",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Concept+Architect,+Talagang+Hwy,+opposite+Qazi+Service+station,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d6b608c10f5:0xaf7d75dbe8354172?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Concepts Engineering Consultants& Builder",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0331 6640186",
+                "Map URL": "https://www.google.com/maps/dir//GFV3%2BM3H+Concepts+Engineering+Consultants%26+Builder,+Khadim+Ali+Rd,+Kotli+Behram,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921d73693cbce7f:0x5e803e75cada7644?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Construct",
+        "Category": "Construction company",
+        "Website": "http://www.construct.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35753503",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Construct,+Construct+41,+Block+B+Gulberg,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904f6edcb0fb9:0x91595c24aed5713c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Construction House & The Architect Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0314 4777769",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Construction+House+%26+The+Architect+Studio,+Construction,+Daska+Rd,+opposite+PSO+PETROLEUM,+Sambrial,+51070/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ee7320ddea3ef:0xa109c5ca1a6bf785?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Construction Vision & Interiors",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0300 9512963",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Construction+Vision+%26+Interiors,+Mb-2+Citi+housing+Jhelum,+Satellite+Town+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0xe9089baebb9772b:0x80b0124a1b93a438?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Map URL": "https://www.google.com/maps/dir//Construction+Vision+%26+Interiors,+MB-2,+Citi+Housing,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f93894806c02f:0xcf44536e6bbb0f7d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Contractor/Builder/architect",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0311 3717272",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "CoreLine Construction & Design",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0333 8803656",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//CoreLine+Construction+%26+Design,+17+Manka+Canal+Road,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab3002ed295df:0x8458db86fb3d5464?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0333 8803656",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//CoreLine+Construction+%26+Design,+17+Manka+Canal+Road,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab3002ed295df:0x8458db86fb3d5464?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Architect & Developers",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0340 6546638",
+                "Map URL": "https://www.google.com/maps/dir//Creative+Architect+%26+Developers,+Jutt+chowk,+Manthar+Rd,+near+Ghosia+pull,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d53bc88c2cb:0x786328057ca9a3b2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Architects & Builders",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/profile.php?id=100063919666897&mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 8217164",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Architects+%26+Builders,+Wapda+Town+phase+II+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393c8fb740e6299f:0x29e30b60f029151a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0307 8217164",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Architects+%26+Builders,+Wapda+Town+phase+II+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393c8fb740e6299f:0x29e30b60f029151a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Architects & Engineer's",
+        "Category": "Architecture firm",
+        "Website": "https://creativearchitectsandengineers.godaddysites.com/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 6118527",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Architects+%26+Engineer's,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b915a8158f63d:0x37336ab58b1f404b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Architectural Studio",
+        "Category": "Architectural designer",
+        "Website": "http://creative.architecture.unaux.com/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 5393706",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Architectural+Studio,+Super+Market+Plaza,+Church+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7a8da8ffa7d:0x525bbd58f5f59400?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Architecture and Advertiser",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 5393706",
+                "Map URL": "https://www.google.com/maps/dir//C2HR%2BG78+Creative+Architecture+and+Advertiser,+Bank+bazaar,+Kamir,+57130/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d356a5aaf28ff:0x55fb75e21a0a1e6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Associates & Builders",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 0656201",
+                "Rating": 4.6,
+                "Reviews": 19.0,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Associates+%26+Builders,+Citi,+Office-3,+Near+Rills+School+PICO+Campus-2,+EE-Block,+Main+Boulevard,+Wafi,+Housing+Society,+Gujranwala,+52230/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918d5354191ff4d:0x188631e5ea582d1d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 0656201",
+                "Rating": 4.6,
+                "Reviews": 19.0,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Associates+%26+Builders,+Citi,+Office-3,+Near+Rills+School+PICO+Campus-2,+EE-Block,+Main+Boulevard,+Wafi,+Housing+Society,+Gujranwala,+52230/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918d5354191ff4d:0x188631e5ea582d1d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Design Studio",
+        "Category": "Interior designer",
+        "Website": "https://web.facebook.com/Unrealcreation.1/?modal=admin_todo_tour",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0349 4956659",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Creative+Design+Studio,+shaheen+chowk,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bcb5234b1ab:0xc3968c10c1396341?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Creative Interiors Pvt. Ltd.",
+        "Category": "Interior architect office",
+        "Website": "http://www.creativeinteriors.com.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0332 5553745",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No+43,+Lower+Ground+Floor,+Creative+Interiors+Pvt.+Ltd.,+Al-Ghaffar+Mall,+G-11+Markaz+G-11,+Islamabad,+44110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95268f1c3927:0x2ff6937cecd7b58f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "CreativeTan Design Studios",
+        "Category": "Design agency",
+        "Website": "https://www.upwork.com/freelancers/tanveerahmad2",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0322 7359794",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//CreativeTan+Design+Studios,+Office+%2328-A+Citi+Housing+Phase+I+Bosan+Road,+A,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3924cb6458c91219:0x5d9fc8fc2621401b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Cross Reflection",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//No%23+54+%26+55,+First+floor,+Cross+Reflection,+Green+Avenue,+W+Canal+Rd,+near+Babu+Petroleum,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922694298e7ce03:0x714239e772f6ca3d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Cubes Construction",
+        "Category": "Construction company",
+        "Website": "http://cubesconstruction.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8443625",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Cubes+Construction,+45-D1+MM+Alam+Rd,+near+Blue+Mall,+Block+D1+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905b13894402f:0xa19795a9f0716fdb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Cyber Usman Javaid",
+        "Category": "Website designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 7017010",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+12,+Cyber+Usman+Javaid,+Civic+Center,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226dd7c73945d1:0x50e0601eb00cd52c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "D.S 23 Architect'z",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0331 4851416",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//D.S+23+Architect'z,+1+Data+Shah+Jamal+Rd,+Sadar+chock+Habib+Colony,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3353552d1d5:0x98a1b014b6bd73bf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DBH Arch (Design by Hamza)",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0310 0777839",
+                "Map URL": "https://www.google.com/maps/dir//DBH+Arch+(Design+by+Hamza),+Shah+Jahangir+Rd,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bca32079975:0x3b2e1b476de35d9c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DC ARCHITECT",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0300 5672056",
+                "Map URL": "https://www.google.com/maps/dir//Q89F%2B837+DC+ARCHITECT,+near+Punjab+Food+Authority,+Shaheen+Bagh+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df230013129879:0x50f46d479c25dadb?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0300 5672056",
+                "Map URL": "https://www.google.com/maps/dir//Q89F%2B837+DC+ARCHITECT,+near+Punjab+Food+Authority,+Shaheen+Bagh+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df230013129879:0x50f46d479c25dadb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DELTA DESIGN & ENGINEERING Pvt. Ltd. ARCHITECT & INTERIOR DESIGN",
+        "Category": "Construction company",
+        "Website": "http://dde.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0303 7778818",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//Building+%23F-6,+DELTA+DESIGN+%26+ENGINEERING+Pvt.+Ltd.+ARCHITECT+%26+INTERIOR+DESIGN,+Al-Haram+Plaza,+PIA+Main+Boulevard,+Lahore,+54770/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391901d3376e2f0f:0x54a3a7e432f95e3a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DERA MALIK HASSAN",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0315 4338091",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//DERA+MALIK+HASSAN,+Attack+pump,+Faisabad+bybass,+street+no2,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918e965d42f44f7:0xde006b7c246c327d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0315 4338091",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//DERA+MALIK+HASSAN,+Attack+pump,+Faisabad+bybass,+street+no2,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918e965d42f44f7:0xde006b7c246c327d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DESIGN ARCHITECT CONTRACTION",
+        "Category": "Shopping mall",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Map URL": "https://www.google.com/maps/dir//WGXX%2BJ3H+DESIGN+ARCHITECT+CONTRACTION,+MaskeenAbad+Road,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f8918a3140499:0xccde42efde6aae29?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DESIGN CREATER ARCHITECTURE & MEP DESIGN",
+        "Category": "Building designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0333 5478685",
+                "Rating": 4.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Q89F%2B837+DESIGN+CREATER+ARCHITECTURE+%26+MEP+DESIGN,+near+Punjab+Food+Authority+sheenbagh,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df233823ae89a7:0x36948072f2e8f378?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0333 5478685",
+                "Rating": 4.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Q89F%2B837+DESIGN+CREATER+ARCHITECTURE+%26+MEP+DESIGN,+near+Punjab+Food+Authority+sheenbagh,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df233823ae89a7:0x36948072f2e8f378?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DESIGN HOME ASSOCIATES",
+        "Category": "Architect",
+        "Website": "http://www.abidarchitect.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 4684073",
+                "Map URL": "https://www.google.com/maps/dir//DESIGN+HOME+ASSOCIATES,+p-12+lmtiaz+shaheed+road,+link+Susan+Road,+near+d.i.g+office,+Shah,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226918546f99df:0x4e53b62b94d97d53?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DESIGN MATRIX",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 37135821",
+                "Rating": 4.7,
+                "Reviews": 24.0,
+                "Map URL": "https://www.google.com/maps/dir//Plaza+No.+180%2F1-D,+DESIGN+MATRIX,+Broadway+Comm,+DHA+Phase+8,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391907be62ace89f:0x467a148b71908a79?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DESIGN'S ARCHITECT",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0300 5672056",
+                "Map URL": "https://www.google.com/maps/dir//Q9V3%2BFPV+DESIGN'S+ARCHITECT,+Peoples+Colony,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19003f5f40e7:0x63107e2b3bf7b76f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0300 5672056",
+                "Map URL": "https://www.google.com/maps/dir//Q9V3%2BFPV+DESIGN'S+ARCHITECT,+Peoples+Colony,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19003f5f40e7:0x63107e2b3bf7b76f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DESIGNART",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8545990",
+                "Rating": 4.9,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Plot+117,+DESIGNART,+D+Ground,+Block+B+People's+Colony+No+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922697ed0b99a8b:0xaa0695a39be8ade4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DOT Architecture",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/dotarchitect/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0321 6259965",
+                "Rating": 3.6,
+                "Map URL": "https://www.google.com/maps/dir//Office+No-1,+1st+Floor,+DOT+Architecture,+Usman+Plaza,+D-Block+Block+D+Phase+ll+Citi+Housing,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918d548cd36a037:0x607cb63240b048ac?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DRAFT Design Studio",
+        "Category": "Interior architect office",
+        "Website": "https://in.pinterest.com/DDS_RJT_GUJ/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//7QW5%2B97H+DRAFT+Design+Studio,+Sadhu+Vasvani+Rd,+Yogi+Nagar,+Rajkot,+Gujarat+360005,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3959cb7d44327623:0xc2caeed084bebf81?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DREAM ARCHITECT",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Map URL": "https://www.google.com/maps/dir//WJFF%2BV96+DREAM+ARCHITECT,+Sh%C4%81hd%C4%81dpur,+68030/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x394bc3003bf2666f:0x7e61c118a6bdf18f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DREAM BUILDERS",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Phone Number": "0314 3014107",
+                "Rating": 4.9,
+                "Reviews": 83.0,
+                "Map URL": "https://www.google.com/maps/dir//DREAM+BUILDERS,+Circular+Rd,+near+Tallab+Committee+Gate,+Madina+Colony,+Jhang,+35200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392398172b087355:0x74720b6908478d51?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DREAM HOMES",
+        "Category": "Interior designer",
+        "Website": "http://www.dreamhomes.pk/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 9668571",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//DREAM+HOMES,+Satyana+Road+Parking+Plot+340,+near+Punjab+Bank,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269999844019d:0xd135cf65fbbc564f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DUA architect and interior",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0304 0500924",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//office%2342,+1st+floor,+DUA+architect+and+interior,+makkah+commercial,+208+Chak+208+Rd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269fd85fcbacf:0x86c09b02ead5826b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DUBAI ASSOCIATES",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0302 3678975",
+                "Map URL": "https://www.google.com/maps/dir//DUBAI+ASSOCIATES,+Adda+GULMERG+road,+opposite+zarai+college,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x53d4b5e73e41d0f:0xf504386d0398c0ba?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0302 3678975",
+                "Map URL": "https://www.google.com/maps/dir//DUBAI+ASSOCIATES,+Adda+GULMERG+road,+opposite+zarai+college,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x53d4b5e73e41d0f:0xf504386d0398c0ba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DZINERZ Consulting Architects & Engineers",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/share/1AqrGRJ1Ro/?mibextid=wwXIfr",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35201083",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//DZINERZ+Consulting+Architects+%26+Engineers,+55-A+HBFC,+Faisal+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391903f1ec36f32f:0x6dc2456702114a04?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Danish Associate & Architect",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6200894",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//J6V3%2BC39+Danish+Associate+%26+Architect,+banazir+chock+Jalalpur+Rd,+Jalalpur+Jattan,+Jalalpur,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f028e50542717:0x7c780197c2025e8f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Daswandi architect & builder",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0301 6267067",
+                "Map URL": "https://www.google.com/maps/dir//H3RJ%2BQRQ+Daswandi+architect+%26+builder,+Bhimber+Road+Area,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b0002e24401:0x4b951888de4dd5ed?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Deep Breath Architecture Firm",
+        "Category": "Architect",
+        "Website": "http://www.dbarchitecture.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Deep+Breath+Architecture+Firm,+908,+ICON+BUSINESS+HUB,+NR+VALENTINE+THEATER,+Piplod,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e7ad61b6bf5:0x4fde42e06cb55277?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Deep+Breath+Architecture+Firm,+908,+ICON+BUSINESS+HUB,+NR+VALENTINE+THEATER,+Piplod,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e7ad61b6bf5:0x4fde42e06cb55277?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Defence Housing Enclave - DHE",
+        "Category": "Housing society",
+        "Website": "http://www.dhesargodha.com/",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 0021010",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Defence+Housing+Enclave+-+DHE,+Main+Rd+NST,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39219dc39bee4631:0x35d4fcae74d8b867?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 0021010",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Defence+Housing+Enclave+-+DHE,+Main+Rd+NST,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39219dc39bee4631:0x35d4fcae74d8b867?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dera Tariq Mahmood Architect",
+        "Category": "Farm household tour",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//F6RC%2BC7R+Dera+Tariq+Mahmood+Architect,+Chak+193+Rb+Sharinwala,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226f0039393def:0x2efd70e76b240dbb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design & Construct",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/profile.php?id=100063670879437&mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8405401",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+%26+Construct,+Bhimber+Rd,+opposite+habibi+Restaurant,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f05cf9ee02b83:0x6f3a28a07160a64d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Center",
+        "Category": "Architectural designer",
+        "Website": "http://cadregen.com/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0301 7771419",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Center%D8%8C+Jinnah+Supper+Market+One+Unit+Chowk,+Rafi+Qamar+Road,+Satellite+Town,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b90fab4197899:0xe0e86686a5f5e8b6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Center Aassociates Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0324 9705384",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//46J6%2B5VM+Design+Center+Aassociates+Architect,+Lalazar+road,+opposite+master+city,+Sector+Y+Peoples+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2bc43e8dd7d1:0x13060466bdaff23e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Centre",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 6683305",
+                "Rating": 4.1,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Centre,+10+Sargodha+Rd,+Usman+Block+Muslim+Town,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922427698219d75:0xa86023445cfb465b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Corner",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0311 8686916",
+                "Rating": 5.0,
+                "Reviews": 28.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Corner,+Akbar+Plaza,+Daburji+Malian,+near+1122+office,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eedab3fc1ad5f:0x1cda5641e18bef14?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Estimations Engineering Services",
+        "Category": "Architectural designer",
+        "Website": "https://designestimations.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0328 9900555",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Floor,+84+D1,+Design+Estimations+Engineering+Services,+Gulberg+center,+37F+A+1+Road,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8874fdb2e1b97819:0x2056a09120d3687f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Etiquette",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0315 4562210",
+                "Rating": 4.8,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Etiquette,+8-T+Main+Blvd+Gulberg,+Block+T+Gulberg+2,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905ceebf3c1a5:0x6f51b97a692d8c43?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Expert",
+        "Category": "Interior designer",
+        "Website": "https://design-expert.net/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0333 8689339",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Expert,+Al-Madina+Center,+Khadim+Ali+Rd,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb9606157837:0x77cdb4868b97f2fd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0333 8689339",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Expert,+Al-Madina+Center,+Khadim+Ali+Rd,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb9606157837:0x77cdb4868b97f2fd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Fusion",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0331 8956666",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Fusion,+90_A,+Model+Town+A+Block+A+Model+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b350021a787b7:0xaf64c7b5e0917f93?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Inc.",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0310 4507391",
+                "Map URL": "https://www.google.com/maps/dir//Design+Inc.,+New+City+Kasur,+Kasur,+55050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919bb462959b7d5:0x8a1a9a2c9f0f7e50?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0310 4507391",
+                "Map URL": "https://www.google.com/maps/dir//Design+Inc.,+New+City+Kasur,+Kasur,+55050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919bb462959b7d5:0x8a1a9a2c9f0f7e50?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Indulge",
+        "Category": "Architect",
+        "Website": "http://www.designindulge.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0302 9630314",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//OFFICE+%23+48+M,+FIRST+FLOOR,+Design+Indulge,+M,+WAPDA+TOWN+PHASE+02,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35409403064b:0xff650e248e2dfafe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Inn Architect",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 6941442",
+                "Rating": 5.0,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Inn+Architect,+Saeed+Centre,+M-3+Basement,+Farid+Town+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7dfbf7783e3:0xe3de1ee596a72716?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design N Build Architect",
+        "Category": "Architect",
+        "Website": "https://youtube.com/@designbuild5?si=GTL3vGM3P1Hi8NR6",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0302 6840188",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+N+Build+Architect,+Jaj+Wali+Puli,+Alpha+Commercial+Market,+Jhangi+Wala+Rd,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91007708b42f:0xb01496bdd4112733?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0302 6840188",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+N+Build+Architect,+Jaj+Wali+Puli,+Alpha+Commercial+Market,+Jhangi+Wala+Rd,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91007708b42f:0xb01496bdd4112733?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Point",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0335 0404737",
+                "Rating": 5.0,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Point,+shop+no+01+Stadium+shopimg+centre,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c2645b34ea55:0xebf105d75646667f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Point Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0304 6578001",
+                "Map URL": "https://www.google.com/maps/dir//Design+Point+Architects,+Office+No.2,+Paragon+Academy+Road,+4-Block+Jauharabad,+Jauharabad,+41000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213df2af79afe3:0x469751f29684e6a1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Spot",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 8040000",
+                "Rating": 4.9,
+                "Reviews": 43.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+Spot,+Millat+Rd,+opposite+Askari+Bank,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269d250c78ec3:0x128ed85a6e5953eb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design Studio 42",
+        "Category": "Architect",
+        "Website": "https://designstudio42.com/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0304 4154444",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Ground+Floor+21,+Design+Studio+42,+Design+Studio42,+B+Commercial+B,+Citi+Housing+Society,+Sialkot,+51040/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec312d3035321:0x8c3c52ea00ceac7b?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0304 4154444",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Ground+Floor+21,+Design+Studio+42,+Design+Studio42,+B+Commercial+B,+Citi+Housing+Society,+Sialkot,+51040/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec312d3035321:0x8c3c52ea00ceac7b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design View Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0307 7659894",
+                "Map URL": "https://www.google.com/maps/dir//Design+View+Associates,+204+chak+road+Alnoor+garden+road,+Khyban+Street+Number+2,+Faisalabad,+35000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269f18434aca3:0x87cc9ca481ae5e01?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design and Build",
+        "Category": "Architecture firm",
+        "Website": "https://mabbasshahid96.wixsite.com/website",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0312 9690663",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Design+and+Build,+Office+No+3,+Rehmat+Market,+Madhali+Road,+Shadman+Town,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b92b66503d6b:0x7ea14d0ff0d7155e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design and dimensions Associates",
+        "Category": "Corporate office",
+        "Website": "https://designanddimension.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0321 4004799",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//6F59%2BP74+Design+and+dimensions+Associates,+Muhammad+arcade,+Khanewal+Rd,+Chah+Usmanabad,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3391d798247d:0x59c8f60ec8cc13a0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design innovative",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 5.0,
+                "Reviews": 51.0,
+                "Map URL": "https://www.google.com/maps/dir//716,+Design+innovative,+R+K+Prime,+Circle,+150+Feet+Ring+Rd,+next+to+Silver+Heights,+Nana+Mava,+Rajkot,+Gujarat+360004,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3959ca1a008014c9:0x60b74086bedb4c68?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Design palace architect office",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 9667784",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//C28W%2B2MJ+Design+palace+architect+office,+design+palace,+Gulshan+E+Hayat,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243640249985f:0x8cc70bb5e078deca?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DesignAr Architects & Interior Designer",
+        "Category": "Interior designer",
+        "Website": "https://www.instagram.com/designar.pk",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0340 6116169",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//DesignAr+Architects+%26+Interior+Designer,+DHA,+Gujranwala,+52200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190f4a497499d9:0xe0907cad2b9aab66?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "DesignAr Architects & Interior Designers",
+        "Category": "Architecture firm",
+        "Website": "https://designar.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0340 6116169",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//DesignAr+Architects+%26+Interior+Designers,+Dha+Phase+1,+Lahore,+53710/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919039b2120b2ef:0xd04d1af1d5130864?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0340 6116169",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//DesignAr+Architects+%26+Interior+Designers,+Dha+Phase+1,+Lahore,+53710/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919039b2120b2ef:0xd04d1af1d5130864?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Designmark",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0300 5588661",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Designmark,+Main+Street,+Moh,+Meherpura+East,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df191b0967b8e1:0x3c08164bbce8051d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0300 5588661",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Designmark,+Main+Street,+Moh,+Meherpura+East,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df191b0967b8e1:0x3c08164bbce8051d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Designwills Interiors & Architects",
+        "Category": "Architecture firm",
+        "Website": "http://www.designwills.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0304 6030000",
+                "Rating": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Designwills+Interiors+%26+Architects,+G-99%2F100+Ashiana+Shopping+Mall,+Main+Blvd+Gulberg,+Block+D1+Gulberg+III,+Lahore,+54600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919050adb2e2271:0x1171d3c5c6f62f83?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Designx Build Architecture Engineering Services",
+        "Category": "Construction company",
+        "Website": "https://be.net/iftakharkhan3",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0343 8880395",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0343 8880395",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Devang Shah Architect",
+        "Category": "Architect",
+        "Website": "http://www.dsspm.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Devang+Shah+Architect,+302,+Shivalik+Shilp,+Iscon+cross+road,+Sarkhej+-+Gandhinagar+Hwy,+Ahmedabad,+Gujarat+380058,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e84f83fffffff:0xf4111e2628930973?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Deziner studio (Architect/Contractors)",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 9615936",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Deziner+studio+(Architect%2FContractors),+Kacha+phatak,+Sher+Shah+Road,+near+Chaudhary+marriage+club,+Industrial+Estate,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31bce45271b3:0x51e396d92ed1d64a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Diamond Architects Pvt Ltd",
+        "Category": "Architecture firm",
+        "Website": "https://www.diamondarchitects.com.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0311 1907773",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+No+315+3rd+floor,+Diamond+Architects+Pvt+Ltd,+swiss+center,+D-12+Markaz+D-12,+Islamabad,+45200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfeb67f29a4f4d:0x5fa24d994cbe8179?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Digital Architect",
+        "Category": "Marketing agency",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0345 4311321"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dilkusha Bagh",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Rating": 4.3,
+                "Reviews": 224.0,
+                "Map URL": "https://www.google.com/maps/dir//J3P3%2BVGP+Dilkusha+Bagh,+Sardar+Bukhsh+Rd,+Bhakkar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39267881c7e220e3:0x4e1be72b2b7e4dc0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dimension Designs",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0335 7786667",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Dimension+Designs,+Qadir+Colony,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7b18d87cbc9:0x692841de334a7893?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Director Architecture, DG Khan",
+        "Category": "Government office",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//2JPJ%2B499+Director+Architecture,+DG+Khan,+Link+Road,+Model+Town,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab137242bf2c9:0x544b2f234f4703b2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//2JPJ%2B499+Director+Architecture,+DG+Khan,+Link+Road,+Model+Town,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab137242bf2c9:0x544b2f234f4703b2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dn Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0308 1495954",
+                "Map URL": "https://www.google.com/maps/dir//Dn+Architect,+opp.+Gulistan+merrage+hall,+Khanewal,+58150/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b55eb22f45a05:0xa2ca71e1b00c9c5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Double A Builders And Architect...",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 4.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Double+A+Builders+And+Architect...,+Chak+No+123JB,+Lasani+Garden,+Faisalabad,+38001/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224312e0f79b2d:0x95194704ae3b813c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dream Design Architect",
+        "Category": "Architect",
+        "Website": "http://www.dreamdesign.pk/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0336 0098585",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Dream+Design+Architect,+Aimanabad+road,+opposite+Arfan+kanjan+marriage+hall,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eea1ebc8ebbcd:0xb2eaccfd86d3df9f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0336 0098585",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Dream+Design+Architect,+Aimanabad+road,+opposite+Arfan+kanjan+marriage+hall,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eea1ebc8ebbcd:0xb2eaccfd86d3df9f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0336 0098585",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Dream+Design+Architect,+Aimanabad+road,+opposite+Arfan+kanjan+marriage+hall,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eea1ebc8ebbcd:0xb2eaccfd86d3df9f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dream Home Builders",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//4FR6%2BC4J+Dream+Home+Builders,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b900261ce29b:0x912f82b639c5cd9c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Dream Tech Home Designers Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0332 1927677",
+                "Rating": 5.0,
+                "Reviews": 71.0,
+                "Map URL": "https://www.google.com/maps/dir//Dream+Tech+Home+Designers+Architect,+Block,+Office+No.+B-12+NM+Height+Plaza,+C,+near+Main+Office,+Citi+Housing,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f93f0a4957345:0x6ea07a012cb81e79?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ECO Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0300 4002405",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//ECO+Architect,+Basement+ECO+Architect+%26Technologies,+Civil+Quarters+Rd,+near+Millennium+Academy,+Jinnah+Park,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3182577faa7:0xc7852a909221fc3b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "EK Studios & Co.",
+        "Category": "Architecture firm",
+        "Website": "https://www.ekstudios.pk/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 8613697"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ESAC (Engineering Services & Architectural Consultants)",
+        "Category": "Architecture firm",
+        "Website": "https://esaconsultant.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 3722666",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//ESAC+(Engineering+Services+%26+Architectural+Consultants),+168-C+C,+Commercial+Broadway+DHA+Phase+8,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190fe61961a011:0x7d4c445b673c7ead?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Earth and life",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//6F59%2BR7H+Earth+and+life,+Chah+Usmanabad,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33d8728952c7:0x54b99fd30a39390a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Easy Home Developer (Architect & Builder)",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0306 1615036",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+53-A,+Easy+Home+Developer+(Architect+%26+Builder),+A,+Model+Town,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35740339b181:0x948818bc4b03d79e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ebaad's architectural studio (Architectural services)",
+        "Category": "Architecture firm",
+        "Website": "http://www.ebaads.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0308 8008584",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ebaad's+architectural+studio+(Architectural+services),+River+view+commercial+rekodik+plaza,+Phase+7+Bahria+Town,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbdc6e08142cb:0x1194e1339c5f9684?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0308 8008584",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Ebaad's+architectural+studio+(Architectural+services),+River+view+commercial+rekodik+plaza,+Phase+7+Bahria+Town,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbdc6e08142cb:0x1194e1339c5f9684?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0308 8008584",
+                "Rating": 4.9
+            }
+        ]
+    },
+    {
+        "Shop Name": "EcomZone",
+        "Category": "E commerce agency",
+        "Website": "http://www.ecomzones.com/",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Rating": 5.0,
+                "Reviews": 55.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Elegance Architects and construction company",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0323 7783945",
+                "Rating": 5.0,
+                "Reviews": 117.0,
+                "Map URL": "https://www.google.com/maps/dir//Elegance+Architects+and+construction+company,+Mohammad+Ali+Jinnah+Rd,+Okara/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7678d36b081:0xb318731dd1be35cf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Elegant Interiors & Construction",
+        "Category": "Interior architect office",
+        "Website": "http://www.elegantinteriors.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0331 3404441",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Elegant+Interiors+%26+Construction,+Barkat+Market,+61+BB+Central+Plaza,+New,+Garden+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905034c8d9a2f:0x89822477ff7e9dc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Elite Signature Tower",
+        "Category": "Store",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Map URL": "https://www.google.com/maps/dir//98QC%2BCQR+Elite+Signature+Tower,+Etihad+Garden,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d0056f97a41:0xbb136a2ba94ee57a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Emergent Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0315 7373215"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Emotive Design & Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0322 8841663",
+                "Map URL": "https://www.google.com/maps/dir//Emotive+Design+%26+Associates,+Office+%234,+near+Govt.+Islamia+College,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9597233fcbb:0xbadc33e1b446c884?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Engineer Muhammad kamran architect",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0313 7975006",
+                "Rating": 5.0,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//Engineer+Muhammad+kamran+architect,+Streat+no+2+kamran+jutt+tajowalia,+Chak+669%2F10+GB/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39233d3c9c2c5033:0xe558ce020ddf2cf7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Engr Tani",
+        "Category": "Architect",
+        "Website": "https://www.linkedin.com/in/tanveer-556/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 0234060",
+                "Map URL": "https://www.google.com/maps/dir//Engr+Tani,+Mohala+WazirAbad,+60600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37b1a0960513:0x83e0a6e17678cd41?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Engr. Aqib Map Designer & Printers",
+        "Category": "Architectural designer",
+        "Website": "http://recentjobz.com/",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0341 9889066",
+                "Map URL": "https://www.google.com/maps/dir//Engr.+Aqib+Map+Designer+%26+Printers,+PXFW%2B68P,+Chiniot,+Jhang,+Punjab,+Pakistan+Lahore,+Road,+Mohallah+Qasim+Town,+Chiniot,+35400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223d81a8aaaa6b:0xb29ead7cadbeb8dc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Evocative Technologies",
+        "Category": "Design agency",
+        "Website": "https://evocativetech.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0333 2225215",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Evocative+Technologies,+224,+Green+St,+Canal+Rd,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b856b5541a5:0xc52ba59b474dda2a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Experts Associate",
+        "Category": "Architecture firm",
+        "Website": "http://www.expertsassociate1.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0349 4910059",
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Experts+Associate,+1-B,+Aibak+Block+Garden+Town,+Lahore,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190560b0e11ba7:0xeaea9a4d30908d58?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "F & S Home Designer",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0306 0261048",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//9PQ3%2B96M+F+%26+S+Home+Designer,+One+unit+chowk,+Jinnah+Super+Market,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91be753a1c1b:0x8b8d9f0b758b2e9c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "FIM ASSOCIATES ARCHITECT & ENGINEER",
+        "Category": "Interior architect office",
+        "Website": "http://www.facebook.com/fimassociates",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0345 7665458",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//MGW5%2BW6V+FIM+ASSOCIATES+ARCHITECT+%26+ENGINEER,+Islamabad+-+Lahore+Rd,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d25833e3c11:0xae53881162c5457a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "FUTURE Architects \"Online Work Only\"",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Map URL": "https://www.google.com/maps/dir//HFQW%2B8CM+FUTURE+Architects+%22Online+Work+Only%22,+Usmani+Mohalla,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d72cdc21009:0x10787882883707e2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Map URL": "https://www.google.com/maps/dir//HFQW%2B8CM+FUTURE+Architects+%22Online+Work+Only%22,+Usmani+Mohalla,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d72cdc21009:0x10787882883707e2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fairways Consultant, Building Design And Architect",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0314 4721384",
+                "Rating": 4.3,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//FHW2%2B767+Fairways+Consultant,+Building+Design+And+Architect,+Khan+Mahal+Rd,+Rangpura,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb37de551ad1:0x711da66427e81e3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisal Asghar Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8432333",
+                "Rating": 5.0,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//G83F%2B7V5+Faisal+Asghar+Associates,+%D8%B9%D9%84%DB%8C+%D8%B3%D9%B9%D8%B1%DB%8C%D9%B9%D8%8C+Ali+Block+Garden+Town,+Lahore%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919046fc696bd3d:0x73d0d083e51e3c75?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisal Associates",
+        "Category": "Architecture firm",
+        "Website": "https://www.faisalassociates.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4018850",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Faisal+Associates,+18-C.C.A+first+floor+Phase+5+DHA,+cantt,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919092e83e10867:0xe7288e56068c4eda?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisal Mughal Architect FMA. An Award Winner Architecture firm.",
+        "Category": "Architecture firm",
+        "Website": "http://www.fmarchitecture.wordpress.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 8893007",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Faisal+Mughal+Architect+FMA.+An+Award+Winner+Architecture+firm.,+328%2F9+w+block,+Sector+W+DHA+Phase+3,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905008a7d8f77:0x974acc96dcae8b02?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisal Munir & Associate Architect & Interior designer",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0302 3713276",
+                "Map URL": "https://www.google.com/maps/dir//X6RJ%2BWRV+Faisal+Munir+%26+Associate+Architect+%26+Interior+designer,+%D9%80+%DA%86%D8%B4%D8%AA%DB%8C%D8%A7%DA%BA+%D8%B1%D9%88%DA%88,+Bahawalnagar%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6fd0fc560b01:0x34f4870685653278?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisal Rasul Architectural Consultancy",
+        "Category": "Architecture firm",
+        "Website": "http://faisalrasul.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0345 2233137",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//C15,+Faisal+Rasul+Architectural+Consultancy,+Street+6,+Sector+A+DHA+Phase+6,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919091d97615963:0xb950fc31d4eaaaba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisal Rasul and Sameea Faisal",
+        "Category": "Interior Decorator",
+        "Website": "http://faisalrasul.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0345 2233137",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//3rd+Floor%D8%8C+Faisal+Rasul+and+Sameea+Faisal,+58,+Civic+Commercial+Area+Phase+V+DHA%D8%8C+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391908a2694ebf93:0xbb9d74a8a20a4880?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faisalabad Architect",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0303 9646399",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//F535%2BF6G+Faisalabad+Architect,+Jahan+E+Andalus,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269075aca0241:0xd6de0c6fc10d5c71?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0303 9646399",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//F535%2BF6G+Faisalabad+Architect,+Jahan+E+Andalus,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269075aca0241:0xd6de0c6fc10d5c71?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faizan khan builders",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0300 4847575",
+                "Rating": 3.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Faizan+khan+builders,+Bypass+chowk,+Khan+Colony,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c30aabab1d85:0x8149203cab7c8ef6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0300 4847575",
+                "Rating": 3.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Faizan+khan+builders,+Bypass+chowk,+Khan+Colony,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c30aabab1d85:0x8149203cab7c8ef6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Falak Associates & Consultants",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Map URL": "https://www.google.com/maps/dir//PX7R%2B293+Falak+Associates+%26+Consultants,+Muqeet+Town+Chiniot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b11803382e3:0xc272c6e05b37bba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Falcon Associates",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0306 4412200",
+                "Map URL": "https://www.google.com/maps/dir//HF9G%2BX77+Falcon+Associates,+Eiffel+Town+Road,+near+Ghegha+House,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7db9df8aebe3:0xdb9e78e3026f568c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fannan Architect & Interiors",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4084043",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Faraz Design Studio",
+        "Category": "Home builder",
+        "Website": "https://www.facebook.com/Arch.MuhammadFarazIqbal/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 7668682",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Faraz+Design+Studio,+H+market+Chak+208+Rd,+Eden+Valley,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922695fbf62b22b:0x264929306e94a772?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 7668682",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Faraz+Design+Studio,+H+market+Chak+208+Rd,+Eden+Valley,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922695fbf62b22b:0x264929306e94a772?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Farooq Digital Design Studio (Architecture)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0305 6727104",
+                "Rating": 4.5,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//7WXC%2BVQR+Farooq+Digital+Design+Studio+(Architecture),+Unnamed+Road,+Khanewal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b55712c9f4543:0x552cc63c1bec154a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Farq Architects & Interior designers",
+        "Category": "Architect",
+        "Website": "http://www.facebook.com/team.farq",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0333 5733315",
+                "Rating": 4.8,
+                "Reviews": 8.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fatima Arif Architects",
+        "Category": "Architect",
+        "Website": "http://www.fatimaarifarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Fatima+Arif+Architects,+Masood+Farooqi+Rd,+Garden+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391907f178e2cb13:0x3cbddca2662b703?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fayakoon Architect & Builders (FAB)",
+        "Category": "Interior designer",
+        "Website": "http://www.facebook.com/FayakoonBuilders",
+        "Locations": [
+            {
+                "City": "Pakpattan",
+                "Phone Number": "0347 7043165",
+                "Map URL": "https://www.google.com/maps/dir//73P5%2BM8G+Fayakoon+Architect+%26+Builders+(FAB),+Plaza.160,+%C4%80rifw%C4%81la,+57450/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d395e5f079185:0xfcc3dd3c393e9b42?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fayakun Architecture & Interior",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0300 2837751",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Fayakun+Architecture+%26+Interior,+47+pull,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x89d153b31132b4a5:0x793ec087a8f3a0ee?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fazal Elahi Architect Engineers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0322 5910598",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H32C%2BJF5+Fazal+Elahi+Architect+Engineers,+Shadiwal+Rd,+Akhtar+Shah+Colony,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1afeb50a99f7:0x43280b543bf4ec54?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fazal Nursery Faisalabad",
+        "Category": "Wholesale plant nursery",
+        "Website": "https://fazalnurseryfaisalabad.blogspot.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 8657519",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Fazal+Nursery+Faisalabad,+Chenab+club+oops+fazal+nursery,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269edd54edd15:0x57e861fd04ab68f3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Finarch",
+        "Category": "Architect",
+        "Website": "http://www.finarch.co/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 36663150",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Finarch,+E-86%2F11+T.S+Building+Defence,+D.H.A.+Main+Blvd/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905c40cfd300d:0xd029c2a7e4d9e881?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fine Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0333 8162373",
+                "Rating": 4.6,
+                "Reviews": 45.0,
+                "Map URL": "https://www.google.com/maps/dir//Fine+Architects,+Green+Town,+Rahwali+Cantonments,+52280/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f289cb12dafe1:0x2d66aea79061b58b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fine Designer Architect Shop",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0306 6484430",
+                "Map URL": "https://www.google.com/maps/dir//Fine+Designer+Architect+Shop,+Tehsil+Road,+near+Police+line+Ground,+Gujranwala,+50250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2ba3bbb306a7:0x37af726f1d960f92?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Fine Home Associate (Pvt.) Ltd.",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0333 6395331",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//9MV6%2B8HG+Fine+Home+Associate+(Pvt.)+Ltd.,+Model+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b970513092a91:0xcdbc8ad55457e43d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0333 6395331",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//9MV6%2B8HG+Fine+Home+Associate+(Pvt.)+Ltd.,+Model+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b970513092a91:0xcdbc8ad55457e43d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "First City Associates",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0300 6529917",
+                "Rating": 4.3,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//397H%2B66W+First+City+Associates,+Saleem+Market,+Hafizabad+Rd,+Ghalla+Mandi,+Jalalpur+Bhattian,+Pindi+Bhattian,+52110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921fc03eb76ade5:0xb7e3ae51f1ecdd51?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "FocalArch Architectural, Interior, Town Planning and Consultancy Services Provider",
+        "Category": "Architecture firm",
+        "Website": "https://www.focalarch.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4216189",
+                "Rating": 5.0,
+                "Reviews": 3.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Foroxy Interiors",
+        "Category": "Architect",
+        "Website": "http://www.foroxyinteriors.com/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+303,+3rd+floor,+Foroxy+Interiors,+TJ+Mall,+near+Dancing+fountain,+Citi+Housing+Society,+Sialkot,+51040/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec38e67ca12a5:0xd0cb04e2038f01a6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Freelance Web & Graphics",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0302 1108001",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Freelance+Web+%26+Graphics,+Jauharabad+Rd,+Khush%C4%81b,+41000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392117e18086e5bb:0x1747d054b72f1a4c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Friend's Home Design",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Map URL": "https://www.google.com/maps/dir//WPQQ%2BGC2+Friend's+Home+Design,+Civil+Line,+Dhoke+Abdullah,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9100180ea6e7:0xf7879cdd54955d99?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Friends Associates",
+        "Category": "Architectural designer",
+        "Website": "https://maxmapia.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6711828",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Friends+Associates,+Friends+associates,+Aslam+Town,+Main+streel,+near+Iman+Medicos,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d2351568b2b:0xbbf5e5dab2de8502?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6711828",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Friends+Associates,+Friends+associates,+Aslam+Town,+Main+streel,+near+Iman+Medicos,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d2351568b2b:0xbbf5e5dab2de8502?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Full Space Design",
+        "Category": "Architecture firm",
+        "Website": "http://www.fullspace.studio/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4555989"
+            }
+        ]
+    },
+    {
+        "Shop Name": "GATS-B (Group Architects & Builders)",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 8804851",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//GATS-B+(Group+Architects+%26+Builders),+74-CCA,+Phase+5+D.H.A,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190980a88b8895:0xe2a9c96bdea4f604?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "GLOBAL Interior's",
+        "Category": "Interior designer",
+        "Website": "https://thekashagroup.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0307 6220042",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//GLOBAL+Interior's,+Rehman+Shaheed+Rd,+Gujrat,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bfc5a7481a9:0x813e99f958a5f555?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "GM Home designer",
+        "Category": "Architectural designer",
+        "Website": "https://web.facebook.com/profile.php?id=100064244220946",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0343 6243723",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+number+6C,+GM+Home+designer,+Main+wapda+town+Boulevered,+Mohafiz+Town,+Gujranwala,+52262/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2ba8637b664d:0x718417a00aa53318?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0343 6243723",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+number+6C,+GM+Home+designer,+Main+wapda+town+Boulevered,+Mohafiz+Town,+Gujranwala,+52262/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2ba8637b664d:0x718417a00aa53318?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "GNF Landscape Architect",
+        "Category": "Landscaper",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0311 7030243",
+                "Map URL": "https://www.google.com/maps/dir//GNF+Landscape+Architect,+Mandi+Bahauddin,+Phalia+%E2%80%94+Saida+Bherowal+Rd,+Tariqabad+Mandi+Bahauddin,+Phalia+%E2%80%94+Saida+Bherowal+Rd,+Tariqabad+Gondal+Nursery+Farm+Mandi+Bahauddin,+Saida+Bherowal+Rd,+Tariqabad,+50460/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f5fef16bf1b81:0xef8391da17e6e46a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Gateway of Haveli",
+        "Category": "Tourist attraction",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//4CCW%2BC5F+Gateway+of+Haveli,+Baba+Bulleh+Shah+Rd,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9006dcf217d:0x598b3b2ddf0eea3b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Geometric Design Solutions, Diamond Plaza",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0300 5768975",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//WRJX%2BW6W+Geometric+Design+Solutions,+Diamond+Plaza,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d9f0cf76a8f:0xc44b35e4b23fd2da?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ghanta Ghar",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0300 5159889",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//3J4H%2B2GF+Ghanta+Ghar,+Malisi,+Block,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e53a9ab01d:0x8a9162d4b0823693?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0300 5159889",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//3J4H%2B2GF+Ghanta+Ghar,+Malisi,+Block,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e53a9ab01d:0x8a9162d4b0823693?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ghayyoor Obaid Architects",
+        "Category": "Architect",
+        "Website": "http://www.ghayyoorobaid.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35835993",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Ghayyoor+Obaid+Architects,+55+E,+Model+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905c25fdca4e7:0x723b639d88d0d15f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ghulam Nabi Associates",
+        "Category": "Architecture firm",
+        "Website": "http://gnassociatespk.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0309 1836638",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Ghulam+Nabi+Associates,+Wazirabad,+52000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f19007e0fa2e9:0x718e9aae1468a44e?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0309 1836638",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Ghulam+Nabi+Associates,+Wazirabad,+52000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f19007e0fa2e9:0x718e9aae1468a44e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Global Village Architect Associate",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 6918253",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Global+Village+Architect+Associate,+Langriyal+market+church+road,+Langriyal,+market,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b709f4314167:0x3f95771739efb037?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 6918253",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Global+Village+Architect+Associate,+Langriyal+market+church+road,+Langriyal,+market,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b709f4314167:0x3f95771739efb037?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Global survey eng architecture",
+        "Category": "Engineering consultant",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0340 3712774",
+                "Rating": 5.0,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Global+survey+eng+architecture,+Tehsel+chok,+Chakwal,+41000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39208b3a32eb6c53:0x64fadac8889a0e44?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Gold Pillars By Engineer Noman Shahid. (Building Design & Construction)",
+        "Category": "Architecture firm",
+        "Website": "http://www.facebook.com/gold_pillarz",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0322 6005548",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Gold+Pillars+By+Engineer+Noman+Shahid.+(Building+Design+%26+Construction),+LinkSusan+Road,+12+Imtiaz+Shaheed+Rd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269cf63497a6d:0x74fd23fdd7e1dcfc?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0322 6005548",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Gold+Pillars+By+Engineer+Noman+Shahid.+(Building+Design+%26+Construction),+LinkSusan+Road,+12+Imtiaz+Shaheed+Rd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269cf63497a6d:0x74fd23fdd7e1dcfc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Golden key",
+        "Category": "Construction company",
+        "Website": "https://goldenkey.com.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0321 6301300",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Golden+key,+Office+48+M,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37cd4de5ce71:0x66427e9bc82625c4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Gondal Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8423989",
+                "Map URL": "https://www.google.com/maps/dir//H3MQ%2BJ87+Gondal+Architect,+Jalapur+Jattan+Rd,+Al-Nabi+Colony,+Rashid+Colony,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b2fddc82cc5:0x478c6d9dec1df724?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Govt. Graduate College Bhakkar, BS Block",
+        "Category": "Government college",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//J3HH%2B9C4+Govt.+Graduate+College+Bhakkar,+BS+Block,+Bhakkar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925d7ee8e099ee9:0xcb259d20bdc448b0?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bhakkar",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//J3HH%2B9C4+Govt.+Graduate+College+Bhakkar,+BS+Block,+Bhakkar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925d7ee8e099ee9:0xcb259d20bdc448b0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Green Art Landscape",
+        "Category": "Landscape architect",
+        "Website": "https://www.facebook.com/greenartlandscape.pk",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0320 6615814",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Green+Art+Landscape,+Akram+Shaheed+Rd,+Block+W+Madina+Town,+Faisalabad,+36000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392268429815463b:0xb82ed118d4853860?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Green Heavens",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 8022882"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Green Revolution Horticulture",
+        "Category": "Plant nursery",
+        "Website": "https://greenevolution.pk/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6183392",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//C492%2BWG7+Green+Revolution+Horticulture,+Faisalabad,+37000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269007a3d49c5:0xb99206948e382591?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Green Valley Landscaping",
+        "Category": "Landscape designer",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Rating": 4.4,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//XXC3%2BM3R+Green+Valley+Landscaping,+Layyah+Minor+Road,+near+Lab-e-Neelam+Pull%D8%8C+Manzoorabad,+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a6f7850ff295:0x99ce6b27f6636fbe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Green Vista Landscape",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0333 0647202",
+                "Rating": 4.3,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//Green+Vista+Landscape,+38+Y+106,+Madina+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269e21ad5bccf:0x46dcb5c931ce51f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Grey Studio Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0302 4993883",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+63-64,+Grey+Studio+Architects,+Fatima+Commercial+Center,+Yazman+Rd,+Bahawalpur:,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91857b61eedd:0xf73ff5b9706dcab?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Grow More Building Map Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0308 5254541",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Grow+More+Building+Map+Designer,+Jinnah+colony,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x82771c7046779259:0x580f2e6efeb9fefa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Gujrat Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0332 8387218",
+                "Rating": 4.4,
+                "Reviews": 23.0,
+                "Map URL": "https://www.google.com/maps/dir//Gujrat+Architect,+Jail+Rd,+Marghzar+Colony,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f04d5ec5c2591:0xaca07f5d7366b2f2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Gulraiz Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4046406",
+                "Rating": 4.9,
+                "Reviews": 49.0,
+                "Map URL": "https://www.google.com/maps/dir//Gulraiz+Architects,+36+Boradway,+Barki+Rd,+Paragon+City,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190efffb9440bf:0x807181bbf6a1ae26?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4046406",
+                "Rating": 4.9,
+                "Reviews": 49.0,
+                "Map URL": "https://www.google.com/maps/dir//Gulraiz+Architects,+36+Boradway,+Barki+Rd,+Paragon+City,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190efffb9440bf:0x807181bbf6a1ae26?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "H-A Architect and Interior Design DHA",
+        "Category": "Architecture firm",
+        "Website": "https://hadesignstudio.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4721307",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//H-A+Architect+and+Interior+Design+DHA,+25+Block+C+DHA+Phase+8,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190fedbb8fc91f:0x94103a262ad19f03?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "H-A Design Studio",
+        "Category": "Architecture firm",
+        "Website": "https://www.hadesignstudio.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0323 4600075",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//52-B,+H-A+Design+Studio,+1,+New+Muslim+Town+Abu+Bakar+Block+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905f04ac238c1:0x5eed77e15b6199e9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "H-A Design Studio Lake City",
+        "Category": "Interior designer",
+        "Website": "http://www.hadesignstudio.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0323 4600076",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//5th+Floor,+C-31,+H-A+Design+Studio+Lake+City,+Bella+Vista+Downtown,+Lake+City,+Holdings,+54790/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919ab646a74efe9:0xc9414b03581dde5e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "H. S Architect",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0322 5755700",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//H.+S+Architect,+Main+St,+Usmani+Mohalla,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d65a0e4f103:0x90e9f44178b20b4d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "H2 Designs",
+        "Category": "Architecture firm",
+        "Website": "https://h2-designs.brick.site/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0336 5320944",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "HA Architect",
+        "Category": "Design engineer",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0349 8263098",
+                "Rating": 1.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0349 8263098",
+                "Rating": 4.9,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//5RRM%2BV64+HA+Architect,+Islamgarh/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391fe90948528025:0xa2d8a4bce17681f4?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0349 8263098",
+                "Rating": 4.9,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//5RRM%2BV64+HA+Architect,+Islamgarh/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391fe90948528025:0xa2d8a4bce17681f4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HAMMAD ENGINEERING AND RESEARCH",
+        "Category": "Corporate office",
+        "Website": "http://hammadjatt.weebly.com/",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0311 4248781",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//HFH6%2B9HH+HAMMAD+ENGINEERING+AND+RESEARCH,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921d61f0df469d9:0xa13781b8872a80a1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HAQBAHOO DESIGN & CONSTRUCTION",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0315 3766000",
+                "Map URL": "https://www.google.com/maps/dir//394F%2BQCX+HAQBAHOO+DESIGN+%26+CONSTRUCTION,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cc1004708e795:0xdb23f0129b4c9de6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Vehari",
+                "Phone Number": "0315 3766000",
+                "Map URL": "https://www.google.com/maps/dir//394F%2BQCX+HAQBAHOO+DESIGN+%26+CONSTRUCTION,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cc1004708e795:0xdb23f0129b4c9de6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HB INTRIOR DESIGNERS",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 5073206",
+                "Rating": 4.6,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//5F3R%2B7XQ+HB+INTRIOR+DESIGNERS,+Bahawalpur+Rd,+Basti+Allahabad,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37a5e67316cb:0xa7ecd51c9555901f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HILINE Architects and Interior Designers",
+        "Category": "Architecture firm",
+        "Website": "https://www.hiline.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8424644",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor%D8%8C+HILINE+Architects+and+Interior+Designers,+27+K+Sir+Syed+Rd,+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190178602b110d:0x8cb20f893cda692a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HK Architects",
+        "Category": "Architecture firm",
+        "Website": "https://hassamnadeem922.wixsite.com/website?fbclid=IwAR1dvYXmCXiboYpI_XX8rWzoVApvg0I4QIw4oTkiD5263iKb1k4dHa0LFVk",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0324 7668665",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//3rd+Floor,+HK+Architects,+Burj-ul-Kuwait+Plaza,+Kohinoor+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269d87b5de057:0x1fd8208a69c3514a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HK Dezine: Architecture, Interior & Furniture",
+        "Category": "Architecture firm",
+        "Website": "http://www.hkdezine.com/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0324 4135487",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//HK+Dezine:+Architecture,+Interior+%26+Furniture,+City+Mall,+near+Fareed+Gate,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91e4cdfd8b0f:0xa5e2f89a0682c0c1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HOME LINE INTERIOR",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 8597363",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//HOME+LINE+INTERIOR,+Al+Mustafa+Rd,+Mohalla+Sadiqabad,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31d932b02a95:0x8fbc617877abdb4f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0300 8597363",
+                "Map URL": "https://www.google.com/maps/dir//HOME+LINE+INTERIOR,+Bomanji+Chowk+Gujer+ghuda+road+cantt,+Tughlaq+Town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37ec8e64e26f:0x8dbd61b67e764748?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HOME LINE INTERIOR DECORETOR",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 8597363",
+                "Map URL": "https://www.google.com/maps/dir//HOME+LINE+INTERIOR+DECORETOR,+chock,+near+Pso+Pump,+Farooq+Pura+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b318e1897b9bf:0x5838aafb43dbdf52?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HR Architecture & Designs",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0300 2738422",
+                "Rating": 4.4,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//78WP%2B2J3+HR+Architecture+%26+Designs,+Khush%C4%81b/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39211626a24591e1:0x4c3e72df826d8ef6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HR Design Studio",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/share/19isLk2zis/?mibextid=wwXIfr",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0305 6200789",
+                "Map URL": "https://www.google.com/maps/dir//HR+Design+Studio,+Ferozwala+Road,+near+UBL+Bank+Bazar+CH+Rasheed+wala,+Gujranwala,+25250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed5950ebec933:0xeb0a6a5c71ac01a7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Habib Architect - House Maps & Interior Designer",
+        "Category": "Architect",
+        "Website": "https://www.instagram.com/saahi_builder/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0333 8797981",
+                "Map URL": "https://www.google.com/maps/dir//Habib+Architect+-+House+Maps+%26+Interior+Designer,+Gali+Billo+Mehar,+Doburji+Arian,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb002c6c2299:0x176fd3a1bf3b98b9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0333 8797981",
+                "Map URL": "https://www.google.com/maps/dir//Habib+Architect+-+House+Maps+%26+Interior+Designer,+Gali+Billo+Mehar,+Doburji+Arian,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb002c6c2299:0x176fd3a1bf3b98b9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Habib Fida Ali Architects",
+        "Category": "Architecture firm",
+        "Website": "http://www.habibfidaali.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(021) 35661683",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Habib+Fida+Ali+Architects,+4+Khaliq-uz-Zaman+Rd,+Karachi,+75530/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3eb33ddaabf07cf9:0xdd1be8b84f76554d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hafiz Homes",
+        "Category": "Housing utility company",
+        "Website": "http://hafizhomes.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6609148",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Hafiz+Homes,+306-B,+Lyallpur+Avenue,+Jaranwala+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922678b87525ac3:0x2c96d8b63703fa42?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hafiz moters & architectures",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Rating": 3.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Hafiz+moters+%26+architectures,+Main+Burewala+Rd,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ccf00542d5a9f:0xf5b7527db4e6b380?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Haider Ali Architects",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 0904748",
+                "Map URL": "https://www.google.com/maps/dir//House+35,+Haider+Ali+Architects,+Street+C+Masoom+Shah+Rd,+Block+T+New+Multan+Colony,+Multan,+60650/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35ce7e1ab311:0xd2279bc98b216956?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Haider Architects ( Zamana CES (PVT) LTD.)",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 4804044",
+                "Rating": 5.0,
+                "Reviews": 33.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+No%2307,+08,+Haider+Architects+(+Zamana+CES+(PVT)+LTD.),+Fatima+Commercial+Center,+Yezman+Road,+near+Beacon+House+School,+Rehman+Garden,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b917fd5faad9d:0x3b372dd89cd7185f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0300 4804044",
+                "Rating": 5.0,
+                "Reviews": 33.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+No%2307,+08,+Haider+Architects+(+Zamana+CES+(PVT)+LTD.),+Fatima+Commercial+Center,+Yezman+Road,+near+Beacon+House+School,+Rehman+Garden,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b917fd5faad9d:0x3b372dd89cd7185f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 4804044",
+                "Rating": 5.0,
+                "Reviews": 33.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+No%2307,+08,+Haider+Architects+(+Zamana+CES+(PVT)+LTD.),+Fatima+Commercial+Center,+Yezman+Road,+near+Beacon+House+School,+Rehman+Garden,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b917fd5faad9d:0x3b372dd89cd7185f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Haider Design & Contracting Pvt. Ltd.",
+        "Category": "Architect",
+        "Website": "http://haider-design.com/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 6915872",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Haider+Design+%26+Contracting+Pvt.+Ltd.,+198+B+1+Goalchowk%D8%8C+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7ea846709ef:0xf25ef239689e7d60?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Haji Abbas Architect",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//M49G%2BGCC+Haji+Abbas+Architect,+Bilal+Colony,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b71f23662e7b:0x2335e5e440e43eb8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Map URL": "https://www.google.com/maps/dir//Haji+Abbas+Architect,+298-Y+Scheme+Number+3,+Farid+Town,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c9c6ffb80405:0xdd63b08e24ec9f69?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hamza Alam Khan",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0326 4621569"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hamza Center (Property, Architect, Construction)",
+        "Category": "Real estate agency",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H3W7%2B5V3+Hamza+Center+(Property,+Architect,+Construction),+Mughal+Town,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f05ca78b6e65b:0x729b44b26520950b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hamza Sharif Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0302 4034486",
+                "Rating": 4.9,
+                "Reviews": 25.0,
+                "Map URL": "https://www.google.com/maps/dir//J6Q5%2BV8R+Hamza+Sharif+Architects,+Jalalpur+Jattan,+50200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f03173c1217c9:0xba84394c6d0478cc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hamza architect & Darood construction company",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0320 7039139",
+                "Map URL": "https://www.google.com/maps/dir//Hamza+architect+%26+Darood+construction+company,+Plot+432,+Sehgal+City+Saigol+City,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d000e8fdf81:0x40d811d0ea997ae0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hanan Manan Architecture",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0348 5260451",
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Hanan+Manan+Architecture,+Dubai+Plaza,+near+Meezan+Bank,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19e611842093:0xb265b2f83a152a6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0348 5260451",
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Hanan+Manan+Architecture,+Dubai+Plaza,+near+Meezan+Bank,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19e611842093:0xb265b2f83a152a6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Haq Consultants, Architects & Interior Designer",
+        "Category": "Interior architect office",
+        "Website": "http://www.haqconsultants.com/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0333 8637695",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Haq+Consultants,+Architects+%26+Interior+Designer,+Office+%234+Haji+Pura+Rd,+opp.+Executive+Passport+Office,+Fatehgarh,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb3b57f30537:0x8c430c385a3418f2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0333 8637695",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Haq+Consultants,+Architects+%26+Interior+Designer,+Office+%234+Haji+Pura+Rd,+opp.+Executive+Passport+Office,+Fatehgarh,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb3b57f30537:0x8c430c385a3418f2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Harsimran Architect and Builders",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/share/1B6u8vfpeo/?mibextid=wwXIfr",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+no+3,+Harsimran+Architect+and+Builders,+Chabbal+Rd,+near+Pannu+Dairy,+Amritsar,+Punjab+143001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39197b270eab98f7:0x3dcd24a8cc910aa1?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+no+3,+Harsimran+Architect+and+Builders,+Chabbal+Rd,+near+Pannu+Dairy,+Amritsar,+Punjab+143001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39197b270eab98f7:0x3dcd24a8cc910aa1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hashir Architect",
+        "Category": "Architects association",
+        "Website": "https://www.facebook.com/Highway-Architect-Builder-Property-Adviser-106446885148359",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0311 0416472",
+                "Map URL": "https://www.google.com/maps/dir//Hashir+Architect,+Sufi,+Sufi+city,+City+Arcade,+Cinema+plaza,+Bank+of+Punjab+basement,+City,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dca1a1164ef:0x4858ccd27d0d1daf?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0311 0416472",
+                "Map URL": "https://www.google.com/maps/dir//Hashir+Architect,+Sufi,+Sufi+city,+City+Arcade,+Cinema+plaza,+Bank+of+Punjab+basement,+City,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dca1a1164ef:0x4858ccd27d0d1daf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hassan Bin Ibraheem Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0332 6445566",
+                "Rating": 4.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Hassan+Bin+Ibraheem+Architects,+1st+Floor+Din+Plaza,+G.T.+Rd,+Krishan+Nagar,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f295623e403e1:0x8c8aa1664414f6af?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hassan Builder & Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6126267",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//H3JJ%2BP6C+Hassan+Builder+%26+Architect,+Court+Rd,+Muslimabad,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bd0f0195e25:0xdb15d88d1e4fb487?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hassan Builders & Developers",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0336 8385769",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Hassan+Builders+%26+Developers,+Street+2+Circular+Rd,+Citi+Housing+Satellite+Town,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f93f4cce4e7fb:0xc604657f2b6abac1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hassan IT House & The Architects",
+        "Category": "Computer training school",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0332 5947729",
+                "Map URL": "https://www.google.com/maps/dir//Hassan+IT+House+%26+The+Architects,+Haq+Nawaz+Arcade+Bhoun+Road,+bhoun,+raod,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d6a19df05bb:0xdfb88d42c7b81c2?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0332 5947729",
+                "Map URL": "https://www.google.com/maps/dir//Hassan+IT+House+%26+The+Architects,+Haq+Nawaz+Arcade+Bhoun+Road,+bhoun,+raod,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d6a19df05bb:0xdfb88d42c7b81c2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hassnain Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0323 4064464",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Hassnain+Associates,+Regal+Cinema+Rd,+Old+City,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3c3ec1ee71d:0x95d54e2b1fd28f91?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hayat Architects & Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0343 6857060"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hayat Associates And Architect",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0303 6686688",
+                "Rating": 4.9,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//2795%2B2MV+Hayat+Associates+And+Architect,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6f07567bb30f:0xed9535106067629d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hayyul Qayyum Architect Designer & Consultant",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0336 5704690",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Hayyul+Qayyum+Architect+Designer+%26+Consultant,+Govt,+Girls+College+Rd,+behind+1+5+chowk,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dd7b765410d:0x877f34b1715172da?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0336 5704690",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Hayyul+Qayyum+Architect+Designer+%26+Consultant,+Govt,+Girls+College+Rd,+behind+1+5+chowk,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dd7b765410d:0x877f34b1715172da?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0336 5704690",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Hayyul+Qayyum+Architect+Designer+%26+Consultant,+Govt,+Girls+College+Rd,+behind+1+5+chowk,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dd7b765410d:0x877f34b1715172da?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0336 5704690",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Hayyul+Qayyum+Architect+Designer+%26+Consultant,+Govt,+Girls+College+Rd,+behind+1+5+chowk,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dd7b765410d:0x877f34b1715172da?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Heritage Event , Rahim Yar Khan",
+        "Category": "Event venue",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0303 8224444",
+                "Rating": 4.3,
+                "Reviews": 129.0,
+                "Map URL": "https://www.google.com/maps/dir//Heritage+Event+,+Rahim+Yar+Khan,+Canal+Rd,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375c0199831307:0xbae88e98eba1c455?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hesper Idea's Zone (Come for Know)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0333 4525175"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hidden Lines Architects",
+        "Category": "Architecture firm",
+        "Website": "http://www.hiddenlines.co/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 7777839",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Hidden+Lines+Architects,+220+FF,+Phase+IV+DHA+Phase+3,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391907c231361ae7:0xccf7bfd1caa46d7b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "High Sky Associates (Civil Engineering Services & Map designing)",
+        "Category": "Corporate office",
+        "Website": "http://www.facebook.com/high.sky.associates",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 5300571",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//3P54%2BX3W+High+Sky+Associates+(Civil+Engineering+Services+%26+Map+designing),+Sargodha/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217722e90e91cd:0x3438de3edace28b7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 5300571",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//3P54%2BX3W+High+Sky+Associates+(Civil+Engineering+Services+%26+Map+designing),+Sargodha/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217722e90e91cd:0x3438de3edace28b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "HnH Architects",
+        "Category": "Construction company",
+        "Website": "https://www.hnharchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0308 4000666",
+                "Map URL": "https://www.google.com/maps/dir//HnH+Architects,+Sector+A+Commercial+Market+Askari+X,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190faa0781933d:0xe97aff1f5f858486?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Home Design",
+        "Category": "Architectural designer",
+        "Website": "http://www.homedesignpk.weebly.com/",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0344 5722271",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Home+Design,+North+Circular+Road,+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266c2e68d234f3:0xf26e1f9a67f35488?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Home Design Kaleki.... Munawar Hussain",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/homedesignkaleki170/",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0303 5442170",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Home+Design+Kaleki....+Munawar+Hussain,+Street+1+mohalla+RHC+Kaleki,+Kaleke/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918acc27288c7cd:0x7ee7541e1e48db99?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Home Design Muzaffargarh",
+        "Category": "Wholesaler",
+        "Locations": [
+            {
+                "City": "Muzaffargarh",
+                "Phone Number": "0309 0028665",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Home+Design+Muzaffargarh,+Multan+Road,+Muzaffargarh/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b299dce0235df:0xcc9a2426a3dcc015?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Home Interior",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0315 4702400",
+                "Map URL": "https://www.google.com/maps/dir//PX7G%2BM48+Home+Interior,+Civil+Lines,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3ca108d3209:0xeb11cfc02a42d168?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0315 4702400",
+                "Map URL": "https://www.google.com/maps/dir//PX7G%2BM48+Home+Interior,+Civil+Lines,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c3ca108d3209:0xeb11cfc02a42d168?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Horti Club | Landscaping Company | Dancing Fountain Company",
+        "Category": "Landscape designer",
+        "Website": "http://www.horticlub.com.pk/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 7681547",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Horti+Club+%7C+Landscaping+Company+%7C+Dancing+Fountain+Company,+chock,+Bilal+Road+near+Commissioner+Office+opposite+Jinnah+Bagh,+Faisalabad,+38000,+Pakistan+Commissioner,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243302118846f:0x19933124fc1fb99a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Housing Planning & Designing",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 5825361",
+                "Map URL": "https://www.google.com/maps/dir//Office+No.10,+Housing+Planning+%26+Designing,+Resham+Plaza+Civil+Line,+Dhoke+Abdullah,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91f6671bb0b1:0xba0143a35705222e?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 5825361",
+                "Map URL": "https://www.google.com/maps/dir//Office+No.10,+Housing+Planning+%26+Designing,+Resham+Plaza+Civil+Line,+Dhoke+Abdullah,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91f6671bb0b1:0xba0143a35705222e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hs Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6187078",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Hs+Architects,+Chak+208+Road,+Eden+Valley,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226980657b83c3:0xf5c6454f359c8b4c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hunains Architect | Best Architectural Designer & 3D Visualizer Lahore",
+        "Category": "Architect",
+        "Website": "https://sites.google.com/view/muhammadhunainshahid",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0329 7265903",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hundreddesigns",
+        "Category": "Architect",
+        "Website": "http://www.hundreddesigns.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//A,+3,+Hundreddesigns,+4,+Someshwar+Junction,+Sarunagar,+Piplod,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e763274850b:0xdfa39f1f6ba26d7f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Husnain Abbasi Institute of architecture",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0314 6879992",
+                "Map URL": "https://www.google.com/maps/dir//Husnain+Abbasi+Institute+of+architecture,+Husnain+Abbasi+Defence,+Ahmadpur,+Bahawalpur,+63236/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b914b6f52f9c3:0x33093e68068fbb77?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hussain Builders",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0333 8031899",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Hussain+Builders,+Unnamed+Road,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d3a433b4677:0xaad6d35035316a23?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hussain Builders Layyah",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0307 8560103",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Hussain+Builders+Layyah,+Layyah,+31200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a7594750e4cd:0x57dfbdd09fb56671?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hussain property marketing and builders architect",
+        "Category": "Real estate agency",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0301 4389542",
+                "Map URL": "https://www.google.com/maps/dir//Hussain+property+marketing+and+builders+architect,+near+to+MDA+cooperative+society,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e2f6773205:0xaa3f29a63f83fc4c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hussainia Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0300 6239322",
+                "Map URL": "https://www.google.com/maps/dir//Hussainia+Associates,+32%2FB+Civil+Line+Jauharabad+Rd,+Jauharabad,+41200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213dbf7162eb03:0xf2f8b9549485ee77?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hyper Hub Designs",
+        "Category": "Architecture firm",
+        "Website": "https://hyperhubdesigns.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 2229311",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Hyper+Hub+Designs,+384-E,+Ali+Center+Block+E+1+Phase+1+Johar+Town,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391903ab05d8075b:0xef0b41cbdc39e39f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Hyper—Practice",
+        "Category": "Architecture firm",
+        "Website": "http://www.hy-pr.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0334 4223020",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Hyper%E2%80%94Practice,+76+Arif+Jan+Rd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190589bf663cf1:0xa9b23b84ce3531c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "I-Vision Associates",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/ivisionassociatesfsd",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 3947702",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//I-Vision+Associates,+Faisalabad+-+Samundri+Rd,+Farooqabad,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d486e4bce41:0x7d73bc3ac7446ad8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IAA - Imtiaz Ali Associates (Pvt. Ltd.)",
+        "Category": "Architecture firm",
+        "Website": "http://www.iaaconsultancy.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35713215",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//IAA+-+Imtiaz+Ali+Associates+(Pvt.+Ltd.),+298-A,+Upper+Mall+Scheme,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919051dc01024bf:0xf54f1f4f6667fed1?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35713215",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//IAA+-+Imtiaz+Ali+Associates+(Pvt.+Ltd.),+298-A,+Upper+Mall+Scheme,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919051dc01024bf:0xf54f1f4f6667fed1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IBRAHIM INTERIOR Model Town-B",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 6812789",
+                "Rating": 4.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//CM37%2B3X5+IBRAHIM+INTERIOR+Model+Town-B,+Model+Town+B+Road,+Model+Town+B+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b97d077b0573b:0xe1beff89109f7cb3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IES ARCHITECTS & BUILDERS",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 5935523",
+                "Rating": 4.3,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//IES+ARCHITECTS+%26+BUILDERS,+141,+Block+A+Model+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3563124d1b5f:0xd9add913a6a6a5d6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IES Architets & Builders",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "(061) 6016000",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//6FMJ%2B8P5+IES+Architets+%26+Builders,+Bosan+Rd,+Nasheman+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3479154b663b:0xe5a6f7d71fc26685?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IHA Design Works",
+        "Category": "Architecture firm",
+        "Website": "https://ihadesignworks.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4253253",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//IHA+Design+Works,+149+H,+Dha+Phase+1,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190505d40b32d7:0x8b67a606ee613b4f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IJAZ TECHNOLOGIES ( Architecture, Interior, Constrction, Material )",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "(057) 2541030",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//IJAZ+TECHNOLOGIES+(+Architecture,+Interior,+Constrction,+Material+),+public+park,+5-E,+Block+B,+Opposite,+People's+Colony,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df196e9ec6e119:0xf22f390a4c09a7c0?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "(057) 2541030",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//IJAZ+TECHNOLOGIES+(+Architecture,+Interior,+Constrction,+Material+),+public+park,+5-E,+Block+B,+Opposite,+People's+Colony,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df196e9ec6e119:0xf22f390a4c09a7c0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "INC Architect",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 1405004",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//G963%2BVMW+INC+Architect,+Ghalib+Market+Gulberg+III,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190453c7c9be05:0x2e9c60801751dce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "INLAY ARCHITECTS",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0321 6103955",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+17,+INLAY+ARCHITECTS,+Gondal+Plaza,+Khadim+Ali+Rd,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec1ff7d0b77fb:0x11edfbc8d9728e27?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "INNOVATIVE BUILDERS & DESIGNERS",
+        "Category": "Construction company",
+        "Website": "https://ibuilders.com.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0303 0215855",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//OFFICE+%23+30,+INNOVATIVE+BUILDERS+%26+DESIGNERS,+COMMERCIAL+MARKET,+Multan+Public+School+Road,+Sahar+Villas+(Sahara+Homes),+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35bd15111ba5:0x4c2a5c03a1003d6f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IQBAL ARCHITECTS (PVT) LTD.",
+        "Category": "Architect",
+        "Website": "http://www.iqbalarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4106215",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//IQBAL+ARCHITECTS+(PVT)+LTD.,+Office+%23+63+Commercial+Main+Boulevard,+Park+Lane+City,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190524ed575267:0x22e2784a287f5351?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ITTEFAQ ARCHITECT",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0300 7748211",
+                "Map URL": "https://www.google.com/maps/dir//HFMV%2B84Q+ITTEFAQ+ARCHITECT,+Thana+Rd,+School+Mohalla+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d99d3a5acd3:0xbde539f8932bfabd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "IV Square Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0334 6016161",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//IV+Square+Studio,+Office+92-A+1st+floor+Commercial,+Block+A+Model+Town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e084399fd1:0xf71d6c7a4d188076?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ibrahim Constructions -IC",
+        "Category": "Construction company",
+        "Website": "https://muhammadibrahim32.wixsite.com/website",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0311 6887786",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office-B,+Ibrahim+Constructions+-IC,+Toheed+petroleum,+near+Passport+Office,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177cd3be706d5:0xcf5e3e725a8f862d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0311 6887786",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office-B,+Ibrahim+Constructions+-IC,+Toheed+petroleum,+near+Passport+Office,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177cd3be706d5:0xcf5e3e725a8f862d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Iconic Architect and Interior Designer",
+        "Category": "Interior designer",
+        "Website": "https://www.iconicarchitectandinteriordesigner.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8441528",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//F9PV%2B6H5+Iconic+Architect+and+Interior+Designer,+Sector+N+Dha+Phase+1,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905006d03a1c5:0x88d4845e34eaaa29?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Idea catcher interior designers",
+        "Category": "Interior designer",
+        "Website": "http://ideacatcher.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0322 6666698",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//25%2F26+M+block,+Idea+catcher+interior+designers,+commercial+market,+M,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35c012aca8fd:0x23d31d0b74f4ae09?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Idea's Consultants",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/ideas.consultants?mibextid=LQQJ4d",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 4228862",
+                "Rating": 4.9,
+                "Reviews": 47.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ideal Architect",
+        "Category": "Architect",
+        "Website": "http://www.ideal-architect.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0312 5999324",
+                "Map URL": "https://www.google.com/maps/dir//Q9C4%2BCVF+Ideal+Architect,+Committie+chowk,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df190025efa387:0x7bf9777d532924fc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ideas and Design",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0303 4382930"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Idesign Architect & Developers",
+        "Category": "Architecture firm",
+        "Website": "https://idesignar.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0333 7772232",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Idesign+Architect+%26+Developers,+Main+Market%D8%8C+Gulshan-e-iqbal%D8%8C+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393759fd9f2772b7:0x1812873d7661667f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Imran Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0302 7842733",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0302 7842733",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0302 7842733",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Inam Ellahi Dar Architect",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//F3PQ%2BWRF+Inam+Ellahi+Dar+Architect,+Eden+Orchard,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922695f53892633:0xb2cb63d413477920?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Infinity Design Studio",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0309 1745298",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Infinity+Design+Studio,+Haider+Road,+Sialkot+Cantonment,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebd4cbb5fa21:0xd9f13cab5377d124?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Inner Art Interiors",
+        "Category": "Interior architect office",
+        "Website": "https://innerart.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4444422",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Inner+Art+Interiors,+7-A1+Gulberg+III,+off+M.M.Alam+Road,+Lahore,+Gulberg,+III,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905002a777a05:0x13cfbed3ff2ab256?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Insight Architechture & Engineers (Pvt) LTD.",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 8623623",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H3MG%2BMJG+Insight+Architechture+%26+Engineers+(Pvt)+LTD.,+Jail+Chowk,+Gharibpura,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1ad62ec11e25:0x1f8e892b2b3e05d3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 8623623",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H3MG%2BMJG+Insight+Architechture+%26+Engineers+(Pvt)+LTD.,+Jail+Chowk,+Gharibpura,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1ad62ec11e25:0x1f8e892b2b3e05d3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "InterArch,Lahore-Fsd.",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0320 7456691",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//InterArch,Lahore-Fsd.,+2.1+Km+Mian+Zulfiqar,+Shahid+Rd,+near+A+B+Export,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922435e5220d19d:0x3e60bedcf788bccd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Interior Decor",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0301 8090853",
+                "Rating": 4.3,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Interior+Decor,+09+Star+Arcade+,opposite+DHA+Bosan+road+gate,+Main+Northern+Bypass,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e3b616b8df:0x8c7bf4e689b4f949?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Interior Designer (Kitchen, Wardrobe, Architectural 2d and 3d Designer)",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/profile.php?id=61553884744813",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0334 1553072",
+                "Map URL": "https://www.google.com/maps/dir//Interior+Designer+(Kitchen,+Wardrobe,+Architectural+2d+and+3d+Designer),+Street+1-A+A,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9301cad9c639:0x8514526e187a75aa?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0334 1553072",
+                "Map URL": "https://www.google.com/maps/dir//Interior+Designer+(Kitchen,+Wardrobe,+Architectural+2d+and+3d+Designer),+Street+1-A+A,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9301cad9c639:0x8514526e187a75aa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Interior Designer in Lahore | Architects in Lahore | ILHAN'S Interior's",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0302 9722626",
+                "Rating": 4.6,
+                "Reviews": 34.0,
+                "Map URL": "https://www.google.com/maps/dir//Interior+Designer+in+Lahore+%7C+Architects+in+Lahore+%7C+ILHAN'S+Interior's,+Zainab+Tower,+M+59+Model+Town+Link+Rd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919074b2b9360e5:0x68fa9915a35417af?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Interior Designers & Architect's",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0324 8082389",
+                "Rating": 4.5,
+                "Reviews": 4.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ionic Associates",
+        "Category": "Building consultant",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Rating": 5.0,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//Ionic+Associates,+Garden+Town,+Gujranwala,+50250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29de68cd96f5:0x93aba843d121d8bb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Iqbal Architect Attock",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0321 5700406",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Iqbal+Architect+Attock,+Imam+Bargah,+Road,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df47b49de2f575:0x8330f90fc3d5f152?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Iqbal Son's Architect & Builders Pakistan",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0302 7314216",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Iqbal+Son's+Architect+%26+Builders+Pakistan%D8%8C+Street+%231+Super+Market+Depalpur,+56180/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918035668212285:0x12aa2e356485b85b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Isbah Hassan & Associates",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35692522",
+                "Rating": 4.3,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//F9FG%2BMFQ+Isbah+Hassan+%26+Associates,+Sector+Y+DHA+Phase+3,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391906769ddcd54b:0x19b5b38178fc1a07?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Islamabad Architects & Consultants",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0345 4760603",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Islamabad+Architects+%26+Consultants,+Usman+bakhshwal+plaza+Talagang+Road+chakwal+Near+Yasir+plaza+Talagang+Road+chakwal+Chakwa,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d5d31229619:0xc9db400e12c72e54?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Isra Hashim Architects",
+        "Category": "Architect",
+        "Website": "https://www.instagram.com/iha.studio",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0307 6201888",
+                "Rating": 5.0,
+                "Reviews": 13.0
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0307 6201888",
+                "Rating": 5.0,
+                "Reviews": 13.0
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0307 6201888",
+                "Rating": 5.0,
+                "Reviews": 13.0
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0307 6201888",
+                "Rating": 5.0,
+                "Reviews": 13.0
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0307 6201888",
+                "Rating": 5.0,
+                "Reviews": 13.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Italian 3d architects and Kitchens interior",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0336 7164467",
+                "Rating": 4.2,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Italian+3d+architects+and+Kitchens+interior,+Lilla+Town+next+to+Mano+schools+ol+Wasu,+nala+road,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dea0d1f1a89:0x9a69c955422d022?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0336 7164467",
+                "Rating": 4.2,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Italian+3d+architects+and+Kitchens+interior,+Lilla+Town+next+to+Mano+schools+ol+Wasu,+nala+road,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dea0d1f1a89:0x9a69c955422d022?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JAUHAR ARCHITECT & BUILDING DEVELOPER",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//77PJ%2B46C+JAUHAR+ARCHITECT+%26+BUILDING+DEVELOPER,+Wahdat+Colony,+Jauharabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213c4b83dcb755:0x36044a9cb708dd9b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JD Architecture",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0307 6841243",
+                "Map URL": "https://www.google.com/maps/dir//JD+Architecture,+Naiz+street,+Naizabad,+36351/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3923219b3521132d:0x9e8bbf2eac504e2d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JDC - JIBRAN DESIGN CONSULTANCY",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0307 8966218",
+                "Rating": 5.0,
+                "Reviews": 38.0,
+                "Map URL": "https://www.google.com/maps/dir//JDC+-+JIBRAN+DESIGN+CONSULTANCY,+Mehria+Town+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19e03e0469ff:0x6a56659b5f8c83db?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JI Architects",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/jiarchitect/",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0347 7444222",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//JI+Architects,+Canal+Expy,+Park+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226892eebf6c27:0xa107a9458f97b776?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chiniot",
+                "Phone Number": "0347 7444222",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//JI+Architects,+Canal+Expy,+Park+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226892eebf6c27:0xa107a9458f97b776?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0347 7444222",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//JI+Architects,+Canal+Expy,+Park+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226892eebf6c27:0xa107a9458f97b776?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JK Associates",
+        "Category": "Architectural designer",
+        "Website": "https://jkassociatesol.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0303 8511774",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//JK+Associates,+Makkah+commericals,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226970724b32d3:0x52b2067c299e5bc8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JM INTERIORS",
+        "Category": "Interior architect office",
+        "Website": "https://web.facebook.com/JM-interiors-506324356804812/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 7233238",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//JM+INTERIORS,+Mian+Zulfiqar+Ali+Shahid+Rd,+near+best+buy+mart,+Shadman+Town,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224370774a042f:0x144fc8eb9f502b34?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JS Design & Builder",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0304 1400269",
+                "Map URL": "https://www.google.com/maps/dir//6FWW%2B4Q6+JS+Design+%26+Builder,+Model+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b350010c732b9:0xa7dd5e329d74438?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "JSH Group",
+        "Category": "Architecture firm",
+        "Website": "https://jshgroup.us/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8522761",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//JSH+Group,+48-A,+Fahad+Street,+2+W+Canal+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226909630ac499:0x63132fd0c95a04dc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Jamil Saharan Architecture",
+        "Category": "Building designer",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//PX9P%2B5P3+Jamil+Saharan+Architecture,+Doctor+Irfan+munir,+Muqeet+Town+Chiniot,+35400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223bcbd8b13503:0xcc85e0fb506270ba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Jamil Stadium Bhakkar",
+        "Category": "Stadium",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Rating": 4.2,
+                "Reviews": 127.0,
+                "Map URL": "https://www.google.com/maps/dir//J3C7%2BM4G+Jamil+Stadium+Bhakkar,+Layyah+Road,+Bhakkar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925d63a05251cfb:0x5e873b4b7cfef1b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Jamshaid Khan Architects & Associates (JKAA) - Best Architects in Islamabad, Pakistan",
+        "Category": "Architect",
+        "Website": "https://www.jamshaidkhan.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0336 0005600",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Jamshaid+Khan+Architects+%26+Associates+(JKAA)+-+Best+Architects+in+Islamabad,+Pakistan%D8%8C+6+Plaza,+Road-10,+Central+Avenue,+Northern+Block,+Commercial+Trade+Centre+Capital+Enclave,+(Approach+Road%D8%8C+Off+Islamabad+Expy,+Jinnah+Garden,+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfec37ad32f4d1:0xd1f00c4c5731381e?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0336 0005600",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Jamshaid+Khan+Architects+%26+Associates+(JKAA)+-+Best+Architects+in+Islamabad,+Pakistan%D8%8C+6+Plaza,+Road-10,+Central+Avenue,+Northern+Block,+Commercial+Trade+Centre+Capital+Enclave,+(Approach+Road%D8%8C+Off+Islamabad+Expy,+Jinnah+Garden,+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfec37ad32f4d1:0xd1f00c4c5731381e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Javed Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0303 6149255",
+                "Map URL": "https://www.google.com/maps/dir//Javed+Architect,+Abu+Dhabi+Rd,+near+Attock+petrol+pump+New+Imran+Pharmacy%D8%8C+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d0044fcc655:0xb09fa0acbcc1fd92?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Javed architect and real state",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0303 6149255",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//98V8%2BPRG+Javed+architect+and+real+state,+Abu+Dhabi+Rd,+near+attock+petrol+pump,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d00737e27ef:0x1612605339750f22?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Jinnah orchard",
+        "Category": "Housing society",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0334 1110407",
+                "Rating": 5.0,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//Jinnah+orchard,+Near+new+bypass,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c9b1d3bf0625:0x8e99d89797893db7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "KADS Karamanwala Art & Desgin Studio Okara",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0300 6953756",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//KADS+Karamanwala+Art+%26+Desgin+Studio+Okara,+Irfan+Complex,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7237d55395b:0xa9412780aa076ab6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "KASHIF & ARCHITECT",
+        "Category": "Interior architect office",
+        "Website": "https://www.facebook.com/groups/688323804970273/?ref=bookmarks",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0321 7740447",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//KASHIF+%26+ARCHITECT,+Mandi,+Wasu+Rd,+near+DHQ+Hospital,+School+Mohalla+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dbbb823aded:0xc354144a81d83011?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "KB Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Rating": 4.3,
+                "Reviews": 19.0,
+                "Map URL": "https://www.google.com/maps/dir//KB+Architects%D8%8C+Opp.+DHQ,+Gojra+Rd,+Ghaziabad,+Jhang,+35200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39239871546aec9b:0x687f6b4415a184d3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "KBRC pvt Ltd",
+        "Category": "Architect",
+        "Website": "http://www.kbrcon.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//KBRC+pvt+Ltd,+SUITE+03,+3RD+FLOOR,+Taw+Seen+Complex-+75,+Rawalpindi/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed04c485de37:0xa5d477398d263040?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "KHALID HAMEED GRAPHICS DESIGNER & ARCHITECTURE",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0334 6543258",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//KHALID+HAMEED+GRAPHICS+DESIGNER+%26+ARCHITECTURE,+jamia+arbian+FSD,+inside+Street,+road,+Chiniot,+35400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224dd7e028116d:0x2dbaece91339d5ca?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "KR Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8545662",
+                "Rating": 4.4,
+                "Reviews": 35.0,
+                "Map URL": "https://www.google.com/maps/dir//KR+Associates,+Peoples+Colony+Gates,+Main+Blvd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392268730d10cc89:0x2214bdac4d527093?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 8545662",
+                "Rating": 4.4,
+                "Reviews": 35.0,
+                "Map URL": "https://www.google.com/maps/dir//KR+Associates,+Peoples+Colony+Gates,+Main+Blvd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392268730d10cc89:0x2214bdac4d527093?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kaiser Ashrat & Associates",
+        "Category": "Architecture firm",
+        "Website": "https://www.kaiserashratassociates.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0307 7755519",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Kaiser+Ashrat+%26+Associates,+Suite+No.+102,+Al-Noor+Arcade,+Street+No.+19,+Punjab+Colony,+Karachi,+75600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3eb33d4dc04d77cd:0x2f46bb66923249be?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kalim Siddiqui & Associates",
+        "Category": "Architecture firm",
+        "Website": "http://www.kalimsiddiquiassociates.com/index.html",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35711288",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//B,+Kalim+Siddiqui+%26+Associates,+65+Shamshad+Haider+Rd,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904f66e0ee0c7:0x860d6020b15604fe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kaliyar Architechs",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0331 7626616",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//485G%2B7WV+Kaliyar+Architechs,+Kachehri+Rd,+opposite+bakshi+khana,+Rajanpur+District/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393099b7b39b99c3:0xfc916d195866c46?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kamil Architects & Builders",
+        "Category": "Construction company",
+        "Website": "http://kamilarchitectureandbuilders.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0303 6535957",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Kamil+Architects+%26+Builders,+M-4+Wapda+Town+Phase+2+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3582cfd17961:0x3c93ea11b13098fa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kamran sheikh interior design- hospitality consultancy",
+        "Category": "Interior designer",
+        "Website": "http://www.kamransheikh.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0302 8667303",
+                "Rating": 4.4,
+                "Reviews": 18.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kams Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4469685",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Kams+Architect,+Model,+142+P,+Model+Town+Extension+Town,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905e39218749b:0xa46fa68b873e9db9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4469685"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kasana Associates",
+        "Category": "Real estate developer",
+        "Website": "https://sukh100.com/faisalabad/architecture/1/kasana-associates.html",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 2553990",
+                "Rating": 3.7,
+                "Map URL": "https://www.google.com/maps/dir//Kasana+Associates,+Shaista+Flour+Mill+St,+Gulfishan+Colony+Faisalabad+Punjab+38000,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392242d9d76ff605:0x416a803e959bfd85?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kasur Museum",
+        "Category": "History museum",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0326 4006019",
+                "Rating": 4.3,
+                "Reviews": 270.0,
+                "Map URL": "https://www.google.com/maps/dir//4F78%2B4PM+Kasur+Museum,+Abdul+Shakoor+Colony,+Kasur,+55050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b99ad2e77a77:0x77430d43f871e743?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kaswa Design Services",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/KaswaDesign/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35858456",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//Kaswa+Design+Services,+Garden,+379+New,+Tariq+Block+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919040acb769021:0x4fa0e624af682fa6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35858456",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//Kaswa+Design+Services,+Garden,+379+New,+Tariq+Block+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919040acb769021:0x4fa0e624af682fa6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Key sketch Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0320 1597593",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Key+sketch+Architect,+8+Jail+Rd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190531907b9e49:0xc8d6985ad3e9069?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Khalil baloch associates architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0323 8669174",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Khan 21st century",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Rating": 5.0,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//Khan+21st+century,+Baba+Fareed+Park,+Arifwala+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b71f2239f8b7:0x5d05af5a6b2738d1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Khan Associates",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 8917514",
+                "Rating": 4.9,
+                "Reviews": 31.0,
+                "Map URL": "https://www.google.com/maps/dir//Khan+Associates,+AYESHA+TOWER%D8%8C+PULL+47%D8%8C+near+SHELL+POLICE+PETROL+PUMP%D8%8C+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177fa4ec949f7:0x6e91737c57ce868f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Khichi Architectural Design Studio",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0300 4215056",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//77PJ%2BFJJ+Khichi+Architectural+Design+Studio,+Wahdat+Colony,+Jauharabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213d004f77181f:0x23b1090849e2f093?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Khokhar Associates",
+        "Category": "Architecture firm",
+        "Website": "https://www.khokharassociates.com/",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0305 5063000",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Khokhar+Associates,+Khan,+Sagar+Road,+Misri,+near+UBL,+Hafizabad,+52110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4d2eda9f3d01:0x64dcb0ce9baabe89?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Khosa Builders",
+        "Category": "Architect",
+        "Website": "https://sites.google.com/view/khosabuilders/home",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0335 9500035",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Khosa+Builders,+Multan+Rd,+in+front+of+Board+Office+On,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab14532943311:0x71c90f99bf713610?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Komal Developers & Architecture",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "(056) 3792699",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Komal+Developers+%26+Architecture%D8%8C+18+-+Khan+Colony,+Khan+Colony,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c393ede4f711:0x30cb5b76ffdd4a0d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Koncept Design Studio",
+        "Category": "Interior designer",
+        "Website": "https://www.kdstudio.pk/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 9058461",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+16,+first+floor,+Koncept+Design+Studio,+mujahid+plaza,+blue,+area+Blue+Area,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df9938d6b8b1c9:0xc43431ecc42f6b8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Konsult & Konstruct",
+        "Category": "Architecture firm",
+        "Website": "https://www.kandk.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35872801",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,14+A,+Konsult+%26+Konstruct,+1+Ghalib+Rd,+Block+D1+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919059e6d1f2fab:0xe46c9edcaa0afabd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ks.home design and architectural consultancy",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0332 5155928",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Ks.home+design+and+architectural+consultancy,+Pull+piyaraii+wali,+Manka+Canal+Rd,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab11030255f83:0xafc3267e5cb8f052?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Kundan Builders",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 1977877",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C858%2B83C+Kundan+Builders,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375dfa4e86b4eb:0x4bd975ab7c482b8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "LAHORE BUILDER",
+        "Category": "Construction company",
+        "Website": "http://www.lahorebuilder.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 4230910",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//LAHORE+BUILDER,+1114+-+E+Block+ext,+Wapda+Town+Phase+1+Multan,+60800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b353f7288fc81:0xf070448d0c8f6b7f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "LALA Mushtaq Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6758960",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//LALA+Mushtaq+Associates,+Khanpur+Rd,+opposite+Punjab+College,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375be28e8a39d7:0x4b26e6666fb085e9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "LANDMARK Architects & Consultants",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Phone Number": "0312 6508602",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//78H7%2B98J+LANDMARK+Architects+%26+Consultants,+Jhang+Sadar+Chambeli+Market/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392399003f65e5a9:0x1540aa5630add049?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "LMC Map Office (LMC Architect Office)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Map URL": "https://www.google.com/maps/dir//LMC+Map+Office+(LMC+Architect+Office),+LMC,+Twin+Tower+Plaza,+near+LMC+Security+Office,+Motorway+City,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905002ae16611:0xe4ad4e66f3594b87?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "LONE ASSOCIATES",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0339 2202000",
+                "Rating": 4.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//LONE+ASSOCIATES,+Shahrah-e-Quaid-e-Azam,+Grand+Trunk+Rd,+Muslim+Town,+Rahwali+Cantonments,+50250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2930eda65feb:0x304c18ac95d7d571?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Laghari Architect and Consultant",
+        "Category": "Engineering consultant",
+        "Website": "https://www.facebook.com/profile.php?id=100070802148390&mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0301 8797718",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//RWC5%2B8MJ+Laghari+Architect+and+Consultant,+Dera+Ismail+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266f001aa8f2a9:0xd36d86f4bb9138d9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Lahore Landscapes",
+        "Category": "Landscape designer",
+        "Website": "https://www.lahorelandscapes.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0323 4619512",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Lahore+Landscapes,+47+Infantry+Rd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x8770963c0d297181:0x83668aa173ef56d5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Lahore modern architect",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0302 4648460",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Lahore+modern+architect,+AH1,+Mominpura,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391911f9fea278d7:0x9a222d4801c8cb7b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Land Mart",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Nankana Sahib",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Land+Mart,+House+%23115+muhalla+Balila,+Nankana+Sahib,+39100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39188f019b7f5ddb:0x1036af26b8fb1adb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Landmark Consultants Pvt Ltd",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35878987",
+                "Rating": 3.8,
+                "Reviews": 22.0,
+                "Map URL": "https://www.google.com/maps/dir//Landmark+Consultants+Pvt+Ltd,+45-D,+Block+C1,+Gulberg,+Lahore,+Punjab/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919045632fca61f:0xc76240458d740876?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Landscape Architecture",
+        "Category": "Landscape designer",
+        "Website": "https://www.instagram.com/designconceptstudio/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0323 8856239"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Landscaping By Fazal Nursery Faisalabad",
+        "Category": "Landscape designer",
+        "Website": "https://fazalnurseryfaisalabad.blogspot.com/?m=1",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0311 5435050",
+                "Rating": 5.0,
+                "Reviews": 7.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Lekakaar",
+        "Category": "Interior architect office",
+        "Website": "https://www.lekakaar.com/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0301 4566441",
+                "Map URL": "https://www.google.com/maps/dir//House+no,+Lekakaar,+42+St+6,+Model+Town+B,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91a3830ad54f:0x76797e2384c1558?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Living's",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0321 4402274",
+                "Rating": 4.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//459W%2BGCQ+Living's,+G.T.+Road,+Kangni+Wala+Bazar,+Mohalla+Shama+Ul+Arfeen,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b62a7d70817:0x6b4a24e839f8781f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Lusso Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0331 7724552",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Luxury Homes & Designs",
+        "Category": "Building consultant",
+        "Website": "https://m.facebook.com/groups/1405985686371952/?ref=group_browse",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Map URL": "https://www.google.com/maps/dir//Luxury+Homes+%26+Designs,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39195597bdd727c3:0x118324e114b58126?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Narowal",
+                "Map URL": "https://www.google.com/maps/dir//Luxury+Homes+%26+Designs,+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39195597bdd727c3:0x118324e114b58126?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Lyseis Design - Interior Designers, Architects and Builders in Islamabad Bahria Town DHA",
+        "Category": "Architecture firm",
+        "Website": "https://lyseisdesign.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 5207608",
+                "Rating": 4.8,
+                "Reviews": 25.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "M Asghar Tiles and Granites Raiwind Road Kasur",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0303 4223288",
+                "Map URL": "https://www.google.com/maps/dir//M+Asghar+Tiles+and+Granites+Raiwind+Road+Kasur,+Main+Kasur+-+Raiwind+Rd,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919bb54a85de5c9:0xec2446abb5394e06?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M Naseem Architecture Engineer",
+        "Category": "Building consultant",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 6511127",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//M+Naseem+Architecture+Engineer,+Nizam+Pura+Rd,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9cdbb1ff93b:0x53789140b89c1b77?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M Zahoor Architect & Construction Firm",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 5943609",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//M+Zahoor+Architect+%26+Construction+Firm,+Commercial+plaza,+Sargodha+Rd,+21+B+block+Citi+Housing+phase+-+1,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392241ebf0a57da3:0xd7fa9c8e2b040589?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M-B-I Architect. (Muhammad-Bin-Ilyas Architectural Designer)",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0301 9670449",
+                "Map URL": "https://www.google.com/maps/dir//M-B-I+Architect.+(Muhammad-Bin-Ilyas+Architectural+Designer),+Chk+72%2FNP,+Bypass,+near+New+Grain+Market,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375bb99ede5771:0x7cf027f5bcc999fd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0301 9670449",
+                "Map URL": "https://www.google.com/maps/dir//M-B-I+Architect.+(Muhammad-Bin-Ilyas+Architectural+Designer),+Chk+72%2FNP,+Bypass,+near+New+Grain+Market,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375bb99ede5771:0x7cf027f5bcc999fd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M-Naseem Architect & Enineer office",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0307 8816057",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//4C3C%2BJCQ+M-Naseem+Architect+%26+Enineer+office,+Depalpur+Bypass+Rd,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9c2777790c5:0x7a48a0ac39f7cfb9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M. Ramzan House Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0333 5901999",
+                "Rating": 4.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//M.+Ramzan+House+Designer,+Kallar+Kahar+Road,+Chakwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d0b4acea983:0x57b03b552f3e0370?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M.A Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6371887",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//6G77%2BRV8+M.A+Associates,+Qasoori+Chowk,+M.A+Associates,+Architectural+Designing+Work.+Construction+Management,+Renovation+Expert,+M+A+Jinnah+Rd,+Mohalla+Qaisarabad,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b357c9fded5ab:0x6159dd693074bc20?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M.M Consultants ( Architects & Interior Designers )",
+        "Category": "Architect",
+        "Website": "https://www.mmconsultants.pk/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0309 5085489",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//M.M+Consultants+(+Architects+%26+Interior+Designers+),+First+Floor,+Plaza+61-D+Main,+Commercial+Area+Chaklala+Housing+Scheme+3,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed071269faf1:0x981124599047b62a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0309 5085489",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//M.M+Consultants+(+Architects+%26+Interior+Designers+),+First+Floor,+Plaza+61-D+Main,+Commercial+Area+Chaklala+Housing+Scheme+3,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed071269faf1:0x981124599047b62a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0309 5085489",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//M.M+Consultants+(+Architects+%26+Interior+Designers+),+First+Floor,+Plaza+61-D+Main,+Commercial+Area+Chaklala+Housing+Scheme+3,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed071269faf1:0x981124599047b62a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0309 5085489",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//M.M+Consultants+(+Architects+%26+Interior+Designers+),+First+Floor,+Plaza+61-D+Main,+Commercial+Area+Chaklala+Housing+Scheme+3,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed071269faf1:0x981124599047b62a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M.N Architect Engineer",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Map URL": "https://www.google.com/maps/dir//M.N+Architect+Engineer,+138%2F139+fero+center,+54,+Shadman,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919050032124ba1:0x216a7c204840ec30?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M.S Architect",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C3MR%2BXXR+M.S+Architect,+Hajvery+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922698d2b38ccc3:0x7127dbacd27dbcdc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M.S Toor Architect (Al-Diyar Constuction)",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0316 7770600",
+                "Rating": 4.9,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//M.S+Toor+Architect+(Al-Diyar+Constuction),+Katchery+Chowk,+near+Bank+Of+Punjab,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bf333276ca7:0x56bcae84f997acab?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0316 7770600",
+                "Rating": 4.9,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//M.S+Toor+Architect+(Al-Diyar+Constuction),+Katchery+Chowk,+near+Bank+Of+Punjab,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bf333276ca7:0x56bcae84f997acab?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "M/s CONART",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4794710",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MA Architecture & Building Designs",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Toba Tek Singh",
+                "Phone Number": "0334 7819811",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//XFFH%2BGP5+MA+Architecture+%26+Building+Designs,+Toba+Tek+Singh/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39230f6eb644d8f1:0xbcc825dfc1463627?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MA Design Studio",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0345 8287271",
+                "Map URL": "https://www.google.com/maps/dir//MA+Design+Studio,+New+city,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6fd148e4a669:0xf28ecb8766d53175?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAA ARCHITECT",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8408279"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAA'WA Architects",
+        "Category": "Interior designer",
+        "Website": "http://maawaarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8431365",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//MAA'WA+Architects,+30-D+3rd+Floor+DHA+12,+Multan+Rd,+Block+D+DHA+EME+Sector,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918fe1f87f9689d:0x5ffa7785e302a171?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAC (Memaar Architects and Constructors)",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/MemaarArchitects",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4037756",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//MAC+(Memaar+Architects+and+Constructors),+192+Shabbir+Sharif+Rd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919097db6fbac07:0xe85d3af7d656a2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MADNI ASSOCIATES ARCHITECT",
+        "Category": "Lodging",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 4.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//5FF8%2BH7V+MADNI+ASSOCIATES+ARCHITECT,+Kohinoor+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b315334c96173:0xca05edc22f1a0e8b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAG",
+        "Category": "Architect",
+        "Website": "http://thearfanmalik.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 8663496",
+                "Map URL": "https://www.google.com/maps/dir//MAG,+Kaleem+Shaheed+Colony+No+2+2,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922436c3a421b5d:0xc733e9c6e5df35b0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAHAR ARCHITECTS - Best Architect in Burewala",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0333 6968657",
+                "Rating": 4.9,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//MAHAR+ARCHITECTS+-+Best+Architect+in+Burewala,+Canal+Road,+nearby+Tohfa+Sweets+Bakers,+Burewala,+61010/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cdfb7afd58d1b:0x3d087d08eed1efcd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Vehari",
+                "Phone Number": "0333 6968657",
+                "Rating": 4.9,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//MAHAR+ARCHITECTS+-+Best+Architect+in+Burewala,+Canal+Road,+nearby+Tohfa+Sweets+Bakers,+Burewala,+61010/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cdfb7afd58d1b:0x3d087d08eed1efcd?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Vehari",
+                "Phone Number": "0333 6968657",
+                "Rating": 4.9,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//MAHAR+ARCHITECTS+-+Best+Architect+in+Burewala,+Canal+Road,+nearby+Tohfa+Sweets+Bakers,+Burewala,+61010/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cdfb7afd58d1b:0x3d087d08eed1efcd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAK Architects, M. Abdullah khan",
+        "Category": "Architecture firm",
+        "Website": "https://makarchitect.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 8813331",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//06,HBFC,+MAK+Architects,+M.+Abdullah+khan,+Block+A+Faisal+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919054ba50800a3:0x5775dc2e6dfb8418?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MANZIL ARCHITECT AND PROPERTY",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0304 5968668",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//MANZIL+ARCHITECT+AND+PROPERTY,+Main+peoples+colony+market,+first+floor+Chachi+Hotel,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19d9361987bf:0x5853dff8c9c156bc?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Attock",
+                "Phone Number": "0304 5968668",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//MANZIL+ARCHITECT+AND+PROPERTY,+Main+peoples+colony+market,+first+floor+Chachi+Hotel,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19d9361987bf:0x5853dff8c9c156bc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAP Developers",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0308 7610007",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C8H8%2BFJJ+MAP+Developers,+Al+Azizia+Hieghts,+near+Desert+Palm+Hotel,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b03c69ab8b9:0x90c2d7e8188bb3c7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0308 7610007",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C8H8%2BFJJ+MAP+Developers,+Al+Azizia+Hieghts,+near+Desert+Palm+Hotel,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b03c69ab8b9:0x90c2d7e8188bb3c7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MAZ Architectural Design Services",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0335 6992003",
+                "Rating": 4.9,
+                "Reviews": 44.0,
+                "Map URL": "https://www.google.com/maps/dir//MAZ+Architectural+Design+Services,+Office+140,+Second+Floor+Commercial+Market+Model+Town,+Block+A,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b355b23b1d67b:0x12143797e2161a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MBH Studioo Visualization Pvt. Ltd",
+        "Category": "Architect",
+        "Website": "https://mbhstudioo.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0315 8860962",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.291,+MBH+Studioo+Visualization+Pvt.+Ltd,+Makkah+Commercial+Market,+Chak+208+Rd,+near+Allied+Bank,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922686822826a5f:0xad9220bafbb87adf?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0315 8860962",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.291,+MBH+Studioo+Visualization+Pvt.+Ltd,+Makkah+Commercial+Market,+Chak+208+Rd,+near+Allied+Bank,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922686822826a5f:0xad9220bafbb87adf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MDS - Modern Digital Services",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0346 6418660",
+                "Map URL": "https://www.google.com/maps/dir//H38H%2B9VM+MDS+-+Modern+Digital+Services,+Five+Star+Plaza,+Gulzar-e-Madina+Rd,+Ramtalai+Area,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bb186f93c3b:0xb986bc7bef2554bb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MEHRAN ARCHITECTS",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/profile.php?id=100092625284183",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0301 3814584",
+                "Rating": 1.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0301 3814584",
+                "Rating": 1.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MH Sons CO (Architects and builders)",
+        "Category": "Construction company",
+        "Website": "http://www.mhsons.pk/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0335 2929289",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//65Q7%2BGPR+MH+Sons+CO+(Architects+and+builders),+Bolan+Rd,+Commercial+block+52+Dc+Colony,+Gujranwala,+52230/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2908ebcab13b:0x32564fb6b7107908?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0335 2929289",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//65Q7%2BGPR+MH+Sons+CO+(Architects+and+builders),+Bolan+Rd,+Commercial+block+52+Dc+Colony,+Gujranwala,+52230/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2908ebcab13b:0x32564fb6b7107908?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MHSC Architecture, Designers & Builders Pvt Ltd",
+        "Category": "Building designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0336 6392592"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MI ARCHITECT (PVT)Ltd | LAND SURVEYOR & TOWN PLANNER IN RAWALPINDI",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0300 9500211",
+                "Rating": 4.8,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//MI+ARCHITECT+(PVT)Ltd+%7C+LAND+SURVEYOR+%26+TOWN+PLANNER+IN+RAWALPINDI,+SS+Model+town,+Main+Chakri+Rd,+Rawalpindi/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df91c5c52d1523:0x8db4a9a787b3d594?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0300 9500211",
+                "Rating": 4.8,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//MI+ARCHITECT+(PVT)Ltd+%7C+LAND+SURVEYOR+%26+TOWN+PLANNER+IN+RAWALPINDI,+SS+Model+town,+Main+Chakri+Rd,+Rawalpindi/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df91c5c52d1523:0x8db4a9a787b3d594?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MIAN ACOSSIATE AND ARCHITECTURE",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0311 7633850",
+                "Map URL": "https://www.google.com/maps/dir//MIAN+ACOSSIATE+AND+ARCHITECTURE,+goal,+CHUDARY+PARK,+Street+No.+4,+near+d-type,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d4382a23ed5:0x53a4154a01194301?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MIANAFZALARCHITECT",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0300 6970410",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//RC5R%2B39R+MIANAFZALARCHITECT,+Okara/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a76937b6aa43:0x3ef5957da9ace360?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MICHU DESIGN STUDIO",
+        "Category": "Architecture firm",
+        "Website": "http://www.facebook.com/michuarchitects",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4202293",
+                "Rating": 3.4,
+                "Map URL": "https://www.google.com/maps/dir//Office+1808,+MICHU+DESIGN+STUDIO,+Al-Hafeez+Executive+Tower,+Block+C3+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904599d4fffff:0x8f7c918800c812dd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MIDARC",
+        "Category": "Architect",
+        "Website": "http://www.midarc.com.pk/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0311 1424343",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//MIDARC,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922680b0d78507b:0xf1b2cf1ae983a5f6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 9659993",
+                "Rating": 5.0,
+                "Reviews": 26.0,
+                "Map URL": "https://www.google.com/maps/dir//MIDARC,+Street+43,+Sector+B+DHA+Phase+6,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919097cbdd74c71:0xd8fa9cf428024ac5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MIRZA ARCHITECTS",
+        "Category": "Architect",
+        "Website": "http://mirzaarchitects.com/",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0300 6332566",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//MIRZA+ARCHITECTS%D8%8C+28-29-30,+1st+Floor,+Trust+Plaza,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31d7810d6535:0xe2971e962b2b8f71?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0300 6332566",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//MIRZA+ARCHITECTS%D8%8C+28-29-30,+1st+Floor,+Trust+Plaza,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31d7810d6535:0xe2971e962b2b8f71?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0300 6332566",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//MIRZA+ARCHITECTS%D8%8C+28-29-30,+1st+Floor,+Trust+Plaza,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31d7810d6535:0xe2971e962b2b8f71?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6332566",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//MIRZA+ARCHITECTS%D8%8C+28-29-30,+1st+Floor,+Trust+Plaza,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31d7810d6535:0xe2971e962b2b8f71?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6332566",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//MIRZA+ARCHITECTS%D8%8C+28-29-30,+1st+Floor,+Trust+Plaza,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31d7810d6535:0xe2971e962b2b8f71?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MIan Architect",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0315 4332946",
+                "Map URL": "https://www.google.com/maps/dir//MIan+Architect,+imtiaz+shaheed+road,+link+Susan+Road,+Block+Z+Madina+Town,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269a588f0dc17:0x420d7eaac0c74202?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MJ Architect InteriorDesign",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0306 7974987",
+                "Map URL": "https://www.google.com/maps/dir//MJ+Architect+InteriorDesign,+M,+Canal+Road+Civic+Centre+West+Canal+Road,+Gatwala+Main+Rd,+Block,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226f03e59ce10b:0xc43c4bdf8f8df76e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MJMA",
+        "Category": "Architecture firm",
+        "Website": "https://www.mjma.com.pk/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6239100",
+                "Rating": 3.8,
+                "Map URL": "https://www.google.com/maps/dir//MJMA,+CHOWK+IQBAL,+Gujrat,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b33dbfbdf4b:0xa3d9e10752019d49?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MKA Architects",
+        "Category": "Architectural designer",
+        "Website": "https://mkaarchitects.pk/",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Phone Number": "0332 3404348"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0332 3404348"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MM Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0315 8421323",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Shop+No+:+6-7,+MM+Architects,+Ahmad+center,+GT+Rd,+near+servis+Morh,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bcd5ab09e07:0x2487dac74829ccb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MM Home Design Lab",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0332 0605246"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MM Interiors",
+        "Category": "Interior Decorator",
+        "Website": "https://interiorwork.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 7990515",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//MM+Interiors,+M+A+Jinnah+Rd,+near+Hascol+filling+station,+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35d98673bf8b:0x94723a56022f3b6d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MMA",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35722723",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MP Architects & Consultants",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0315 7733882",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MR.Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 3009992",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//MR.Associates,+Office+%23:51+Canal+Avenue,+Abbasia+Town+Main+Road,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375bb2287de175:0x364278ad5863270f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 3009992",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//MR.Associates,+Office+%23:51+Canal+Avenue,+Abbasia+Town+Main+Road,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375bb2287de175:0x364278ad5863270f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MS ARCHITECTS",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 8882883",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MSA ASSOCIATES",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 3.8,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//6FQJ%2B3PV+MSA+ASSOCIATES,+Sabzazar+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35b772ab9cd5:0xd6ee31be7d447429?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MTR Architect & Graphics",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8531373"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MUGHAL ARCHITECT & BUILDERS ( نقشہ سے چابی تک )",
+        "Category": "Architect",
+        "Website": "https://web.facebook.com/profile.php?id=100068611386501",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0349 4253828",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Ground+Floor+,+Shop+%23+3,+MUGHAL+ARCHITECT+%26+BUILDERS+(+%D9%86%D9%82%D8%B4%DB%81+%D8%B3%DB%92+%DA%86%D8%A7%D8%A8%DB%8C+%D8%AA%DA%A9+),+1+Hafiz,+3+Dinga%D8%8C+near+Fawara+Chok,+Dinga,+50280%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f773c88cda223:0xaf79378dd3cc7da0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MUGHAL BROTHERS",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 9472890",
+                "Rating": 5.0,
+                "Reviews": 10.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MW Architect's & Builder's",
+        "Category": "Architecture firm",
+        "Website": "https://www.fiverr.com/s/yvaq6xV",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0309 8100614",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "MY Construction",
+        "Category": "Architecture firm",
+        "Website": "https://www.myconstruction.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0335 3222777",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//MY+Construction,+CCA,+182+DD,+Dha+Phase+4,+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190613bd11a1d3:0x9328fd64fa564ff8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "MZ Design Studio",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 7265691",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//MZ+Design+Studio,+Faisal+Complex,+Bilal+Rd,+Civil+Lines,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224361a81f1b3d:0xba085fe9eb5e3596?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Madho Art Design and Architecture",
+        "Category": "Construction company",
+        "Website": "https://madhoarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4836070",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//52-B,+Madho+Art+Design+and+Architecture,+1,+Abu+Bakar+Block+Garden+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904629d274eb3:0x8906e585b4883d5f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Makkah Garden",
+        "Category": "Housing development",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 1614242",
+                "Rating": 3.9,
+                "Reviews": 236.0,
+                "Map URL": "https://www.google.com/maps/dir//Makkah+Garden,+Makkah+GARDEN+Road,+Eden+Valley,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392268ed5f0c6607:0xbd5a2ff8130d271e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Maks Builders & Architect",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Mianwali",
+                "Phone Number": "0306 1480135",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//HGMM%2B8VP+Maks+Builders+%26+Architect,+Bismillah+plaza+basement+Faisal+Bank,+Ballo+Khel+Road,+Mianwali/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3927194a65860c8d:0x5ce95e3169457d90?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Malik Architecture & MEP Design",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0349 8954181",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0349 8954181",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0349 8954181",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Malik Real Estate",
+        "Category": "Architecture firm",
+        "Website": "http://malikrealestate.unaux.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0343 0402767",
+                "Map URL": "https://www.google.com/maps/dir//Malik+Real+Estate,+chui+East,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19c0f8886bb7:0xeb2ec6cd3a5fae3b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Malik cad studio Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6332466",
+                "Rating": 4.9,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//Malik+cad+studio+Architect,+Fareed+Canal,+Canal+Rd,+near+Qasimpur+colony,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37b4ded6f3f7:0xb2a6963c9c7c9e37?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6332466",
+                "Rating": 4.9,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//Malik+cad+studio+Architect,+Fareed+Canal,+Canal+Rd,+near+Qasimpur+colony,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37b4ded6f3f7:0xb2a6963c9c7c9e37?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mamaar Architecture Studio Jauharabad",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0300 2926006",
+                "Map URL": "https://www.google.com/maps/dir//Mamaar+Architecture+Studio+Jauharabad,+College+Rd,+near+Khan+Lab,+Jauharabad,+41200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392117a6c7b8d47d:0x9e1dd033bbb2cffb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mannan Associates",
+        "Category": "Architect",
+        "Website": "http://www.mannanassociates.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35759651",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//Mannan+Associates,+1%2F1+Sikandar+Ali+Malhi+Rd,+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904ec36e49329:0x24f69dc9d938e719?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Manoj Patel Design Studio",
+        "Category": "Architecture firm",
+        "Website": "http://www.manojpateldesignstudio.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Manoj+Patel+Design+Studio,+Gunatit+Park,+B-71,+behind+the+maa+party+plot,+near+Bhim+Lake,+Atladara,+Vadodara,+Gujarat+390012,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395fc8acd8cf46b9:0xd93ecb5998387ff7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Manoj+Patel+Design+Studio,+Gunatit+Park,+B-71,+behind+the+maa+party+plot,+near+Bhim+Lake,+Atladara,+Vadodara,+Gujarat+390012,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395fc8acd8cf46b9:0xd93ecb5998387ff7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mansoor Shehzad Architects",
+        "Category": "Architecture firm",
+        "Website": "http://mansoorshehzadarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0317 4688855",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Mansoor+Shehzad+Architects,+358%2FA,+DHA+Phase+VIII+Eden+City,+Lahore,+54800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190f5d4f8c5e57:0x11686c4a122c5663?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Map Zone Architect & Design",
+        "Category": "Building designer",
+        "Website": "https://www.facebook.com/profile.php?id=100078088055890",
+        "Locations": [
+            {
+                "City": "Toba Tek Singh",
+                "Phone Number": "0308 6032550",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Map+Zone+Architect+%26+Design,+raja+park,+road,+Islam+Pura,+Toba+Tek+Singh,+36050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39230fe81637b205:0xea25b3e63a9e3435?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mapia.pk - Architects, Interior Designers & Construction Companies",
+        "Category": "Architect",
+        "Website": "https://mapia.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 1119876",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No+2,+Mapia.pk+-+Architects,+Interior+Designers+%26+Construction+Companies,+Nehal+Plaza,+Khuda+Buksh+Colony+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190fb39237406d:0xc5d7d2a65adf891?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Maroon Architects Pvt Ltd",
+        "Category": "Architecture firm",
+        "Website": "https://maroon-architects.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0306 5158732",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+1,+1st+floor,+Plaza+B42,+Maroon+Architects+Pvt+Ltd,+Sector+F+DHA+Phase+1,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfedc2e8f2808d:0x594abde705b23d78?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0306 5158732",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+1,+1st+floor,+Plaza+B42,+Maroon+Architects+Pvt+Ltd,+Sector+F+DHA+Phase+1,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfedc2e8f2808d:0x594abde705b23d78?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Marth Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0348 4698436"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Masjad DHQ Hospital Chak 100M Lodhran",
+        "Category": "Mosque",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Phone Number": "0335 6240207",
+                "Rating": 4.7,
+                "Reviews": 51.0,
+                "Map URL": "https://www.google.com/maps/dir//FJWQ%2BGXQ+Masjad+DHQ+Hospital+Chak+100M+Lodhran,+N-5/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9936f03fffff:0xd3fefe7cb35892c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0335 6240207",
+                "Rating": 4.7,
+                "Reviews": 51.0,
+                "Map URL": "https://www.google.com/maps/dir//FJWQ%2BGXQ+Masjad+DHQ+Hospital+Chak+100M+Lodhran,+N-5/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9936f03fffff:0xd3fefe7cb35892c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Master Architect Construction & Development (MACD)",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Map URL": "https://www.google.com/maps/dir//6FWW%2B88J+Master+Architect+Construction+%26+Development+(MACD),+Block+A+Model+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35919f734717:0xa37b205b541e7174?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Master Building Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0347 0090809",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//RWJ6%2BQW7+Master+Building+Designer,+NH+55,+Dera+Ismail+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266fefe23e81a1:0x711acc30d7889d1c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Materials & Design Services (Pvt) Ltd.",
+        "Category": "Civil engineer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 7813000",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Materials+%26+Design+Services+(Pvt)+Ltd.,+P-19,+Madina+Town+(Extension),+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922686d66078c23:0x37a61730eb7a3278?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Materialspk",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8443609",
+                "Map URL": "https://www.google.com/maps/dir//Materialspk,+45-D1+MM+Alam+Rd,+Block+C+2+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905c8d8b3b439:0x1425a3d22c784a77?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Maulik Vyas Architects",
+        "Category": "Architect",
+        "Website": "https://www.instagram.com/maulikvyas_architects/?hl=en",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Maulik+Vyas+Architects,+Shivalik+Satyamev,+Vakil+Bridge,+Bopal,+Ahmedabad,+Gujarat+380058,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e84d5dc99f387:0x5f093accb8043b61?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mazhar Architect",
+        "Category": "Association / Organization",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0333 8012791",
+                "Rating": 3.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//HFWQ%2B32J+Mazhar+Architect,+Sohawa+Bolan,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d6c8b22bb5d:0x9361767e48765b40?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0333 8012791",
+                "Rating": 3.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//HFWQ%2B32J+Mazhar+Architect,+Sohawa+Bolan,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d6c8b22bb5d:0x9361767e48765b40?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mazhar Munir Architectural Design & Construction Firm",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0310 8555551",
+                "Rating": 5.0,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//49,+Mazhar+Munir+Architectural+Design+%26+Construction+Firm,+6+Fairways+Commercial,+Phase+DHA,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190982de6206b7:0xe32d0dbbc714ff91?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 8555551",
+                "Rating": 5.0,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//49,+Mazhar+Munir+Architectural+Design+%26+Construction+Firm,+6+Fairways+Commercial,+Phase+DHA,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190982de6206b7:0xe32d0dbbc714ff91?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 8555551",
+                "Rating": 5.0,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//49,+Mazhar+Munir+Architectural+Design+%26+Construction+Firm,+6+Fairways+Commercial,+Phase+DHA,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190982de6206b7:0xe32d0dbbc714ff91?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Maعmar Architecture and consultancy",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0322 2633365",
+                "Rating": 4.8,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//Ma%D8%B9mar+Architecture+and+consultancy,+3-A+Block+Model,+town,+Multan,+66000%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3588832fdad3:0xd0a6f9e8937b1?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0322 2633365",
+                "Rating": 4.8,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//Ma%D8%B9mar+Architecture+and+consultancy,+3-A+Block+Model,+town,+Multan,+66000%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3588832fdad3:0xd0a6f9e8937b1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Meenar Architecture and Builders",
+        "Category": "Architect",
+        "Website": "http://www.meenar.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 7180301",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Meenar+Architecture+and+Builders,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35000a0b7a49:0x4f5037e1b63a85ef?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0300 7180301",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Meenar+Architecture+and+Builders,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35000a0b7a49:0x4f5037e1b63a85ef?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mehar Amir Shehzad Architect Engineer",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0307 8947246",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Mehar+Amir+Shehzad+Architect+Engineer,+Zahira,+Habib+Abad+-+Chunian+Rd,+Chunian,+55220/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39186bc4821b157d:0xaaaa22c98025144d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0307 8947246",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Mehar+Amir+Shehzad+Architect+Engineer,+Zahira,+Habib+Abad+-+Chunian+Rd,+Chunian,+55220/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39186bc4821b157d:0xaaaa22c98025144d?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0307 8947246",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Mehar+Amir+Shehzad+Architect+Engineer,+Zahira,+Habib+Abad+-+Chunian+Rd,+Chunian,+55220/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39186bc4821b157d:0xaaaa22c98025144d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mehboob Ul Haq",
+        "Category": "Home builder",
+        "Website": "https://g.co/kgs/DX1r7N",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0322 4302600",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Mehboob+Ul+Haq,+Katchehry+Rd,+Ghausia+Colony,+Kasur,+50550/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b99ed91fb733:0xfc35bf193820ec2b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mehmood Shehzad Raja Architects and Structural service provider in Municipal committee Sohawa.",
+        "Category": "Engineering consultant",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0311 4985900",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Mehmood+Shehzad+Raja+Architects+and+Structural+service+provider+in+Municipal+committee+Sohawa.,+MAIN+STREET,+Mohri+Kathreel,+48450/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39201d18da829f67:0xd70441b10e4aa5d4?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0311 4985900",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Mehmood+Shehzad+Raja+Architects+and+Structural+service+provider+in+Municipal+committee+Sohawa.,+MAIN+STREET,+Mohri+Kathreel,+48450/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39201d18da829f67:0xd70441b10e4aa5d4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mehria Town , Attock, Punjab Pakistan",
+        "Category": "Housing society",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Rating": 4.5,
+                "Reviews": 40.0,
+                "Map URL": "https://www.google.com/maps/dir//R87X%2BVFG+Mehria+Town+,+Attock,+Punjab+Pakistan,+Mehria+Town+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19d1be9df513:0xf3c70e04bb51bf63?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Memari Associates",
+        "Category": "Construction company",
+        "Website": "http://www.memariassociates.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0334 3333465",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//H3G8%2B874+Memari+Associates,+GT+Rd,+opposite+Science+Collage,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1be84a102b75:0x9721545db8f30873?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Metropolitan Studio of Architecture (MSA)",
+        "Category": "Interior designer",
+        "Website": "http://www.msaculture.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8435613",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Metropolitan+Studio+of+Architecture+(MSA),+20+B1,+Maratab+Ali+Road,+FCC,+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919053bace87313:0xed45dec913595355?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Meuld Architect",
+        "Category": "Architect",
+        "Website": "https://meuldarchitect.godaddysites.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0305 7102596",
+                "Map URL": "https://www.google.com/maps/dir//Meuld+Architect,+kalma+chowk,+Lahore,+54600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919057c5ece988b:0x3b71c29e1af9c352?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mian Builders & Adviser",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Jhang",
+                "Phone Number": "0343 3095599",
+                "Rating": 4.9,
+                "Reviews": 24.0,
+                "Map URL": "https://www.google.com/maps/dir//Mian+Builders+%26+Adviser,+Canal+Rd,+Jhang+Sadar,+35200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x6a000c188a0e282d:0x97b203b1c63fefcf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mian House",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0314 7032570",
+                "Map URL": "https://www.google.com/maps/dir//Mian+House,+Street+7,+Rasheed+Nagar+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d9388547f03:0x2451a242eb13d84f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Middle Class Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 4294391"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Millat Architect And Builders",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Millat+Architect+And+Builders,+Yazman+Rd,+link+Canal+Rd,+Garden+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91b2e1209187:0x3a5327616a4342aa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mirza Ahmar",
+        "Category": "Architect",
+        "Website": "https://heylink.me/MirzaAhmarOfficial",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0324 7428023",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//C25J%2BFG+Mirza+Ahmar,+Shadab+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392245ea29de7f25:0x13b22d62b4ad8fdb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mirza Associate Group",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0344 6339900",
+                "Rating": 4.5,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//Mirza+Associate+Group,+Rabani+Coloni+2+F,+Rabbani+Colony,+Faisalabad,+38090/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226703a6a648ef:0x2a12da51e803f034?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mirzaco Design & Supervision",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0345 7778587",
+                "Rating": 3.8,
+                "Reviews": 19.0,
+                "Map URL": "https://www.google.com/maps/dir//C3WV%2BJVQ+Mirzaco+Design+%26+Supervision,+Taj+Colony,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269d3695e86f5:0x5fdf134d76f036ba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Misali Associate architect & civil engineer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Muzaffargarh",
+                "Phone Number": "0301 7442689",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Misali+Associate+architect+%26+civil+engineer,+Karbala+Mohala+opsite+city+public+school,+Muzaffargarh,+34200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ad7d251aa179b:0xa836f71bc462e63c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Misbah Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//Office%2337+Market,+Misbah+Associates,+Ghalib+city,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226962a55d819b:0xf049f9de817120e7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Misbah Associates (Mohsin Ali) Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+37+Market,+Misbah+Associates+(Mohsin+Ali)+Architect,+Ghalib+city,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269612b208b25:0x29d1b500698fd681?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mobeenahmads design and decor",
+        "Category": "Architect",
+        "Website": "http://mobeenahmads.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 9409884",
+                "Map URL": "https://www.google.com/maps/dir//P7,+Mobeenahmads+design+and+decor,+8+Regency+Rd,+new+Civil+Lines,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226990bad352bd:0xb49f599640f82f95?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Model View Housing Society",
+        "Category": "Housing society",
+        "Website": "https://www.facebook.com/pages/category/Local-Business/Model-View-Housing-scheme-Lodhran-350172152266189/",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Phone Number": "0300 8686167",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//HM92%2BRG9+Model+View+Housing+Society,+Bypass,+Lodhr%C4%81n/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9fc7a728e4c7:0x96da40b13beabefa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Modelo",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35840777",
+                "Rating": 4.6,
+                "Reviews": 56.0,
+                "Map URL": "https://www.google.com/maps/dir//Modelo,+105-J%2F2.+Model+Town,+Block+J+Model+Town,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919046c6cb276c3:0x1809172f57b71126?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Modern Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0306 6635703"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Modern Architects & Associates",
+        "Category": "Architect",
+        "Website": "https://modernarchitects.com.pk/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 9485559",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Modern+Architects+%26+Associates,+China+Town+Plaza+2nd+floor,+china+town+plaza,+Liaqat+Rd,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df94bd627110c9:0x7b674d0e10f6fed6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 9485559",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Modern+Architects+%26+Associates,+China+Town+Plaza+2nd+floor,+china+town+plaza,+Liaqat+Rd,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df94bd627110c9:0x7b674d0e10f6fed6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0333 9485559",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Modern+Architects+%26+Associates,+China+Town+Plaza+2nd+floor,+china+town+plaza,+Liaqat+Rd,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df94bd627110c9:0x7b674d0e10f6fed6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0333 9485559",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Modern+Architects+%26+Associates,+China+Town+Plaza+2nd+floor,+china+town+plaza,+Liaqat+Rd,+Islamabad,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df94bd627110c9:0x7b674d0e10f6fed6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Modern House",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0310 6844111",
+                "Rating": 4.9,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//Modern+House,+House+no+2+Lane+6,+Block+A+Royal+Orchard,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x6a387d1032b6f8e3:0xcb2b37de08ac1a65?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0310 6844111",
+                "Rating": 4.9,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//Modern+House,+House+no+2+Lane+6,+Block+A+Royal+Orchard,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x6a387d1032b6f8e3:0xcb2b37de08ac1a65?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mohsin",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0332 5129332",
+                "Rating": 2.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//F2FP%2BP36+Mohsin,+Adiyala+Rd,+Gorakkhpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df8da6a48f1e43:0x3453687fc3025995?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mohsin Dogar architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0323 6074100",
+                "Map URL": "https://www.google.com/maps/dir//Mohsin+Dogar+architect,+master+city+21,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed56e8ce8f349:0x2f7c013eab99757?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mohsin Shaheen Construction Company",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4266756",
+                "Rating": 4.3,
+                "Reviews": 93.0,
+                "Map URL": "https://www.google.com/maps/dir//Mohsin+Shaheen+Construction+Company,+Office+Number+15,+first+Floor.+Leeds+Center,+Main+boulevard+Gulberg+III,+2.90,+mi,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919045b00000001:0x3a6d73babddf61c6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Monoceros Interarch Solutions",
+        "Category": "Architect",
+        "Website": "http://monoceros.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//810,+Monoceros+Interarch+Solutions,+Safal+Prelude,+Prahlad+Nagar,+Ahmedabad,+Gujarat+380015,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e9ad894415555:0x58cb2fc31ea826d5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mori Gate Kasur",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0305 4007525",
+                "Rating": 4.3,
+                "Reviews": 455.0,
+                "Map URL": "https://www.google.com/maps/dir//Mori+Gate+Kasur,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b97801b819e7:0xc4fef2acbd2c1b79?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0305 4007525",
+                "Rating": 4.3,
+                "Reviews": 455.0,
+                "Map URL": "https://www.google.com/maps/dir//Mori+Gate+Kasur,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b97801b819e7:0xc4fef2acbd2c1b79?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ms architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0306 6045874",
+                "Map URL": "https://www.google.com/maps/dir//Ms+architect,+Block+A+Model+Town,+Multan,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b350730cc7983:0x63dcde314a749d69?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mudassar Architecture & Interior Designing",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/me.design174/",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 8033374",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Mudassar+Architecture+%26+Interior+Designing,+JS+Bank,+Dipalpur+Bypass+Rd,+Depalpur,+56180/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39181d78b7d0584f:0x9da13f487b4b6871?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0300 8033374",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Mudassar+Architecture+%26+Interior+Designing,+JS+Bank,+Dipalpur+Bypass+Rd,+Depalpur,+56180/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39181d78b7d0584f:0x9da13f487b4b6871?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Mughal Architect&Engineers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0340 1603132",
+                "Rating": 5.0,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//Mughal+Architect%26Engineers,+MANDI,+MANDI+BAHAUDDIN+MUGHAL+PURA,+BAHAUDDIN,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d36c616fe31:0xe3282371e94f07b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Muhallah Gaoshallah",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0346 2725288",
+                "Rating": 4.3,
+                "Reviews": 12.0,
+                "Map URL": "https://www.google.com/maps/dir//XW6J%2BRJP+Muhallah+Gaoshallah,+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a6e0ad160d15:0xf89d0ada1ef5a730?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Muhammad Ashfaq builders company",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Nankana Sahib",
+                "Phone Number": "0301 4839055",
+                "Rating": 5.0,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//house+no+126,+Muhammad+Ashfaq+builders+company,+ward+no+6%2F18,+near+Madina+mosque,+Nankana+Sahib,+39100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39188fff912be7f9:0x7fed8a6b7f590f68?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Muhammad Salman shatring store",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0346 6045054",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//4P8Q%2B44C+Muhammad+Salman+shatring+store,+Hafizabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4f0dae9f73bb:0x4613ccefb4780db9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Muhammad Umair ( Digital Transformation Architect )",
+        "Category": "Software company",
+        "Website": "https://muhammadumair.info/",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 9089818",
+                "Map URL": "https://www.google.com/maps/dir//Muhammad+Umair+(+Digital+Transformation+Architect+),+Block+C+Citi+Housing,+Jhelum,+49490/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9392e94b9411:0x4b44966f5bc82e67?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Muhammad.Naeem Ch.Architect",
+        "Category": "Housing society",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0309 2244026",
+                "Map URL": "https://www.google.com/maps/dir//29W9%2BX7F+Muhammad.Naeem+Ch.Architect,+Danewal+Town+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ceb004651311d:0x226ce64b463d044f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Vehari",
+                "Phone Number": "0309 2244026",
+                "Map URL": "https://www.google.com/maps/dir//29W9%2BX7F+Muhammad.Naeem+Ch.Architect,+Danewal+Town+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ceb004651311d:0x226ce64b463d044f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Muhammadi Architects",
+        "Category": "Architect",
+        "Website": "https://facebook.com/muhammadi%20Architects",
+        "Locations": [
+            {
+                "City": "Toba Tek Singh",
+                "Phone Number": "0347 7807372",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Muhammadi+Architects,+Canal+Rd,+Toba+Tek+Singh,+36050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39230fabbb85a4ab:0xd605b32cee12c415?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "N.G architect's",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0336 4441971",
+                "Rating": 5.0,
+                "Reviews": 17.0
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0336 4441971",
+                "Rating": 5.0,
+                "Reviews": 17.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "NEW Bismillah Architect",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0342 6015299",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//HFGQ%2BM7R+NEW+Bismillah+Architect%D8%8C+Wasu%D8%8C+Canal+Road%D8%8C+Near%D8%8C+Al%D8%8C+Suffah+School,+Qilla+Gojran,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d958e50b9dd:0xbf79176e32f162c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "NF Property Care",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 6864516",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//NF+Property+Care,+Builders,+M+A+Jinnah+Rd,NEAR+MDA+Officers+Cooperative+Housing+Society,+Multan+Architect,+and,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35eb5824b9e1:0x22c334f4f704b444?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "NT Architect & Builders",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0302 3779816",
+                "Map URL": "https://www.google.com/maps/dir//6FHC%2BCMX+NT+Architect+%26+Builders,+Baber+market,+Kachery+Road,+North+Gulgasht+Colony,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b330adf95d35b:0xf4022496ac89aee4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "NZ Architects",
+        "Category": "Architect",
+        "Website": "https://www.nzarchitects.com.pk/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0345 3151705",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Office+No+16,+Second+Floor,+NZ+Architects,+Al+Hameed+Mall,+G-11+Markaz+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95f8b59aaaab:0x92d36c29de20765c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0345 3151705",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Office+No+16,+Second+Floor,+NZ+Architects,+Al+Hameed+Mall,+G-11+Markaz+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95f8b59aaaab:0x92d36c29de20765c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Nadir Nawaz & Associates Architectural Consultancy",
+        "Category": "Architect",
+        "Website": "http://nadirnawaz.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 8469991",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Nadir+Nawaz+%26+Associates+Architectural+Consultancy,+Third+Floor,+Plaza+226,+Springs+North,+Phase+7+Bahria+Town,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed6d5bd9699d:0x12a6a719647d5aa7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Naksha.com.pk",
+        "Category": "Architecture firm",
+        "Website": "https://www.naksha.com.pk/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0322 7034353",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Naksha.com.pk,+Office+no+14,+Ajwa+City,+Upper+Chenab+Canal+Road,+Sialkot+Bypass,+Colony,+Peoples,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b9a29b6dc33:0x72ea8a1c5493ffba?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Naqsh",
+        "Category": "Architect",
+        "Website": "http://www.naqsharch.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0310 1010192",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Naqsh,+MDA+chowk,+opposite+excise+office,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33c0f77d043b:0xcda1be02af32b4cb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Naqsha Ghar",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0316 1512255",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//J389%2B6GH+Naqsha+Ghar,+Mills+Rd,+Bhakkar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925d7f639cc05c1:0xb6ab465a5d63d259?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Naqsha Wala",
+        "Category": "Architect",
+        "Website": "https://naqshawala.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0309 5747097",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Naqsha+Wala,+Main+Boulevard,+Phase+3+Garden+Town,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29becf06bb93:0x72a9f9948d1d6923?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0309 5747097",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Naqsha+Wala,+Main+Boulevard,+Phase+3+Garden+Town,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29becf06bb93:0x72a9f9948d1d6923?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Naqsha Wala Islamabad",
+        "Category": "Architecture firm",
+        "Website": "https://naqshawala.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0339 5111220",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Naqsha+Wala+Islamabad,+Westridge+3,+Rawalpindi/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df8d0ab025b667:0x68fd17a8d5b6c515?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Naqshabazzar | Architects",
+        "Category": "Architecture firm",
+        "Website": "https://naqshabazzar.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0304 5533344",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//804%2F2,+Naqshabazzar+%7C+Architects,+D+Block,+Jinnah+Town,+Lahore,+53800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918ff2beb750a49:0x9023101e57e3efe9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Nasheman Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0343 7203040",
+                "Map URL": "https://www.google.com/maps/dir//office+no+34-A,Ground+Floor,+Nasheman+Architects,+Model+Town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3524e1d905b9:0xcde5ffb75561aede?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "National Incubation Center, Faisalabad (NICF)",
+        "Category": "Corporate office",
+        "Website": "https://www.nicfaisalabad.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 9201911",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//1st+floor,+National+Incubation+Center,+Faisalabad+(NICF),+Exhibition+Center,+University+of+Agriculture,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922434df39a8fd7:0x8d982a51bbd54b84?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Nawab Home Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 4371798",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Nawab+Home+Designer,+U+Block+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e3fbb13b53:0x8339858f2b2c689d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Nayyar Ali Dada & Associates",
+        "Category": "Architecture firm",
+        "Website": "http://www.nayyaralidada.net/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35864884",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Nayyar+Ali+Dada+%26+Associates,+7,+F%2F3+Muslim+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919047864fa5619:0x3b46a6e57f7afee?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35864884",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Nayyar+Ali+Dada+%26+Associates,+7,+F%2F3+Muslim+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919047864fa5619:0x3b46a6e57f7afee?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "(042) 35864884",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Nayyar+Ali+Dada+%26+Associates,+7,+F%2F3+Muslim+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919047864fa5619:0x3b46a6e57f7afee?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "(042) 35864884",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Nayyar+Ali+Dada+%26+Associates,+7,+F%2F3+Muslim+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919047864fa5619:0x3b46a6e57f7afee?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Nazir Associates (Architect,interior designer,Contractors)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0315 4906656",
+                "Rating": 4.8,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Nazir+Associates+(Architect,interior+designer,Contractors),+Tanveer+Plaza,+Gohd+Pur+Air+portRoad,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec3111e27f6bd:0xbdb5024addb8d1a6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "New-Tech Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 5829902",
+                "Rating": 5.0,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//New-Tech+Architects,+Adnan+plaza,+Civil+Line,+road,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f913ffdd7aa13:0x775cc77e8b616839?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Next Architectures",
+        "Category": "Architect",
+        "Website": "http://saadbintariq.simplesite.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0307 5404514",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Next+Architectures,+Sargodha+Rd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d1f2e19b33b:0xcccadd612e6ac6ac?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Next in",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0300 0957030",
+                "Rating": 4.8,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//Next+in,+Railway+road,+pathak+Rilway+road,+Shafqat+Abad+phatak,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7da64c04592b:0xacd245d75ecdd62d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "NiZAMY ASSOCIATES",
+        "Category": "Interior designer",
+        "Website": "https://www.beanyblogger.com/nizamyassociates/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 7604318",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//p14%D8%8C+NiZAMY+ASSOCIATES,+Al+Fatah+Plaza%D8%8C+Kotwali+Rd,+opposite+Municipal+Library%D8%8C+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243c2db0c0f23:0x1db8b91904825e1f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Noor Associates",
+        "Category": "Construction company",
+        "Website": "https://www.facebook.com/NoorAssociats/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 8665229",
+                "Map URL": "https://www.google.com/maps/dir//9389%2B967+Noor+Associates,+Marble+Road,+Abdullah+Colony,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225dbe6402903f:0x367b1cf69006d6cc?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0309 4894948"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Noor Durrani & Associates",
+        "Category": "Architecture firm",
+        "Website": "http://www.ndapak.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35875181",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//Noor+Durrani+%26+Associates%D8%8C+52+D1+Gulberg+III,+Block+D1+Gulberg+III,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190457e6c15967:0xc51cec0ceae105c7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Noor Khan Design Studio",
+        "Category": "Architecture firm",
+        "Website": "http://noorkhanstudio.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4931519",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Noor+Khan+Design+Studio,+36%2F2,+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904c8272ecbc7:0xc3679f53605026b1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Nusk Associates",
+        "Category": "Architect",
+        "Website": "http://www.nusk.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 8432338",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Nusk+Associates,+12%2F1+L+Gulberg-3near+Kalma,+Chowk,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190308699e412b:0xa0e64c737f38bcc8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8432338",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Nusk+Associates,+12%2F1+L+Gulberg-3near+Kalma,+Chowk,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190308699e412b:0xa0e64c737f38bcc8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ODD - Office of Distinct Design",
+        "Category": "Architect",
+        "Website": "http://www.oddisodd.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0312 5741994",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ODD+-+Office+of+Distinct+Design,+PD+78%2F3+Saidpur+Rd,+Pindora,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95ff03881631:0x43dccc3d682bceef?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0312 5741994",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ODD+-+Office+of+Distinct+Design,+PD+78%2F3+Saidpur+Rd,+Pindora,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95ff03881631:0x43dccc3d682bceef?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "OMD - Office of Metropolitan Design",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0325 2528003",
+                "Rating": 4.5,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//14%2F+C,+OMD+-+Office+of+Metropolitan+Design,+1,+Block+L+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190441df33d285:0x26e3570f0fbfda79?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "OPOC Architects & Builders",
+        "Category": "Contractor",
+        "Website": "https://www.facebook.com/opoc.builders/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//1,+2nd+Floor,+OPOC+Architects+%26+Builders,+Taj+Arcade,+73+Jail+Rd,+Block+H+Gulberg+2,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905c0f2b6235b:0x3ec0366b81303b6b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "OQ-Architects - Architects & Interior Designer in Islamabad and Rawalpindi",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/oqarchitects/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0332 7225060",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//OQ-Architects+-+Architects+%26+Interior+Designer+in+Islamabad+and+Rawalpindi,+Greens,+Office+%23+402,+Al+Samim+Tower+Business,+Square,+Gulberg,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfebff802fde0b:0x1c24b29a07303339?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "OQ-Architects-DIKhan",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0332 7227306",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//RWF2%2BX3C+OQ-Architects-DIKhan,+OQ+Architects,+South+Circular+Road,+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266da837e8076d:0x2668f611267bd0d3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Obit Tech Development",
+        "Category": "Business center",
+        "Website": "https://www.facebook.com/orbittechdevelopment",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0343 7105500",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//3J4M%2B88M+Obit+Tech+Development,+Block+B,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e57c330bab:0xf197598f53c9a92c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0343 7105500",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//3J4M%2B88M+Obit+Tech+Development,+Block+B,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1e57c330bab:0xf197598f53c9a92c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Omer Bin Asif Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0335 5247894",
+                "Rating": 4.9,
+                "Reviews": 114.0,
+                "Map URL": "https://www.google.com/maps/dir//Omer+Bin+Asif+Architects,+LG-20A,+MidCity+Mall,+Rehmanabad,+Murree+Rd,+Rawalpindi,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95519c7b3caf:0xe0239aa91564bf7f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "One Source Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 4902163"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Online AutoCad 2D&3D House Map",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0334 5526508"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Online Service",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0312 6022242",
+                "Map URL": "https://www.google.com/maps/dir//Online+Service,+01,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d2c851e6e65:0x26b151d538af32cb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Optimal Architects & Interior Designs SMC Pvt. Ltd.",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0313 0804449",
+                "Rating": 4.9,
+                "Reviews": 39.0,
+                "Map URL": "https://www.google.com/maps/dir//112,+1st+Floor,+Optimal+Architects+%26+Interior+Designs+SMC+Pvt.+Ltd.,+Shaheen+One,+Major+Rd+2,+D-12,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbd3da0498423:0x3b0bf7cf1a66bad6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Orion Interior",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0321 6545554",
+                "Rating": 4.6,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//3MFP%2BRXV+Orion+Interior,+Hafizabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4db9b618ed8d:0xd949afac1ee8b702?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "P & D Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0307 7681797",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//P+%26+D+Architects,+37-B+Northern+Byp,+Model+Town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b348a2c931ca3:0x69171a95baa9a8a9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "P-DECS Design Studio (Architect & Builders)",
+        "Category": "Architecture firm",
+        "Website": "http://www.pdecs.com/",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0318 8337800",
+                "Map URL": "https://www.google.com/maps/dir//P-DECS+Design+Studio+(Architect+%26+Builders),+3-Y+Benazir+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7a6090f7617:0x25dc3d1be7d20396?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "0318 8337800",
+                "Map URL": "https://www.google.com/maps/dir//P-DECS+Design+Studio+(Architect+%26+Builders),+3-Y+Benazir+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7a6090f7617:0x25dc3d1be7d20396?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "PARADISE CONSULTANT & ARCHITECTURE",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0307 6791583",
+                "Rating": 5.0,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//G+Floor+shop,+PARADISE+CONSULTANT+%26+ARCHITECTURE,+Al+e+Ahmad+plaza,+4+University+Rd,+Sargodha/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217705bde12c75:0x1d378ebc84397286?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "PERFECT CONSULTANTS, FAISALABAD",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0333 6600781",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+63,+PERFECT+CONSULTANTS,+FAISALABAD,+Saleemi+Chowk,+Computer+Arcade,+Chen+One+Rd,+near+Al-Fatah+Sports+Complex,+Peoples+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226920a0f37963:0xd8875318738ef860?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "PLAIN ARCH",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0333 4080369",
+                "Rating": 5.0,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//1ST+FLOOR+Plot+005+N,+PLAIN+ARCH,+1+Business,+phase+8+Business+District+district,+Rawalpindi,+46220/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfedcdfca735bb:0xaa9941696a966add?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "POD-Purpose Oriented Design (architecture & Product-Design & Interior-Design)",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0301 8727685",
+                "Map URL": "https://www.google.com/maps/dir//H2HR%2B3QP+POD-Purpose+Oriented+Design+(architecture+%26+Product-Design+%26+Interior-Design),+Harley+Street,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df931f449d2b2b:0xdf06f04c9c46c0af?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "PRIME ARCHITECTURE",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Map URL": "https://www.google.com/maps/dir//8W2C%2B3P4+PRIME+ARCHITECTURE,+Khanewal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b55b957e65a21:0x524359622d1cbfde?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "PUNNAL GRAND HOME VILLA",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Phone Number": "0300 6849852"
+            },
+            {
+                "City": "Lodhran",
+                "Phone Number": "0300 6849852"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pak AEC (Pak Architects & Engineering Consultants)",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35728602",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Pak+AEC+(Pak+Architects+%26+Engineering+Consultants),+Shop%23+20,+Commercial,+Block+A,+DHA,,+New+Super+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905dd61770753:0x658c59db05b24ded?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pak Architect & Designer",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0335 7907070",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Pak+Architect+%26+Designer,+Chota+bazar,+Mohallah+Sadaat+Ward+%23+6,+Rajanpur+District,+33500/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393099c83ddf4d51:0xb6ae093b1ded437?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pakcon Architect & Engineer's",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0306 6882000",
+                "Map URL": "https://www.google.com/maps/dir//Pakcon+Architect+%26+Engineer's,+Madharinwala+Wala+road,+near+masjid+anwar+e+Mustafa,+Hafizabad,+52110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4d28874a8cbb:0xdbb6c5742abf1436?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pakistan Architects & Builders",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0333 5001702",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pakistan+Architects+%26+Builders%D8%8C+Rawalpindi+Road,+Chakwal+Pakistan+1st+Floor,+Office+F-1,+Usmania+Plaza,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d7176205d31:0xde560c15572d3a3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0333 5001702",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pakistan+Architects+%26+Builders%D8%8C+Rawalpindi+Road,+Chakwal+Pakistan+1st+Floor,+Office+F-1,+Usmania+Plaza,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d7176205d31:0xde560c15572d3a3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0333 5001702",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pakistan+Architects+%26+Builders%D8%8C+Rawalpindi+Road,+Chakwal+Pakistan+1st+Floor,+Office+F-1,+Usmania+Plaza,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d7176205d31:0xde560c15572d3a3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0333 5001702",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pakistan+Architects+%26+Builders%D8%8C+Rawalpindi+Road,+Chakwal+Pakistan+1st+Floor,+Office+F-1,+Usmania+Plaza,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d7176205d31:0xde560c15572d3a3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0333 5001702",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pakistan+Architects+%26+Builders%D8%8C+Rawalpindi+Road,+Chakwal+Pakistan+1st+Floor,+Office+F-1,+Usmania+Plaza,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d7176205d31:0xde560c15572d3a3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0333 5001702",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pakistan+Architects+%26+Builders%D8%8C+Rawalpindi+Road,+Chakwal+Pakistan+1st+Floor,+Office+F-1,+Usmania+Plaza,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d7176205d31:0xde560c15572d3a3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pala Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Pala+Architects,+Canal+Rd,+Rajkot,+Gujarat+360002,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x476747fe44a05b:0x285bef766d2aa98c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Paradise Castle Marquee Attock",
+        "Category": "Wedding venue",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0330 9589412",
+                "Rating": 4.5,
+                "Reviews": 95.0,
+                "Map URL": "https://www.google.com/maps/dir//Paradise+Castle+Marquee+Attock,+Jhala+Khan,+near+Peer+Mehar+Ali+Shah+University,+Road,+Attock,+43600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19636f8f8383:0xd8a85aacce4ea811?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Parvez Iqbal and Associates",
+        "Category": "Architect",
+        "Website": "http://www.piaa.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 8868710",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Parvez+Iqbal+and+Associates,+83-A-2+Gurumangat+Rd,+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919045327611911:0x95f13bc39d405f99?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Patuanwala Gate",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Rating": 4.3,
+                "Reviews": 426.0,
+                "Map URL": "https://www.google.com/maps/dir//4F82%2BW62+Patuanwala+Gate,+Urdu+bazar,+Walled+City,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b99d11759bf1:0xa30236cb9f41dc2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pavilion Design Consultants",
+        "Category": "Architecture firm",
+        "Website": "http://paviliondesignconsultant.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 5556621",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//1st+Floor+,32-Z,+Pavilion+Design+Consultants,+Z+Block+Commercial+Area,+DHA+Phase+3,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919075211b7a479:0xefbeb5a8a0c0d982?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 5556621",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//1st+Floor+,32-Z,+Pavilion+Design+Consultants,+Z+Block+Commercial+Area,+DHA+Phase+3,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919075211b7a479:0xefbeb5a8a0c0d982?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Pemaish Design Studio",
+        "Category": "Interior designer",
+        "Website": "https://www.pemaish.co/",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0306 0103000",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Office+no+13,+Pemaish+Design+Studio,+Minhas+Plaza,+City+Housing,+Block+A+Main+Blvd,+Citi+Housing,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9328d0940dc5:0x70140ee78a8d33da?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0306 0103000",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Office+no+13,+Pemaish+Design+Studio,+Minhas+Plaza,+City+Housing,+Block+A+Main+Blvd,+Citi+Housing,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9328d0940dc5:0x70140ee78a8d33da?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Perfect Designers",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0305 1732864",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//29VC%2B8QV+Perfect+Designers,+Shan+Chowk,+Luddan+Rd,+near+Kamal+palace,+Danewal+Town,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ceb4ab514b193:0x4a96cd6aefee265f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Planet architects and builders",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0322 2237866",
+                "Map URL": "https://www.google.com/maps/dir//A+Block+C215,216,+Planet+architects+and+builders,+Eithad+garden,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d00039c4017:0xd7581a10e205da65?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Platinum Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0324 8645050"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Primarc Studio - Architecture and Interior Design Firm",
+        "Category": "Architect",
+        "Website": "http://www.primarcstudio.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0331 5817223",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+05,+Second+Floor,+Primarc+Studio+-+Architecture+and+Interior+Design+Firm,+The+Palazzo,+Plot+11-C+Gulberg+Expy,+Gulberg+Greens+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed3d24cdc1e1:0x8feebc6fd7d78602?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0331 5817223",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+05,+Second+Floor,+Primarc+Studio+-+Architecture+and+Interior+Design+Firm,+The+Palazzo,+Plot+11-C+Gulberg+Expy,+Gulberg+Greens+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed3d24cdc1e1:0x8feebc6fd7d78602?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Prime Architect",
+        "Category": "Architecture firm",
+        "Website": "https://primearchitect.odoo.com/",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 6745890",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Prime+Architect,+rahim+market,+Shahi+Rd,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375befdc6d3015:0x8223b61f0d622ab0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Prime Architect & Construction's",
+        "Category": "Architect",
+        "Website": "http://web.facebook.com/PrimeArch9",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0300 6505019",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Prime+Architect+%26+Construction's,+Fawra+Chowk,+Lahore+Rd,+Burewala,+61010/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cdfdda43f64ad:0xaa1d26a1ff13bd46?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Prisma enterprises",
+        "Category": "Architect",
+        "Website": "http://prismaenterprises.com/",
+        "Locations": [
+            {
+                "City": "Multan"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Professional Architects 708",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0301 7529160",
+                "Rating": 5.0,
+                "Reviews": 18.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Punjab Architect & Building Construction",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0302 9336442",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Punjab+Architect+%26+Building+Construction,+M+A+Jinnah+Rd,+MDA+Officers+Cooperative+Housing+Society,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35dd8fafd0f1:0x78d0e4f54e955033?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Punjab Architecture Department",
+        "Category": "Government office",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//6C5R%2B88H+Punjab+Architecture+Department,+Chah+Mubarak+Wala,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33c8906bce8d:0x1844e6eae539b471?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Punjab Associates Architect & Builders",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 8882597",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Punjab+Associates+Architect+%26+Builders,+Eidy+Shah+Road,+Kasur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919bbc8a3a460db:0x32b7268878871ab2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Punjab Housing Authority Faisalabad",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "(041) 9220090",
+                "Rating": 3.4,
+                "Reviews": 17.0,
+                "Map URL": "https://www.google.com/maps/dir//C488%2B536+Punjab+Housing+Authority+Faisalabad,+Mediacom+Tradecity+Plaza+link+road+Back+side+Hockey+Stadium+Sousan+Road,+Madina+Town+(Extension),+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922686d90e14595:0x1f542ac298c19797?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Punjab Technical Associate Hafizabad",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0321 8024000",
+                "Rating": 4.6,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//Punjab+Technical+Associate+Hafizabad,+near+bilal+rice+mill,+Ghora+Chowki,+Hafizabad,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4da0edef3771:0xbdc65eb47bd80a4d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Qadri Associates",
+        "Category": "Architecture firm",
+        "Website": "http://www.qadriassociates.net/",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "(051) 2370030",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Qadri+Associates,+3-C%D8%8C+Street+65,+Muslim+Market+F+10%2F3+Islamabad,+45710/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbe6da8616137:0xc53915473ae1be67?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Qamar Associates Architect & Builder",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//9MR4%2BMRG+Qamar+Associates+Architect+%26+Builder,+Habib+bank+Chowk,+Model+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b97000b84d0df:0xea96ee55c04f4d64?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Qasim Ahmed Associates",
+        "Category": "Interior architect office",
+        "Website": "https://www.instagram.com/qasim_ahmed_associates",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35758880",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Qasim+Ahmed+Associates,+46-P,+2+Gulberg+Rd,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x6f0689e83e1e4267:0x939122ecc458f7c7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Qasim Architect & Property Solutions",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0316 4858065",
+                "Rating": 5.0,
+                "Reviews": 20.0,
+                "Map URL": "https://www.google.com/maps/dir//Qasim+Architect+%26+Property+Solutions,+behind+Govt+Girls+High+School+No+2,+Sheikhupura,+39350/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c31ad660351f:0xf17ca5a69cf0179?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "R.A ARCHITECT & CONTRACTOR",
+        "Category": "Architecture firm",
+        "Website": "http://archest.odoo.com/",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0315 5884910",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//R.A+ARCHITECT+%26+CONTRACTOR,+M6+house,+new+canal+colony,+Khanewal,+58150/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b5539ef84c0ef:0xd91f11126b5850de?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "R.M.Jamshaid Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Map URL": "https://www.google.com/maps/dir//H88J%2BM4W+R.M.Jamshaid+Architect,+Qila+Gujjar+Singh,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39191b4518cbef9f:0x2aa1203a247b3820?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "R.Q. Associates",
+        "Category": "Architecture firm",
+        "Website": "https://rqassociates.org/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8614600",
+                "Map URL": "https://www.google.com/maps/dir//R.Q.+Associates,+207,+P+Block+Gulberg+III,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190589d12f853d:0x32ab742ca7f0a48a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RAADS Rahim Yar Khan",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/raadsofficial?igsh=dmVqcXVub2Rra3M2",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0304 7471500",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//C8GH%2B442+RAADS+Rahim+Yar+Khan,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375ba9cb1c893b:0x5555348c19cc436b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RAS Architect & developer",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0303 8512887",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//H3QJ%2BCV9+RAS+Architect+%26+developer,+Bara+Dari+Rd,+Radhanpur,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b2bf2a782c5:0x40b79f1c17f2a197?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RBS Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Map URL": "https://www.google.com/maps/dir//M462%2BVJH+RBS+Associates,+Super+market,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b700007379a9:0xda4ec601cf98c8b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RBS Associates pvt.LTD",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0302 3147883"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RENSEN Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0345 8056365",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//RENSEN+Studio,+1-A+Business+Man+Colony,+near+Desert+Palm+Hotel,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b61d76b365f:0x1224422d828e5e86?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RYK Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Map URL": "https://www.google.com/maps/dir//C8H3%2BC59+RYK+Associates,+Abbasia+Town+Main+Road,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b00617eb19b:0x8e0e4012d471fe88?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RYk builders and developers",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0303 6196700",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//RYk+builders+and+developers,+Ryk+builders+and+developers,+Imam+Bargah,+near+Thana+B+division,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b80c35bc1ef:0x64fea64f13f1e36f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Radical Architect Faisalabad",
+        "Category": "Architect",
+        "Website": "https://www.radicalarchitect.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Radical+Architect+Faisalabad,+Oppt+District+Account+Office,+Shop+No+1+Ajwa+center,+Main+Circular+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922439986387f99:0xf131280f63784506?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raees Faheem Associates",
+        "Category": "Architect",
+        "Website": "http://www.raeesfaheem.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 37182227",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Raees+Faheem+Associates,+15CCA+DHA/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391908a2f8694065:0x318f01d8e7ffb1fd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Rafi Rahmani Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4256707",
+                "Rating": 4.7,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//66-A-2,+Rafi+Rahmani+Associates,+Off+MM+Alam+-+Ghalib+Market+Rd,+Block+A+2+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905419ff55755:0xce42e1e30c6950e4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raheel Architects & Builders",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0308 4729290",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Raheel+Architects+%26+Builders,+Ghazi+Rd,+Nishtar+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391907c319a5822b:0xf8a2b221396e3b77?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raheem Waseem Consultant Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4369581",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Raheem+Waseem+Consultant+Architect,+Office+392+A+B-II+Muqaddas+Market,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919018e0925a7f3:0x4201a3d118f49f0d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Railway Station D.G. Khan",
+        "Category": "Railroad company",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Rating": 4.1,
+                "Reviews": 60.0,
+                "Map URL": "https://www.google.com/maps/dir//3J2F%2BF7Q+Railway+Station+D.G.+Khan,+Railway+Rd,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab10f20489a8d:0xb7619aaa43643442?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Rating": 4.1,
+                "Reviews": 60.0,
+                "Map URL": "https://www.google.com/maps/dir//3J2F%2BF7Q+Railway+Station+D.G.+Khan,+Railway+Rd,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab10f20489a8d:0xb7619aaa43643442?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raja Badar Munir's building project",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 5705576",
+                "Rating": 4.8,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//J6VP%2BFFM+Raja+Badar+Munir's+building+project,+Unnamed+Road,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921cd1f086e40c5:0xb2232a3eb3bbb5e5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 5705576",
+                "Rating": 4.8,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//J6VP%2BFFM+Raja+Badar+Munir's+building+project,+Unnamed+Road,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921cd1f086e40c5:0xb2232a3eb3bbb5e5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0333 5705576",
+                "Rating": 4.8,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//J6VP%2BFFM+Raja+Badar+Munir's+building+project,+Unnamed+Road,+Jhelum/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921cd1f086e40c5:0xb2232a3eb3bbb5e5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raja CAD",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0317 5973754",
+                "Map URL": "https://www.google.com/maps/dir//Raja+CAD,+main+tanglang+road+sibezi,+mendi,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dc015564dcb:0x4cf0a7c1565ddf7?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0317 5973754",
+                "Map URL": "https://www.google.com/maps/dir//Raja+CAD,+main+tanglang+road+sibezi,+mendi,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205dc015564dcb:0x4cf0a7c1565ddf7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raza Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0306 6466885"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raza Brothers Associate",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0300 6111237",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//3PF7%2BP3J+Raza+Brothers+Associate,+commercial+area+Model+Town,+Hafizabad,+52110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4dbf31b7ff0b:0x482e22588006c198?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0300 6111237",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//3PF7%2BP3J+Raza+Brothers+Associate,+commercial+area+Model+Town,+Hafizabad,+52110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4dbf31b7ff0b:0x482e22588006c198?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raza Design Studios",
+        "Category": "Architecture firm",
+        "Website": "https://www.razadesignstudios.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 7973118",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Address:+Office+%23+1223,+Raza+Design+Studios,+Grand+Square+Mall,+Gulberg+lll,+Lahore,+54200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39191b168c00677b:0xc3c1e8fc84ca3d90?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raza House",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//House+%23+143,+Raza+House,+Al+Raheem+Garden,+Phase+2+Block+A+Narowal,+51600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391953e15f416a63:0x67e83f483edd8fcd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Raza Zahid Atelier",
+        "Category": "Architectural designer",
+        "Website": "http://razazahid.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 4.0,
+                "Reviews": 4.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Real Architect Talagang",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0313 2969991",
+                "Rating": 4.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//WCP9%2B92G+Real+Architect+Talagang,+Rawalpindi%2FFateh+Jang+Rd,+Talagang/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3920947d9a185c39:0x197240c912f8d0ca?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0313 2969991",
+                "Rating": 4.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//WCP9%2B92G+Real+Architect+Talagang,+Rawalpindi%2FFateh+Jang+Rd,+Talagang/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3920947d9a185c39:0x197240c912f8d0ca?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Real Art Associates",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 8916098",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Real+Art+Associates,+P46,+Chanab+Market,+Susan+Road+Chanab,+Market,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922693b3f90cc61:0x29f9d7073b3491e2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Red Brick Architects",
+        "Category": "Architecture firm",
+        "Website": "https://www.behance.net/ebdullah",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0316 4841538"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Reflex Architect by jabran",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/Reflexarchi/",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0332 1407928",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Reflex+Architect+by+jabran,+Defence+Road,+near+norabad,+Noorabad,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec10794482555:0xc182e9c600ad6456?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Rehman Builder Computer Graphics",
+        "Category": "Architects association",
+        "Website": "http://www.architecture.com/",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0312 6009593",
+                "Rating": 4.1,
+                "Map URL": "https://www.google.com/maps/dir//XX76%2BMXM+Rehman+Builder+Computer+Graphics,+Layyah+Bypass+Rd,+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a711c5102361:0x54286cb7a70fd0bd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Riaz Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0321 4872000",
+                "Map URL": "https://www.google.com/maps/dir//Riaz+Architect,+Mashal+Heights,+Jail+Rd,+Gulshan+Colony,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1ad530d61f89:0x8efc286229d9fe29?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Rishi Architect",
+        "Category": "Architect",
+        "Website": "https://rishiarchitect.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Rishi+Architect,+101,+Uchchang,+9,+Old+Padra+Rd,+Punit+Nagar,+Akota,+Vadodara,+Gujarat+390007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395fc5f6beef182f:0xe31dd8f7756b9170?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Rishi+Architect,+101,+Uchchang,+9,+Old+Padra+Rd,+Punit+Nagar,+Akota,+Vadodara,+Gujarat+390007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395fc5f6beef182f:0xe31dd8f7756b9170?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Riwayat Restaurant Bhakkar",
+        "Category": "· Restaurant",
+        "Website": "http://riwayat.com.pk/",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0313 9322027",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Riwayat+Restaurant+Bhakkar,+Darya+Khan+Rd,+opposite+Smart+School,+near+Ibrahim+Town,+Bhakkar,+30000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925d733ec1d33c7:0xbabaf2172dd6fcda?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "RockWood Consultants",
+        "Category": "Architecture firm",
+        "Website": "https://www.rockwoodcon.com/",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0344 6667657",
+                "Rating": 5.0,
+                "Reviews": 34.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Royal Architect and Associate",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0333 1635034",
+                "Rating": 4.8,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//F36J%2B7MR+Royal+Architect+and+Associate,+Muslim+Town+B-Block+Block+A+Muslim+Town,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243bb608ee0fd:0x60637c48515102f4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Royal Architect and Associates",
+        "Category": "Architecture firm",
+        "Website": "https://royalarchitectureandbuilders.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0307 8424104",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Royal+Architect+and+Associates,+Baryal+Market+Citi+Housing+Sarghoda+Road+Baryal,+Market,+Faisalabad,+38850/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243dc2efa5edd:0xac0d8a795d28063a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Royal Architects & Builders",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6368904",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+F-06+A,+9,+Royal+Architects+%26+Builders,+star+Arcade,+Bosan+Rd,+opposite+DHA+Gate,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3924cb66ff549f2f:0xc14510125f74b51a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Royal Garden",
+        "Category": "Housing society",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0305 3604884",
+                "Rating": 4.4,
+                "Reviews": 27.0,
+                "Map URL": "https://www.google.com/maps/dir//C83G%2BV6X+Royal+Garden,+Dr+Abubaker+Jalil+Rd,+Abu+Dhabi+Rd,+opp.+Jamia+Shams+Ul+Uloom,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d273bcc8b5b:0x9975e323abcadc6f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Royal Palm City Sahiwal",
+        "Category": "Housing authority",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Rating": 4.5,
+                "Reviews": 241.0,
+                "Map URL": "https://www.google.com/maps/dir//M46Q%2BJ4P+Royal+Palm+City+Sahiwal,+Multan+Rd,+Royal+Palm+City+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b708621e77ab:0xccae22fe06bc7681?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ruler and trees Architects",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/p/C6L3oo5CBFN/?igsh=bTN0dGRzcjliMTVo",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0332 6323503",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//6GP6%2B9CF+Ruler+and+trees+Architects,+MDA+Officers+Cooperative+Housing+Society,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b350009fd3aed:0xa6e8c37cf96e49e1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Rumi Consultant and Developer",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 1764864"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ryk Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0302 9735696",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Ryk+Associates,+28+Commercial+fronnt,+Dr+Naeem+ul+Haq+avenue,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375baef04af05d:0xbab712fb1fcd8245?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0302 9735696",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Ryk+Associates,+28+Commercial+fronnt,+Dr+Naeem+ul+Haq+avenue,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375baef04af05d:0xbab712fb1fcd8245?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "S.A Associates",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/saqlainnaeem07",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0309 6385997",
+                "Map URL": "https://www.google.com/maps/dir//S.A+Associates,+H%23993+Street+No.+2,+kaleem+shaheed+colony,+Faisalabad,+38900/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243a7101a8553:0x2f4223345641a2d9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "S2 Design Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35833223",
+                "Rating": 4.6,
+                "Reviews": 47.0,
+                "Map URL": "https://www.google.com/maps/dir//S2+Design+Studio,+Garden,+Plot+22+Shershah,+Block,+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919046b80454e65:0x8ab795e1f27c6858?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SA Design Architecture &Interiors",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Rating": 4.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//PX8C%2B9CP+SA+Design+Architecture+%26Interiors,+Hazoori+Masjid+Rd,+Chiniot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b58b0477879:0xa64e7d5000b6e14?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SA Design studio",
+        "Category": "Interior architect office",
+        "Website": "https://www.facebook.com/SAdesign715?mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0333 6707715",
+                "Map URL": "https://www.google.com/maps/dir//SA+Design+studio,+ground,+Cold+storage+road+near+bypass+Phool,+Chiniot,+35400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223baf006b2943:0x6b7142a81410ad9c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SAGHER ASSOCITES",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Map URL": "https://www.google.com/maps/dir//PX8Q%2BVG9+SAGHER+ASSOCITES,+Muqeet+Town+Chiniot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b000824e875:0x9dc960173fef8af9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chiniot",
+                "Map URL": "https://www.google.com/maps/dir//PX8Q%2BVG9+SAGHER+ASSOCITES,+Muqeet+Town+Chiniot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b000824e875:0x9dc960173fef8af9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SAM Architects | Architecture, Interior Design & Construction Since 1980",
+        "Category": "Architecture firm",
+        "Website": "http://www.samarchitects.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4097098",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//SAM+Architects+%7C+Architecture,+Interior+Design+%26+Construction+Since+1980,+65-C2+Main+Road+PGECHS,+Lahore,+54770/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391901d830631e9b:0x45038ecbda47f78b?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 4097098",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//SAM+Architects+%7C+Architecture,+Interior+Design+%26+Construction+Since+1980,+65-C2+Main+Road+PGECHS,+Lahore,+54770/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391901d830631e9b:0x45038ecbda47f78b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SARJAN Architects & Project Consultants",
+        "Category": "Architect",
+        "Website": "http://sarjanarchitects.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//SARJAN+Architects+%26+Project+Consultants,+51,+5th+Floor,+River+Palace+%22A+Wing%22,+Opp.+Old+Civil+Court,+Nanpura,+Surat,+Gujarat+395001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e7b1ab86515:0x313210f709c379d0?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//SARJAN+Architects+%26+Project+Consultants,+51,+5th+Floor,+River+Palace+%22A+Wing%22,+Opp.+Old+Civil+Court,+Nanpura,+Surat,+Gujarat+395001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04e7b1ab86515:0x313210f709c379d0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SB Architects & Engineers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0301 0461176",
+                "Rating": 5.0,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//SB+Architects+%26+Engineers,+Multan+Bypass,+New+Shalimar+Colony,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35e070c4bc41:0xdad8de6d5461d46c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SDW",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0310 1702700"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SEE Consultants & Architects Pvt Ltd",
+        "Category": "Architecture firm",
+        "Website": "http://www.seeca.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//SEE+Consultants+%26+Architects+Pvt+Ltd,+903+C+Maulana+Shaukat+Ali+Rd,+Block+C+Faisal+Town,+Lahore,+54770/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190397e0f3a4e7:0x287590b13837aedc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SHABBIR ARTIC",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//93P9%2B4X7+SHABBIR+ARTIC,+Block+A+Samanabad,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d1e7787fa7f:0x2e2ac812a6cbfb3c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SHAHEEN ARCHITECT & BUILDERS",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Map URL": "https://www.google.com/maps/dir//3VW9%2BM7G+SHAHEEN+ARCHITECT+%26+BUILDERS,+Narowal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391953cdf2247db9:0x9f4969da6898870e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SHAHID ASSOCIATES",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 9687204",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//SHAHID+ASSOCIATES,+Railway+Rd,+Welcome+Colony,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b97a27484b277:0xda42ad35f53e2e78?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 9687204",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//SHAHID+ASSOCIATES,+Railway+Rd,+Welcome+Colony,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b97a27484b277:0xda42ad35f53e2e78?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SKETCH DESIGN",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Rating": 5.0,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//SKETCH+DESIGN,+RAFIQ+PLAZA,+aimanabad+road,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebd64c4fe2a7:0xcd5070490cd6e89f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Rating": 5.0,
+                "Reviews": 21.0,
+                "Map URL": "https://www.google.com/maps/dir//SKETCH+DESIGN,+RAFIQ+PLAZA,+aimanabad+road,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebd64c4fe2a7:0xcd5070490cd6e89f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SKETCH HOUSE.pvt.ltd",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 5003809",
+                "Rating": 4.9,
+                "Reviews": 12.0,
+                "Map URL": "https://www.google.com/maps/dir//SKETCH+HOUSE.pvt.ltd,+150-A+first+floor+umer+street,+Northern+Byp,+Model+Town,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b358c9f6801ed:0x6039b55dd025e2a1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SKP Enterprises",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0300 4452836",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//PX7G%2BM44+SKP+Enterprises,+Civil+Lines,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c34f512aacd3:0x2015432b5fe52b71?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0300 4452836",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//PX7G%2BM44+SKP+Enterprises,+Civil+Lines,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918c34f512aacd3:0x2015432b5fe52b71?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SM ARCHITECT",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0318 5262499",
+                "Map URL": "https://www.google.com/maps/dir//F5WW%2B3F9+SM+ARCHITECT,+Rawat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff10033b94cf3:0x4e837005e7c0f841?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SM Architect & Developers",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0321 7887969",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//C88J%2BGWH+SM+Architect+%26+Developers,+%DA%A9%DB%8C%D9%86%D8%A7%D9%84+%D8%A2%D8%B1%DA%88%DB%8C%D8%8C+Rahim+Yar+Khan%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375d797baf5475:0xd952f679158d53e2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SM DESIGNWORKS",
+        "Category": "Architecture firm",
+        "Website": "http://smdesignworks.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0336 4558833",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//SM+DESIGNWORKS,+52-+A+A,+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391903732787da29:0xc2bf987507a964d8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SM Sons Architecture & Interior Design Studio.",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0309 7278565",
+                "Rating": 4.9,
+                "Reviews": 73.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+8,+SM+Sons+Architecture+%26+Interior+Design+Studio.,+NM+Heights,+C+Block+Citi+Housing,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f93ee0d3bb255:0x873c1cf5f836d44e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SMC Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0324 5735173",
+                "Map URL": "https://www.google.com/maps/dir//SMC+Architect,+https:%2F%2Fmaps.app.goo.gl%2FpWyVB26AKMiZd17Q7,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d784a519d6f:0x5290470a6cfe8882?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SOHAIL ASSOCIATES",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4204386",
+                "Rating": 4.7,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//SOHAIL+ASSOCIATES%D8%8C+108%2F1-R+Commercial,+CCA,+Defence+Phase+2+Sector+R+DHA+Phase+3,+Lahore,+54972/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190532a5ea4a83:0xd59325fe16aa01ab?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SOS BUILDERS & DEVELOPERS",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0322 4503748",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//M47M%2B7WX+SOS+BUILDERS+%26+DEVELOPERS,+Royal+Palm+City+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b79245574259:0x48a52a26dc2e88f6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SR DesignWorks (SRDW)",
+        "Category": "Architecture firm",
+        "Website": "http://www.srdw.net/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35752339",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//SR+DesignWorks+(SRDW),+27-28%2F2b+Syed+Maratib+Ali+Road,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904f267762fa5:0xc26eab3d5ce26673?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35752339",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//SR+DesignWorks+(SRDW),+27-28%2F2b+Syed+Maratib+Ali+Road,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904f267762fa5:0xc26eab3d5ce26673?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SS Architect's & Builder's",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0303 2149238",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//6FWW%2B7GG+SS+Architect's+%26+Builder's,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35002cb6e19d:0x3e78950e85de6b48?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SUFI TOWER",
+        "Category": "Tourist attraction",
+        "Website": "http://www.suficity.com/",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0334 8512811",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//HGP7%2B76J+SUFI+TOWER,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d006d623ddd:0x906f350d4caa588a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SUNIA ZAIN ARCHITECTS",
+        "Category": "Architecture firm",
+        "Website": "http://www.suniazainarchitects.com/",
+        "Locations": [
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0336 0971000",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Plaza+151-C,+Ground+Floor,+SUNIA+ZAIN+ARCHITECTS,+Bahria,+Spring+North+Commercial,+Town,+Rawalpindi,+46300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df93ec49b4d1b9:0xfac5092e9d0565ac?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SWDS-Space Walk Design Studio",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0334 7686406",
+                "Rating": 4.3,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//SWDS-Space+Walk+Design+Studio,+148-A+first+floor+commercial+market,+Block+A+Model+Town,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3596f40aa1af:0xad46a5ccabbd4e7f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SYIAL ARCHITECT",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Map URL": "https://www.google.com/maps/dir//SYIAL+ARCHITECT,+Cotton+Colony,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cebf0b2618e61:0xe5182d412f576935?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Vehari",
+                "Map URL": "https://www.google.com/maps/dir//SYIAL+ARCHITECT,+Cotton+Colony,+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cebf0b2618e61:0xe5182d412f576935?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SaM Architect",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/profile.php?id=100005304255920",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0304 2602114",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//SaM+Architect,+Gulsnhan+Ali+Town,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392267de1aa9699f:0xd32bb775d2c991e2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Saama Architects & Constructors",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0333 3339693",
+                "Map URL": "https://www.google.com/maps/dir//Saama+Architects+%26+Constructors,+Laghari+Gate,+near+Punjab+Bakers,+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266df3babd97dd:0x6449be667a57c8c9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0333 3339693",
+                "Map URL": "https://www.google.com/maps/dir//Saama+Architects+%26+Constructors,+Laghari+Gate,+near+Punjab+Bakers,+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266df3babd97dd:0x6449be667a57c8c9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sadar Gate",
+        "Category": "Historical landmark",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Rating": 4.5,
+                "Reviews": 805.0,
+                "Map URL": "https://www.google.com/maps/dir//HFPR%2BWM6+Sadar+Gate,+Saadar+Baazar+Road,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dc3d49eb573:0xd0d2b58d7d794ecb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sadia Rasheed Interior Design",
+        "Category": "Interior designer",
+        "Website": "http://www.sadiarasheed.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4091911",
+                "Rating": 4.5,
+                "Reviews": 19.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sadia and Ammar Associates",
+        "Category": "Architect",
+        "Website": "http://www.sadiaammar.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4601643",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Sadia+and+Ammar+Associates,+Plaza+No+113%2F1,+Block+A,+Commercial+Broadway,+DHA+Phase+8,+Cantt,+Lahore,+54940/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905e38097b2bd:0x6fd1c7f76c5e917f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Safebuild Design & Construction Company",
+        "Category": "Architecture firm",
+        "Website": "https://sites.google.com/view/safe-build",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0331 5522419",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Safebuild+Design+%26+Construction+Company,+225+Street+no:4+Imam+Bargah+Rd,+Santpura,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x2f0a497f99fae357:0xff7fe817d2b7c8ab?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0331 5522419",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Safebuild+Design+%26+Construction+Company,+225+Street+no:4+Imam+Bargah+Rd,+Santpura,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x2f0a497f99fae357:0xff7fe817d2b7c8ab?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sahiwal Architecture & Designer",
+        "Category": "Architecture firm",
+        "Website": "http://sahiwalarchitecture.wordpress.com/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0303 6846411",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office%23+9+ground+Floor,+Sahiwal+Architecture+%26+Designer,+Super+Market,+Church+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7005b62e305:0x6870032bf4a0c14c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sahiwal Interiors & Talha Mobiles Enterprises & property advisor",
+        "Category": "Home goods store",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0301 4222414",
+                "Rating": 4.4,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//M496%2B2XV+Sahiwal+Interiors+%26+Talha+Mobiles+Enterprises+%26+property+advisor,+Main+Shami+Shaheed+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b72a278e88c3:0xe5e38dcf16b6be4d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sak Designs",
+        "Category": "Architect",
+        "Website": "http://www.sakdesigns.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.2,
+                "Map URL": "https://www.google.com/maps/dir//Sak+Designs,+701,+Shapath+2,+Opposite+Rajpath+Club,+Sarkhej+-+Gandhinagar+Hwy,+Thaltej,+Ahmedabad,+Gujarat+380015,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e9a93fb84129b:0x4f2c03cf3120c616?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Saleem Associates",
+        "Category": "Architectural designer",
+        "Website": "https://m.facebook.com/SaleemAssociates18/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 6489598",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//18%D8%8C+Saleem+Associates,+Sethi+plaza,+GT+Rd,+Arafat+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2a3e52d0059f:0x28d5c5463b43f0b6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sam Architect and Media Centre",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/Sammediacentre/",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0330 5564684",
+                "Rating": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Sam+Architect+and+Media+Centre,+Main+Katchery+Road,+opposite+National+Bank,+Pindigheb/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df5f6d13117475:0x79675e7abeb6c542?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sameer Architects",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/profile.php?id=100086397696265",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6166844",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Sameer+Architects,+Souq-Al-Arab+Building+First+Floor+Opposite+5-C+Rose+Garden+Four+Season+Avenue,+Samundri+Road,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d06751de7e3:0x155dc041e1cae221?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sanwal Architects & interiors",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0304 0072047",
+                "Rating": 4.9,
+                "Reviews": 53.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+no+5+First+Floor,+Sanwal+Architects+%26+interiors,+Abdulla+plaza,+opp.+Royal+orchard,+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35df941452e3:0xf8841fd9c5eed809?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0304 0072047",
+                "Rating": 4.9,
+                "Reviews": 53.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+no+5+First+Floor,+Sanwal+Architects+%26+interiors,+Abdulla+plaza,+opp.+Royal+orchard,+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35df941452e3:0xf8841fd9c5eed809?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0304 0072047",
+                "Rating": 4.9,
+                "Reviews": 53.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+no+5+First+Floor,+Sanwal+Architects+%26+interiors,+Abdulla+plaza,+opp.+Royal+orchard,+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35df941452e3:0xf8841fd9c5eed809?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0304 0072047",
+                "Rating": 4.9,
+                "Reviews": 53.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+no+5+First+Floor,+Sanwal+Architects+%26+interiors,+Abdulla+plaza,+opp.+Royal+orchard,+Multan,+60700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35df941452e3:0xf8841fd9c5eed809?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Saqi Associates & Consultants",
+        "Category": "Architect",
+        "Website": "http://www.saqiassociates.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0305 3297977",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Office+no+9b,+Saqi+Associates+%26+Consultants,+hockey+stadium,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269001450a109:0xc496fd946571225e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Saqib Mirza Architects",
+        "Category": "Architect",
+        "Website": "https://www.behance.net/isaqibmirza",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0334 8181234",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Saqib+Mirza+Architects,+Backside+Bank+Alfalah+Islamic,+Sabzi+Mandi+Rd,+Li%C4%81qatpur,+64000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393a25f9bccc1f6b:0xa6f3c4bae06f347a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sardar Khan Design Studio - Architect in Multan | Interior Designer in Multan | Interior Designer and Architects in Multan",
+        "Category": "Architect",
+        "Website": "http://sardarkhandesign.studio/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 4596590",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//1st+floor,+Sardar+Khan+Design+Studio+-+Architect+in+Multan+%7C+Interior+Designer+in+Multan+%7C+Interior+Designer+and+Architects+in+Multan,+Commercial+Market,+Office+No:22,+opp.+Multan+Public+School+Road,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35fb6d8f8a07:0x436f56b0f1a2d386?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sardar Khuram Shahzad Baloch Home",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0334 9941234",
+                "Map URL": "https://www.google.com/maps/dir//Sardar+Khuram+Shahzad+Baloch+Home,+Baloch+city,+Phase+1,+Dera+Ismail+Khan,+29111/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266dd5760df759:0x68196461ff51956b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sargodha Home Design",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/SHD49?mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0322 8951282",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0322 8951282",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sarjan Interior",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.8,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//327,+Sarjan+Interior,+four+point,+VIP+Rd,+opposite+CB+Patel+health+club,+Vesu,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be05341b987ed2d:0x16cc9570da677cd1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Saud & Architects",
+        "Category": "Architect",
+        "Website": "https://saudarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4053403",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Saud+%26+Architects,+43-M+Gulberg+III,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919050147aac9b5:0xa89e234eef5fcb8e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sensory Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0345 8335231",
+                "Rating": 5.0,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//Sensory+Architects,+169,+Block+D+PIA+society,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919059615121afb:0xe9d403dacee16eeb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Serene Tower",
+        "Category": "Apartment complex",
+        "Website": "http://www.serenetower.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 4111110",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Plot+CC,+Serene+Tower,+006,+Main+Jinnah+Ave,+DHA+Multan,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3924cb961f9a91e1:0x944afc964efacd9a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shadabia Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "(053) 3520707",
+                "Rating": 4.4,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//Shadabia+Associates,+Shadiwal+Rd,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b1d5d64f291:0xbe7927c7ca533b5d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shafaiz Interiors",
+        "Category": "Interior designer",
+        "Website": "https://shafaizinteriors.pk/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0304 9311090",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//CM29%2BG82+Shafaiz+Interiors,+Karbala+Rd,+Model+Town+B,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91004a767da5:0xab9dc42a232c6c45?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0304 9311090",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//CM29%2BG82+Shafaiz+Interiors,+Karbala+Rd,+Model+Town+B,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91004a767da5:0xab9dc42a232c6c45?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shah Architecture",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0331 7553030",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//484C%2B554+Shah+Architecture,+Band+Road,+Rajanpur+District/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393099391ca0785f:0x79445786d1948f61?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahab Naqsha Nawees",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0307 8612666",
+                "Rating": 4.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//C88R%2BW74+Shahab+Naqsha+Nawees,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375f001ce25689:0x78e05c54c18d4821?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahbaz Afzal Architect DHA Lahore",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0312 4266512",
+                "Map URL": "https://www.google.com/maps/dir//Shahbaz+Afzal+Architect+DHA+Lahore,+DHA+Phase+6,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919094a8536ed71:0x780d10a7a720c414?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahbaz Associates",
+        "Category": "Architecture firm",
+        "Website": "https://web.facebook.com/ShahbazAssociates",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6688481",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//House+%23+709+Block,+Shahbaz+Associates,+No,+1,+B+D+Ground+People's+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922686953dce9cd:0x8085cf88f3c06243?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6688481",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//House+%23+709+Block,+Shahbaz+Associates,+No,+1,+B+D+Ground+People's+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922686953dce9cd:0x8085cf88f3c06243?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shaheen Architect and Builder's",
+        "Category": "Agricultural engineer",
+        "Locations": [
+            {
+                "City": "Narowal",
+                "Map URL": "https://www.google.com/maps/dir//3VWP%2B49W+Shaheen+Architect+and+Builder's,+bypass+Shakargar+Road,+Jassar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391955007acfbf9d:0xe3a39e2d2ea35813?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shaheen Associates Chakwal",
+        "Category": "Architects association",
+        "Website": "https://www.facebook.com/profile.php?id=100069058367207&mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0336 5905151",
+                "Map URL": "https://www.google.com/maps/dir//Shaheen+Associates+Chakwal,+Doctor+Tariq+Mehmood+Hospital+Street,+Doctor+Tariq+mehmood+Street+,+Meesum+plaza+Ground+Floor+Shaheen+associates,+Talagang+Hwy,+opposite+sadar+police+station,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d277774797d:0xa23834e80b04cdaa?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0336 5905151",
+                "Map URL": "https://www.google.com/maps/dir//Shaheen+Associates+Chakwal,+Doctor+Tariq+Mehmood+Hospital+Street,+Doctor+Tariq+mehmood+Street+,+Meesum+plaza+Ground+Floor+Shaheen+associates,+Talagang+Hwy,+opposite+sadar+police+station,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d277774797d:0xa23834e80b04cdaa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shaheen Group Pk Pakistan",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0307 7779066",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Shaheen+Group+Pk+Pakistan,+Samnabad+bypass+road,+Samnabad,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29d565062c27:0x64edc6cadbe80ddc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shaheen designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 7601893",
+                "Rating": 4.6,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//F58Q%2B6JF+Shaheen+designer,+Civic+Center,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226fa51b4ad3f9:0xf40e66f2c8d96d48?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahid Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 6600743",
+                "Rating": 5.0,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Shahid+Architect,+Circular+Rd,+Rail+Bazar,+Qadimi+Shehar,+Clock+Tower,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392242a1a6f91c35:0x27f7a9981bb7b3fc?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahid Architect House Design",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0320 3828382",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Shahid+Architect+House+Design,+Plot+51,+Gulfishan+Colony,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243af353ff80b:0x5bc083b9e9aa2b3c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahin Architect & Home Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0305 8614105",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//WPP7%2B7QJ+Shahin+Architect+%26+Home+Designer,+Rohtas+Rd,+near+Star+Medical+Store,+Jinnah+Colony,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91a98b774d5d:0xe482fc726f12a9d5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahnawaz Architect Enger",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0306 3351270",
+                "Rating": 5.0,
+                "Reviews": 7.0,
+                "Map URL": "https://www.google.com/maps/dir//Shahnawaz+Architect+Enger,+Marzipura,+Burewala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cdfdd973b0283:0x4cf824c4a470b0c6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahnawaz Associates Pvt. Ltd",
+        "Category": "Architect",
+        "Website": "http://www.shahnawazassociates.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0308 0062505",
+                "Rating": 3.7,
+                "Map URL": "https://www.google.com/maps/dir//Shahnawaz+Associates+Pvt.+Ltd,+Basement+Floor,+Executive+Tower,+Gatwala+Commercial+Hub+Main+Sheikhupura+Road,+Gatwala+Chowk,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226f85fe01062d:0xee23e2bd32f5fc0b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahroz Architects & Builders",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 2155881",
+                "Rating": 5.0,
+                "Reviews": 13.0,
+                "Map URL": "https://www.google.com/maps/dir//Shahroz+Architects+%26+Builders,+40-B+Model+civic+commercial,+near+Chill+bar,+Model+Town,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35eaceeb87eb:0x249800e31e5a14f3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shahroz Design Studio",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0310 6111755",
+                "Rating": 5.0,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//5FV3%2B7X8+Shahroz+Design+Studio,+Tipu+Sultan+Colony,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33e06b2b98b7:0xcc5ddb2f675b3a0b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shapes Design Studio",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/ShapesDesignStudio?mibextid=LQQJ4d",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0302 8380418",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//9,+Shapes+Design+Studio,+star+arcade,+Bosan+Rd,+opposite+Dha+Multan,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3924cb004294f569:0x438bac5ba22b7626?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sharif & Anwar Bibi Architects and Consultants",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/sab_archfirm/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0324 7573585",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Block,+Sharif+%26+Anwar+Bibi+Architects+and+Consultants,+Royal+Palm+City,+Plaza%23+209,+1st+Floor,+Main+Commercial,+Gujranwala,+52460/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39192bd7b8d49dad:0x2a1f4f87f0550ba2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shayona Consultant",
+        "Category": "Architect",
+        "Website": "https://www.prashantparmar.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//7th+Floor,+Shayona+Consultant,+The+Capital+2,+701%2F702,+Science+City+Rd,+Sola,+Ahmedabad,+Gujarat+380060,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e9d7aecb118e5:0x85d1f606df621dde?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shelters",
+        "Category": "Architectural designer",
+        "Website": "https://shelters.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 36667917",
+                "Rating": 3.4,
+                "Map URL": "https://www.google.com/maps/dir//Office+No:+2,+Lower+Ground+Floor,+Shelters,+Cantt+Plaza,+Tufail+Rd,+Cantonment,+Lahore,+54830/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190545896ac65b:0xb54091a3a2b2008?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Shoaib Architect",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8418518"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sial Builders",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0300 6760930",
+                "Rating": 4.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//XX56%2BW34+Sial+Builders,+Housing+Colony+No.+2+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a7001627942f:0x6457bc8bed115137?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sial House Lodhran",
+        "Category": "City or town hall",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Rating": 4.9,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//Sial+House+Lodhran,+N-5,+opposite+Shahida+Islam+Medical+College,+Lodhr%C4%81n/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9992e101089d:0x682d62f747b222d5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Siddique Sons Associates Architect, Builders & Developers",
+        "Category": "Building consultant",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 8780893",
+                "Rating": 4.4,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Siddique+Sons+Associates+Architect,+Builders+%26+Developers,+near+Bagdad+Station+Road,+Mohajir+Colony,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91d452b8001f:0xb7f49c3bca0ffdad?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0300 8780893",
+                "Rating": 4.4,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Siddique+Sons+Associates+Architect,+Builders+%26+Developers,+near+Bagdad+Station+Road,+Mohajir+Colony,+Bahawalpur,+63100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91d452b8001f:0xb7f49c3bca0ffdad?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sidra Architect & Interior Design",
+        "Category": "Architecture firm",
+        "Website": "https://www.sidraarchitect.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 8083003",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Sidra+Architect+%26+Interior+Design,+2nd+floor,+plaza+number+85+CCA,+DHA+Phase+4+Block+DD+Commercail+area,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905c4f14055b7:0x228581e18804f4ab?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Signature Interiors",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Rating": 4.7,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Signature+Interiors,+phase+3+Garden+Town,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29c9893d2b89:0xcd6ce305344ea431?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Site Plan Studio",
+        "Category": "Architectural designer",
+        "Website": "https://ejaz434.wixsite.com/site-plan-studio",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0303 3731037",
+                "Rating": 5.0,
+                "Reviews": 3.0
+            },
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0303 3731037",
+                "Rating": 5.0,
+                "Reviews": 3.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Siyal interior and doors | 3D Wallpaper Shop",
+        "Category": "Construction company",
+        "Website": "https://siyalinterioranddoors.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0305 8888297",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//5GF3%2B393+Siyal+interior+and+doors+%7C+3D+Wallpaper+Shop,+Faizabad,+Multan,+59300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b37804fcc9215:0x2a1d45c5fc436f42?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sketchline builders",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0323 7922237",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Sketchline+builders,+41+commercial+Mehta,+block,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29329ba0b9a9:0x447ee977b72d80fe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sky Architect Consultant",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6290280",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H374%2BF7Q+Sky+Architect+Consultant,+Staff+Galla,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bf69f4bb833:0x5714bccacd55f3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sky Builders",
+        "Category": "Building consultant",
+        "Website": "http://www.skybuilders.com.pk/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Map URL": "https://www.google.com/maps/dir//Office+413,+Sky+Builders,+B+lll+High+St,+Jogi+Chowk+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b7007765d025:0x5c689aafd8df4e3f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "SkyNest Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0349 6176984"
+            },
+            {
+                "City": "Narowal",
+                "Phone Number": "0349 6176984"
+            },
+            {
+                "City": "Narowal",
+                "Phone Number": "0349 6176984"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0347 8861284",
+                "Map URL": "https://www.google.com/maps/dir//SkyNest+Architects,+near+ilama+iqbal+house,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb9659c5a335:0xc19a8dc1c4a26f19?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0349 6176984"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sohail A. Khan Associates",
+        "Category": "Architecture firm",
+        "Website": "https://saka.net.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(051) 5174329",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//159,+Sohail+A.+Khan+Associates,+Street+4+Race+Course+Rd,+Westridge+1,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df957ac84c8839:0xef505147863e7f11?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "(051) 5174329",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//159,+Sohail+A.+Khan+Associates,+Street+4+Race+Course+Rd,+Westridge+1,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df957ac84c8839:0xef505147863e7f11?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sovran Architect",
+        "Category": "Housing development",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0307 9593461",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//653W%2BQFP+Sovran+Architect,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29003ac32197:0xbe195bf9b7252fa8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Space Design Studio",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0344 7979880",
+                "Rating": 4.6,
+                "Reviews": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Space+Design+Studio,+14-A+Civil+Line,+Sahil+Colony,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f915cb50300f7:0x5e3972ec59fa50e7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Space Race Architects",
+        "Category": "Architect",
+        "Website": "http://www.spaceracearchs.com/",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Space+Race+Architects,+2,+Ladowali+Rd,+Central+Town,+Jalandhar,+Punjab+144001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391a5a4336044065:0x2fdaa015210bcf13?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lodhran",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Space+Race+Architects,+2,+Ladowali+Rd,+Central+Town,+Jalandhar,+Punjab+144001,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391a5a4336044065:0x2fdaa015210bcf13?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Stone Work Construction & Architect Interior Design",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 8335100",
+                "Rating": 5.0,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.+131,+Stone+Work+Construction+%26+Architect+Interior+Design,+Makkah+Commercial+Market,+Eden+Garden+Rd,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269005b2b7ee1:0x9e046325d2de1c76?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Struc-Arch Pakistan",
+        "Category": "Architecture firm",
+        "Website": "http://www.strucarchpakistan.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0310 3330023",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Struc-Arch+Pakistan,+Kacha,+Eminabad+Road,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b24c0017f95:0x83161aea45c6ef4f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0310 3330023",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Struc-Arch+Pakistan,+Kacha,+Eminabad+Road,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b24c0017f95:0x83161aea45c6ef4f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Studio 3",
+        "Category": "Architect",
+        "Website": "http://www.studio3.pk/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 6365524",
+                "Rating": 3.5,
+                "Map URL": "https://www.google.com/maps/dir//Studio+3,+Rehman+Plaza,+Bosan+Rd,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33f6d434c9bd:0xae65c9e5a56a6f62?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Studio Arch",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0333 5753976",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Studio MBR",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0316 5540064"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0316 5540064"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Studio Of Design",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0332 7438299",
+                "Rating": 4.8,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//RC5R%2BGC4+Studio+Of+Design,+Block+A+Okara/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a709a80e084b:0x7839a5336321bc99?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "0332 7438299",
+                "Rating": 4.8,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//RC5R%2BGC4+Studio+Of+Design,+Block+A+Okara/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a709a80e084b:0x7839a5336321bc99?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Stylish design Associate. Architect office",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Pakpattan",
+                "Phone Number": "0300 6944644",
+                "Map URL": "https://www.google.com/maps/dir//89WQ%2B283+Stylish+design+Associate.+Architect+office,+Circular+Rd,+P%C4%81kpattan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d59279e2bcf19:0x474c240b278297d1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Subhania Group Of Estate Developers & Builders",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/profile.php?id=100071151306685",
+        "Locations": [
+            {
+                "City": "Jauharabad",
+                "Phone Number": "0300 0449200",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Subhania+Group+Of+Estate+Developers+%26+Builders,+Aslam+Colony,+Jauharabad,+41200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213d55c33ebcf5:0xd1b33ead4f770339?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sufi City",
+        "Category": "Real estate developer",
+        "Website": "http://suficity.com/",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0310 7823131",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Sufi+City,+Gurha+Mahalla,+Dera+Roshan+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7c34ae81312b:0xe94fd5272ae87820?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sufi's Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0303 4859538",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//G7JW%2B4C6+Sufi's+Architect,+New+Ranjha+Road+Pukki+Thutti+Bus+Stop,+Samanabad+Town,+Lahore,+55401/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919037bc9754d57:0x7468462f46576aad?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Suhaib Architectural Planner and Consultant",
+        "Category": "Architect",
+        "Website": "http://suhaib3d.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0317 9868285",
+                "Rating": 5.0,
+                "Reviews": 3.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sultan Builders",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0332 7763679",
+                "Map URL": "https://www.google.com/maps/dir//3J3W%2B326+Sultan+Builders,+Right+Drain+Canal+Rd,+Block+17,+Dera+Ghazi+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab104b46fd509:0xc7e9456cad07369c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sundar Interiors & Architects",
+        "Category": "Construction company",
+        "Website": "https://rsmdevelopers.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0331 4161213",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//Sundar+Interiors+%26+Architects,+Ceo+Club,+95,+J1-,+Block+J+1+Phase+2+Johar+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919032006998fc7:0x2fdfc5343f168b51?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Sutlej City Bahawalnagar",
+        "Category": "Housing development",
+        "Locations": [
+            {
+                "City": "Bahawalnagar",
+                "Phone Number": "0333 8443322",
+                "Rating": 4.3,
+                "Reviews": 82.0,
+                "Map URL": "https://www.google.com/maps/dir//X6QC%2BHRM+Sutlej+City+Bahawalnagar,+Bypass+road,+near+Matyana+Moverer,+Bahawalnagar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393d6f3ebde5b879:0x20817879f92b0112?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Swarnim Design Studio",
+        "Category": "Interior architect office",
+        "Website": "https://swarnimdesign.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Swarnim+Design+Studio,+925,+RK+Empire+nr+mavdi+Circle+150+Feet+Ring+Road,+fly+over,+opp.+Sanskar+Height,+Mavdi,+Rajkot,+Gujarat+360004,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3959cbeee58744cd:0x4dbdfccb0576ca9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Syed Associates (Architects & Engineers)",
+        "Category": "Architect",
+        "Website": "https://web.facebook.com/SyedAssociatesGujrat",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0333 8429032",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Syed+Associates+(Architects+%26+Engineers),+Gujrat+-+Jalalpur+Jattan+Rd,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b4860d7749f:0x16e59a966de935d5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8429032",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Syed+Associates+(Architects+%26+Engineers),+Gujrat+-+Jalalpur+Jattan+Rd,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b4860d7749f:0x16e59a966de935d5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Syed Brothers Head Office – Construction & Architectural Services Lahore",
+        "Category": "Construction company",
+        "Website": "https://syedbrothers.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4524254",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Syed+Brothers+Head+Office+%E2%80%93+Construction+%26+Architectural+Services+Lahore,+24+CCA,+5,+Phase+DHA,+Lahore,+54792/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919090cbd98ef11:0xe8386497f625e4fb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TAHIR HOME DESIGNER'S",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0335 5621843",
+                "Rating": 4.8,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//TAHIR+HOME+DESIGNER'S,+Resham+plaza,+Civil+Line,+Naya+Mohalla+Jhelum,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9174122f5abd:0xbabe0434c327411c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0335 5621843",
+                "Rating": 4.8,
+                "Reviews": 10.0,
+                "Map URL": "https://www.google.com/maps/dir//TAHIR+HOME+DESIGNER'S,+Resham+plaza,+Civil+Line,+Naya+Mohalla+Jhelum,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f9174122f5abd:0xbabe0434c327411c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TBH Realtor",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0322 7349609",
+                "Rating": 5.0,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//C8GH%2B442+TBH+Realtor,+Main+Sadiq,+Canal+Rd,+adjacent+to+MH+Mart+TBH+Realtor,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b0140be9e9f:0x6b6703c9738d8027?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TDW - Architects & Town Planners",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4352156",
+                "Rating": 4.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//TDW+-+Architects+%26+Town+Planners,+4th+Floor,+7-A+Commercial,+Sector+A+DHA+Phase+6,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918ff0f325465b7:0xd3f04349e7d98ee1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "THE ARCHITECT COUNSULTAT ENGINEERIG",
+        "Category": "Architects association",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 6751107",
+                "Map URL": "https://www.google.com/maps/dir//THE+ARCHITECT+COUNSULTAT+ENGINEERIG,+101-C,+Satellite+Town,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217758135134ab:0x6b4155804cefdaaa?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0304 6751107",
+                "Map URL": "https://www.google.com/maps/dir//THE+ARCHITECT+COUNSULTAT+ENGINEERIG,+101-C,+Satellite+Town,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39217758135134ab:0x6b4155804cefdaaa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "THE WOW ARCHITECTS",
+        "Category": "Architecture firm",
+        "Website": "http://www.thewowarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0331 5123713",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//THE+WOW+ARCHITECTS,+126-C+Airport+Rd,+Block+B+Divine+Gardens,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190f1115a963d9:0xa41779431fc3688a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TRICA",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Map URL": "https://www.google.com/maps/dir//556X%2BQGX+TRICA,+Satellite+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b00447fd8a9:0x80bb2d8608ae1a1d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TSM Design Studio",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35783637",
+                "Rating": 4.3,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//TSM+Design+Studio,+Suit%23+17,+2nd+floor,+Leeds+centre,+Block+E+2+Gulberg+III,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190580d59e6afb:0x972f0b83efb08b55?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TSM Digital Studio",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/tsmdesignstudio",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0339 4189878"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TVASHTA ARCHITECTS & INTERIORS",
+        "Category": "Architecture firm",
+        "Website": "https://tvashtaarchitects.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//TVASHTA+ARCHITECTS+%26+INTERIORS,+504,+TITANIUM+SQUARE+NR+ACROPOLIS+MALL,+THALTEJ+CROSS+ROAD,+Sarkhej+-+Gandhinagar+Hwy,+Thaltej,+Ahmedabad,+Gujarat+380054,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e85b68a872409:0xba98c924aaacda01?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Taamir Associate",
+        "Category": "Architecture firm",
+        "Website": "https://www.instagram.com/taamirassociate1?igsh=MTlwODVyZmY2cWVyMw==",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 8410734",
+                "Map URL": "https://www.google.com/maps/dir//Taamir+Associate,+Chenab+Plaza,+Kutchery+Road,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bc127d219f3:0x3ecfe3f9d255c0e0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tabassumwoodworks services, Custom Woodworks",
+        "Category": "Interior designer",
+        "Website": "http://www.tabassumwoodworks.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0308 7822106",
+                "Rating": 4.3,
+                "Map URL": "https://www.google.com/maps/dir//Tabassumwoodworks+services,+Custom+Woodworks,+DHA+Phase+3,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391907036f34575b:0x92b5624461ecb87a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tahir Maqbool Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0323 8887667",
+                "Map URL": "https://www.google.com/maps/dir//Tahir+Maqbool+Associates,+Khalid+Block,+Satayana+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392267a26ea86a2d:0x79dbb2a38c04e1cd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tahir Property Designers",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Tahir+Property+Designers,+136+Jinnah+Rd,+D+Block+Vehari/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cea98f394ac81:0x2d41e33fd9546568?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tahir's Architects ( DHA Registered Architect)",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/ArchitectMianTahirIrshad?mibextid=LQQJ4d",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8449027",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+Tahir's+Architects+(+DHA+Registered+Architect),+2-A+Commercial,+Phase+6,+DHA,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391908a246efeef1:0xf04afb53d8433662?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Taiyeb Interiors",
+        "Category": "Store",
+        "Website": "https://nipponpaint.com.pk/store_locator/taiyeb-interiors/",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0321 5933083",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Taiyeb+Interiors,+Railway+Rd,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d0000d36707:0x5ca3261cb481c39a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tajdeed Design Studio",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/TajdeedDesignStudio/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0314 7564466",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Tajdeed+Design+Studio%D8%8C+P-176%D8%8C+01+Small,+D+Ground+People's+Colony+No+1,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269661f1672c9:0x561c1ddd007a697c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Takhleeq Architecture Atelier",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0333 6169547",
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Takhleeq+Architecture+Atelier,+Commercial+Market,+14-D,+near+Northern+Bypass,+Wapda+Town+Phase+1+PH-I,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35cf51993441:0xd52982d2ca3adf6a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Talha Associates (Architect Office)",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 5589798",
+                "Map URL": "https://www.google.com/maps/dir//Talha+Associates+(Architect+Office),+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226ed0f286289d:0x92625818d9fd43a0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Talha Shahid Architects & Associates - Architects in Islamabad/Rawalpindi",
+        "Category": "Architect",
+        "Website": "http://www.talhashahidarchitects.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0332 5123472",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+306,+4th+Floor,+Talha+Shahid+Architects+%26+Associates+-+Architects+in+Islamabad%2FRawalpindi,+HM+Tower,+above+Allied+Bank+Business+Park,+Gulberg+Greens,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed571ac164e9:0xb9422fed38a388d8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0332 5123472",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+306,+4th+Floor,+Talha+Shahid+Architects+%26+Associates+-+Architects+in+Islamabad%2FRawalpindi,+HM+Tower,+above+Allied+Bank+Business+Park,+Gulberg+Greens,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed571ac164e9:0xb9422fed38a388d8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0332 5123472",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+306,+4th+Floor,+Talha+Shahid+Architects+%26+Associates+-+Architects+in+Islamabad%2FRawalpindi,+HM+Tower,+above+Allied+Bank+Business+Park,+Gulberg+Greens,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed571ac164e9:0xb9422fed38a388d8?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0332 5123472",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Office+306,+4th+Floor,+Talha+Shahid+Architects+%26+Associates+-+Architects+in+Islamabad%2FRawalpindi,+HM+Tower,+above+Allied+Bank+Business+Park,+Gulberg+Greens,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed571ac164e9:0xb9422fed38a388d8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tarar Architect's And Interior Designer",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0324 7735136",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Tarar+Architect's+And+Interior+Designer,+Office+19-20,+Main+Samundri+Rd,+Sehgal+City+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d41b27c2359:0xa96ba7e5373a6fd7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tarar Associates & Builders(Construction Company)",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0300 6003777",
+                "Rating": 4.9,
+                "Reviews": 26.0,
+                "Map URL": "https://www.google.com/maps/dir//Tarar+Associates+%26+Builders(Construction+Company),+pull,+47,+Lahore+-+Sargodha+Rd,+National+Park,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39218382b8ff3c69:0x7344393d74411305?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tayyab lights",
+        "Category": "Architectural and engineering model maker",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0322 6580927"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tec Ton Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0325 3430001",
+                "Rating": 3.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Tec+Ton+Architects,+Shadman+Town+People's+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39192bb54b449b5d:0xfe7b4ad43ac652d3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Tech Zone",
+        "Category": "Architect",
+        "Website": "http://tech-zone.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Tech+Zone%D8%8C+2nd+Floor,+Uni+Build+Building,,+Mozang+Rd,+Jinnah+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904b198d24885:0xa445bd5a7ed81a00?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Technagon",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Map URL": "https://www.google.com/maps/dir//Technagon,+148+B,+Shahbaz+Town,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243127fb84689:0x305c4ac9ef427026?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Address Design Studio",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 0666966",
+                "Rating": 5.0,
+                "Reviews": 57.0,
+                "Map URL": "https://www.google.com/maps/dir//The+Address+Design+Studio,+A,+P-482+Block,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922435eb6e0dacb:0xf85e00aa06e9716a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0313 6685798",
+                "Map URL": "https://www.google.com/maps/dir//The+Architect,+P-7%2F8+Regency+Rd,+New+Civil+Lines,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226984d4dd7451:0xdf0add7c5d338b33?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0301 6112713",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//FHJ5%2BX76+The+Architect,+Sialkot+-+Sankhatra+Rd,+Ahmed+Nagar+Boonga,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb0d615d6431:0x699ea53e1705499b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Architect Lab",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0312 9654849"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Architect's / Coastal Estate Builders & Developers",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0331 2331423",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//The+Architect's+%2F+Coastal+Estate+Builders+%26+Developers,+Shop%231,2+By-pass+road,+D.C+O+Chowk,+Badin,+72200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x394dd93af9a63813:0xdfc9ca6f3087a7eb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Architectural Design Office",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Rating": 4.3,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+Number+303,+level+3,+The+Architectural+Design+Office%D8%8C+Address+8,+Block+F,+GTC,+Gulberg+2,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905538ec90619:0x5a35d77bb469ad35?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Arcisense Architect & builders",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0312 7628724",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H3JG%2B66V+The+Arcisense+Architect+%26+builders,+Gulberg+Colony,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bb62add862b:0x2fe2a6ac2c76897e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The B-Studios",
+        "Category": "Architecture firm",
+        "Website": "http://www.thebstudios.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 8443996",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Suit%23+17,+2nd+floor,+The+B-Studios,+Leeds+centre,+Block+E2+Block+E+2+Gulberg+III,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0xdcda872a90bc71f:0x1d5c1a6be520b303?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Body Architects GYM",
+        "Category": "Gym",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0335 0559287",
+                "Rating": 4.4,
+                "Reviews": 12.0,
+                "Map URL": "https://www.google.com/maps/dir//The+Body+Architects+GYM,+Machine+Street+Number+3,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91c85c4b17cb:0xb9c464e8429e93b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Construction Studio",
+        "Category": "Construction company",
+        "Website": "http://www.facebook.com/theconstudio",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 4438026",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+53+1st+floor,+The+Construction+Studio,+H-Market,+Ghalib+city+road+opp+Eden+Executive+Main+Gate,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269111694b597:0xf9a6c578919df5f3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Hamd's Studio",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 2150004",
+                "Rating": 5.0,
+                "Reviews": 26.0,
+                "Map URL": "https://www.google.com/maps/dir//PX22%2B8G4+The+Hamd's+Studio,+Camping+Ground+lalamusa+Hajipura,+Lalamusa/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f097802e74ded:0xe161aa879adcecf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Horizon Architecture",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0328 1777000",
+                "Rating": 4.9,
+                "Reviews": 51.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+14+G-Floor,+The+Horizon+Architecture,+Cantt+Plaza,+Khawaja+Safdar+Rd,+near+Dar-Ul-Shifa+Hospital,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebca36b0258d:0x5919431209b7f0a0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Line Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0370 1416698",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//The+Line+Architects,+Liaqat,+Meezan+Executive+Tower,+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x89a3b1f422211f2b:0xfca824cd47a68969?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The M Square - Architect in multan | Interior designer in multan | Construction Company in Multan",
+        "Category": "Architect",
+        "Website": "https://themsquare.com.pk/",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0312 9887777",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//ist+Floor,+The+M+Square+-+Architect+in+multan+%7C+Interior+designer+in+multan+%7C+Construction+Company+in+Multan,+Chungi+Tipu+Motors,+8+LMQ+Rd,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33eee4df8329:0xfd262a8a5c657f24?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0312 9887777",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//ist+Floor,+The+M+Square+-+Architect+in+multan+%7C+Interior+designer+in+multan+%7C+Construction+Company+in+Multan,+Chungi+Tipu+Motors,+8+LMQ+Rd,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33eee4df8329:0xfd262a8a5c657f24?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The M Square | Architect in Lahore | Interior Designer in Lahore | Construction Company in Lahore",
+        "Category": "Architect",
+        "Website": "https://themsquare.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0312 9887777",
+                "Rating": 5.0,
+                "Reviews": 3.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Planners Engineer",
+        "Category": "Architect",
+        "Website": "http://www.facebook.com/theplannerseng",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0333 6159906",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//6F62%2BH57+The+Planners+Engineer,+Lodhi+Colony+Rd,+Shadab+Colony+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33c0f742320b:0x935cc983018620c8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Professional Landscape Company",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0304 5828722",
+                "Rating": 4.8,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//The+Professional+Landscape+Company,+Old+Shujabad+Road,+opposite+Dream+Garden,+Rangilpur,+Multan,+66000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31b2d218ecc7:0x8cc989674ad939b5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Riser Architect",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0345 6946537",
+                "Rating": 3.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H32C%2BFHQ+The+Riser+Architect,+Shadiwal+Rd,+Green+Town,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1afecbd2c0f5:0xcf82fe81c92c86a3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Riser Architect and builders",
+        "Category": "Corporate office",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0345 5467542",
+                "Map URL": "https://www.google.com/maps/dir//H3P9%2B3JP+The+Riser+Architect+and+builders,+Shadman+Colony,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1ad163634327:0x9bb1d77780786173?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The Sketch Associates",
+        "Category": "Architect",
+        "Website": "https://web.facebook.com/TheSketchAssociates",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0304 8662288",
+                "Rating": 3.5,
+                "Map URL": "https://www.google.com/maps/dir//5th+floor,+The+Sketch+Associates,+Meezan+Executive+Tower,+Liaqat+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224306650d345d:0xa30103e80a277db?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "The building eXperts",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0307 5672204"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TheSake (S. A Khan Enterprises)",
+        "Category": "Automation company",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 5.0,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Thearchitectsdiary",
+        "Category": "Media house",
+        "Website": "http://www.thearchitectsdiary.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.6,
+                "Map URL": "https://www.google.com/maps/dir//Thearchitectsdiary,+1101,+one+world+west,+Ambli+-+Bopal+Rd,+nr.+Vakil+bridge,+Ahmedabad,+Gujarat+380058,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x395e9ba66cba0925:0x56c7404469f9914?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Town Hall",
+        "Category": "City or town hall",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "(068) 9230341",
+                "Rating": 4.3,
+                "Reviews": 348.0,
+                "Map URL": "https://www.google.com/maps/dir//C8F7%2B32C+Town+Hall,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b8d2d999503:0xeede99ba42e5dd60?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Transeptia Construction, Interior & Architect (TCIA)",
+        "Category": "Architecture firm",
+        "Website": "https://www.transeptia.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0311 1611117",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Transeptia+Construction,+Interior+%26+Architect+(TCIA),+13%2FB-1+Khursheed+Alam+Road,+Cantt,+Lahore,+54810/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190565e7a5cb97:0xa34e5f806562e3c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "TrendHome",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0307 5280278",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//TrendHome,+79+road,+Street+No.+1,+Rehman+Pura,+Faisalabad,+38900/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922436320efa24d:0xce85a3817ad4dc33?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Trimax Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0322 5601682",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Trimax+Associates,+Siddique+Centre,+Muslim+Town,+Gujranwala,+52280/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29b6b6a01195:0xd54b8b77e77be52a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Trust Plaza",
+        "Category": "Distribution service",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Rating": 3.9,
+                "Reviews": 637.0,
+                "Map URL": "https://www.google.com/maps/dir//Trust+Plaza,+LMQ+Rd,+Nawan+Shehar,+Tipu+Sultan+Colony,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b316003ece813:0x39992ced6a40fc10?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "U.S Design Unit",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 5384466",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//M494%2B2GG+U.S+Design+Unit,+%DB%81%D8%A7%D8%A6%DB%8C+%D8%B3%D9%B9%D8%B1%DB%8C%D9%B9%D8%8C+Sahiwal,+57000%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b79c8ebbad7f:0xe53bc5c9c93b87fe?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0300 5384466",
+                "Rating": 5.0,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//M494%2B2GG+U.S+Design+Unit,+%DB%81%D8%A7%D8%A6%DB%8C+%D8%B3%D9%B9%D8%B1%DB%8C%D9%B9%D8%8C+Sahiwal,+57000%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b79c8ebbad7f:0xe53bc5c9c93b87fe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "U4A Design",
+        "Category": "Architectural designer",
+        "Website": "https://usmansikander55.wixsite.com/u4adesign",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0301 8612155",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//U4A+Design,+127-C,+Citi+Housing+Society,+Sialkot,+51040/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec3924306dc2b:0xd878858dbd0dd849?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0301 8612155",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//U4A+Design,+127-C,+Citi+Housing+Society,+Sialkot,+51040/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ec3924306dc2b:0xd878858dbd0dd849?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "UMAIR Associates | Architectural Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0304 8321742",
+                "Rating": 4.9,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//UMAIR+Associates+%7C+Architectural+Designer,+Al-Hamd+Garden,+Rahim+Yar+Khan,+64200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b3853c614ed:0xde562fdb1e8f5993?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "UNIQUE ARCHITECT",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Map URL": "https://www.google.com/maps/dir//7QMH%2BMHH+UNIQUE+ARCHITECT,+Unique+architect+near+Allied+bank+Hameedabad+colony+Chakswari+Pind+Kalan,+P.O+Dist,+Mirpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391fe70011f46d2d:0x458a1ef0427b5728?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "UNIQUE ARCHITECTURE BY MMA",
+        "Category": "Construction company",
+        "Website": "http://uniquemma.com/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 4336432",
+                "Map URL": "https://www.google.com/maps/dir//UNIQUE+ARCHITECTURE+BY+MMA,+CS+38,+Fazaia+housing+Down+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919abf76fab8979:0x392c386df4c0f6be?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ud studio",
+        "Category": "Architectural designer",
+        "Website": "https://takmeelbyudstudio.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Ud+studio,+3+ud+studio,+phase+3+Garden+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29905c5b0dd1:0x81f75b140b723bcd?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Ultimate Architect & Interior Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0304 4854017",
+                "Rating": 5.0,
+                "Reviews": 119.0,
+                "Map URL": "https://www.google.com/maps/dir//Ultimate+Architect+%26+Interior+Designer,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7fa5c2e104b:0xd117269793fbacaf?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "0304 4854017",
+                "Rating": 5.0,
+                "Reviews": 119.0,
+                "Map URL": "https://www.google.com/maps/dir//Ultimate+Architect+%26+Interior+Designer,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7fa5c2e104b:0xd117269793fbacaf?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Pakpattan",
+                "Phone Number": "0304 4854017",
+                "Rating": 5.0,
+                "Reviews": 119.0,
+                "Map URL": "https://www.google.com/maps/dir//Ultimate+Architect+%26+Interior+Designer,+Mohammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7fa5c2e104b:0xd117269793fbacaf?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Umair Architect & Developers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0308 8022573",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Umair+Architect+%26+Developers,+HAKEEM+PLAZA,+6+Sir+Syed+Road,+BLOCK+%23+8+Khanewal,+58150/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b559ecdaa7ce3:0xb922fa62a9a5804d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Umair Architect & Interiors",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0312 4972008",
+                "Map URL": "https://www.google.com/maps/dir//Umair+Architect+%26+Interiors,+Bhimber+Rd,+Model+Town,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b720c0c4ecb:0x2bdc3b36da9e8934?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Umar Draz Khokhar",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/omardraz.khokhar",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0321 3823749",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//House+No,+Umar+Draz+Khokhar,+426+Street+Number+6,+Ghani+Park,+Sargodha,+40101/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392177f636d1c7a7:0x29d0e96838940c4f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Umar Hayat Mahal Library (Gulzar Manzil)",
+        "Category": "Historical landmark",
+        "Website": "http://www.facebook.com/UdiUdiJaawan",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//PX9J%2BQ29+Umar+Hayat+Mahal+Library+(Gulzar+Manzil),+Muslim+Bazar,+Jafar+Qasmi+Street,+near+Umar+Hayat+Mehal,+Muhalla+Raikhti+Chiniot,+35400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b6be700c32f:0x29c04ed9bf8caa55?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Unique Architect & Construction Group",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/uniquearchitect99",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0341 9993182",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Unique+Architect+%26+Construction+Group,+Pacca+garah+islamnagar+road,+Kashmir+Road,+near+medplus+pharmacy,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb72752adf9b:0x1917cf5ac1be7094?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Unique Architect & Graphic Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0313 0639704"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Unique Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0344 6273577",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Unique+Architects,+Shaheen+Chok+Bus+Stop,+Sargodha+Road,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b132abdea79:0x3431c1252bf71535?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0344 6273577",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Unique+Architects,+Shaheen+Chok+Bus+Stop,+Sargodha+Road,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b132abdea79:0x3431c1252bf71535?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Unique Architects and Engineers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lodhran",
+                "Phone Number": "0301 2303759",
+                "Rating": 5.0,
+                "Reviews": 11.0,
+                "Map URL": "https://www.google.com/maps/dir//Unique+Architects+and+Engineers,+%D9%86%D8%B2%D8%AF+%DA%AF%D9%84%D8%A8%D8%B1%DA%AF+%DA%A9%D8%A7%D9%84%D9%88%D9%86%DB%8C+%DA%AF%DB%8C%D9%B9+%D9%86%D9%85%D8%A8%D8%B1+2+%D8%B3%D9%BE%D8%B1+%DA%86%D9%88%DA%A9%D8%8C+%DA%A9%DB%81%D8%B1%D9%88%DA%91+%D9%BE%DA%A9%D8%A7+%D8%B1%D9%88%DA%88,+Lodhr%C4%81n,+59320%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9f9b615eff2d:0x43d0f855384c3196?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Unique Home Associate",
+        "Category": "Architect",
+        "Website": "https://www.facebook.com/Malik.Nadeel",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0300 8999973",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Unique+Home+Associate,+Head+Marala+Rd,+Gohadpur,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebd8317e177b:0xa236e5995510efe?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sialkot",
+                "Phone Number": "0300 8999973",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Unique+Home+Associate,+Head+Marala+Rd,+Gohadpur,+Sialkot,+51310/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eebd8317e177b:0xa236e5995510efe?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "United Architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 0114324",
+                "Map URL": "https://www.google.com/maps/dir//6FVV%2BJPR+United+Architects,+Block+B+Model+Town,+Multan,+59110/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b358b563e85e7:0xeab5c83360b0552d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Urban Bricks",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0322 5616213",
+                "Rating": 4.8,
+                "Reviews": 46.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.07,Upper+Ground,+Urban+Bricks,+Star+Plaza,+opposite+Master+City,+Gujranwala,+52250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed5f0d5005e43:0xd647586db7f703f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Urban Draft",
+        "Category": "Architecture firm",
+        "Website": "https://urbandrafts.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0339 0013753",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Urban+Draft,+Main+Street,+near+Buch+Villas,+Ahbab+Colony+Multan,+60800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35ac19630947:0xb31bb86b9e259900?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Usama Amjad Architect Pvt",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 7644954",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Usama+Amjad+Architect+Pvt,+n+toll+plaza,+Main+Sheikhpura+road,+Punjab,+near+Gatwala+Park,+opposite+Suzuki+crown+motor+n+widi-e-sitara,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226fa6c3831d8f:0xaf729d036d4e77c1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Usama Estate Agency & Architecture",
+        "Category": "Real estate developer",
+        "Locations": [
+            {
+                "City": "Sheikhupura",
+                "Phone Number": "0318 4345440",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//M2X9%2BRQJ+Usama+Estate+Agency+%26+Architecture,+Khan+Colony+Rd,+bypas+chok+Khan+Colony,+Sheikhupura/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918e938640d9fdd:0x9e95eb31a9a6dfae?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Usama Imtiaz Architects / Interior Design / Architect in Multan / Archviz Architect",
+        "Category": "Architectural designer",
+        "Website": "https://instagram.com/usamaimtiazarchitects?igshid=NGVhN2U2NjQ0Yg==",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0337 7279559",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//House+77,+Usama+Imtiaz+Architects+%2F+Interior+Design+%2F+Architect+in+Multan+%2F+Archviz+Architect,+Faisal+Cottages,+Phase-1+Askari+Bypass,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31af05ca5b29:0xe7d4ba1cf05998cb?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Multan",
+                "Phone Number": "0337 7279559",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//House+77,+Usama+Imtiaz+Architects+%2F+Interior+Design+%2F+Architect+in+Multan+%2F+Archviz+Architect,+Faisal+Cottages,+Phase-1+Askari+Bypass,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b31af05ca5b29:0xe7d4ba1cf05998cb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Usman Chinioti 2D&3D Designer",
+        "Category": "Interior designer",
+        "Website": "https://www.youtube.com/channel/UC0ihxPU8DrNVoh0VGQhvf5A",
+        "Locations": [
+            {
+                "City": "Chiniot",
+                "Phone Number": "0341 9737176",
+                "Rating": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Usman+Chinioti+2D%263D+Designer,+Peer+Hamiyo+Road,+Chiniot,+35400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39223b58665350d9:0x3233381661eeca63?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Utopia Designs",
+        "Category": "Architect",
+        "Website": "http://utopiadesigns.in/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Utopia+Designs,+207,+Surat+-+Dumas+Rd,+nr.+Valentine+Cinema,+SNS,+Synergy,+Piplod,+Rundh,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04d8514451cfb:0x18e8f5ae0f86c7a6?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//Utopia+Designs,+207,+Surat+-+Dumas+Rd,+nr.+Valentine+Cinema,+SNS,+Synergy,+Piplod,+Rundh,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be04d8514451cfb:0x18e8f5ae0f86c7a6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Utovision Designs Bahawalpur-Best Architects in Bahawalpur/Multan",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0335 5247894",
+                "Rating": 5.0,
+                "Reviews": 20.0,
+                "Map URL": "https://www.google.com/maps/dir//Utovision+Designs+Bahawalpur-Best+Architects+in+Bahawalpur%2FMultan,+Chowk+Bazar,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9134aad949e3:0xf8545a27dc758ff3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Utovision Designs and Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0335 5247894",
+                "Rating": 4.8,
+                "Reviews": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Utovision+Designs+and+Associates,+Bosan+Rd,+near+Beast+Burgers,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33769b9ae95f:0xfdffcd570b8c9256?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Uzair Associates & Builders",
+        "Category": "Architect",
+        "Website": "http://www.uzairrasul.com/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0321 9091010",
+                "Rating": 4.0,
+                "Map URL": "https://www.google.com/maps/dir//Uzair+Associates+%26+Builders,+1st+floor+Gill+plaza+bear+DC+Colony+main+Gate,+GT+Rd,+Meher+Colony,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29a5e3d589db:0x37bd0d20191b369d?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "VISION ASSOCIATES",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0332 8678108",
+                "Map URL": "https://www.google.com/maps/dir//VISION+ASSOCIATES,+Road+Gulzar-e-Madina+Rd,+near+Rimsha+Hospital,+Ramtalai+Area,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1bed30c35d01:0x550f39484b54d943?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "VISUAL ARCH DESIGN STUDIO",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0312 1433515",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Vaaste Architects and interior designer",
+        "Category": "Architecture firm",
+        "Website": "http://www.vaastearchitects.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Vaaste+Architects+and+interior+designer,+Western+Vesu+Point,+902,+Vesu+Main+Road,+nr.+Reliance+mart,+Vesu,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be0538222e64f25:0xd20eaa8f4d7be063?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Vision Developers & Builders",
+        "Category": "Construction company",
+        "Website": "http://www.facebook.com/VisionDevelopersBuilders/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0300 8644560",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Plot+4,+Vision+Developers+%26+Builders,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b35208bcbe25d:0x863ff6658f80a39a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ViveraDesigns",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0336 9882085"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Volcan Engineering Pvt ltd",
+        "Category": "Construction company",
+        "Website": "https://volcanengineering.com/",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0332 5696886",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Volcan+Engineering+Pvt+ltd,+Office+No+F+07+08+Fatima+Commercial+Center,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b9172b660ca63:0x3aac65ad43de84de?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Vox Designs & Builders",
+        "Category": "Architect",
+        "Website": "https://nearby101.com/vox-design-studio/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0316 0817682",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Vox+Designs+%26+Builders,+Commercial+market,+Shop%2316+Multan+Public+School+Road,+Sahara+Homes+Sahar+Villas+(Sahara+Homes),+Multan,+60600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b3762c5dfba8b:0x7c4f58968511a8f0?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "WHITE SPACES",
+        "Category": "Architecture firm",
+        "Website": "http://whitespaces.com.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 9496430",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//WHITE+SPACES,+63+A,+Faisal+Town,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905eba728b3eb:0x50c6886320a7b302?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "WM ARCHITECTS BAHAWALPUR",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0303 3264800",
+                "Map URL": "https://www.google.com/maps/dir//WM+ARCHITECTS+BAHAWALPUR,+FATIMA+COMMERCIAL+CENTER,+Yazman+Rd,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b91006bd05237:0x59b69824dd4cd344?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Waheed Architects",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0345 3211880",
+                "Rating": 4.1,
+                "Reviews": 14.0,
+                "Map URL": "https://www.google.com/maps/dir//Waheed+Architects,+Layyah+road,+near+bypass+road,+Chowk+Azam,+31450/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3924555b62b36f37:0x495781c28ed3b84b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Wahid estate and architect offcial",
+        "Category": "Real estate agency",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 8786749",
+                "Map URL": "https://www.google.com/maps/dir//H3MM%2BPWC+Wahid+estate+and+architect+offcial,+Gujrat+-+Jalalpur+Jattan+Rd,+Radhanpur,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b5b384b070f:0xb06dfdddbdeda8d7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Wakkar DesignHouse",
+        "Category": "Interior architect office",
+        "Website": "https://facebook.com/wakkardesignhouse",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0316 4759630",
+                "Map URL": "https://www.google.com/maps/dir//Wakkar+DesignHouse,+Wakkar+DesignHouse+Architect,interior+Designer,+Jail+Rd,+Marghzar+Colony,+Gujrat,+50300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f05138b1b76cb:0x90a0996af3843de6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Wali sons Architect",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0318 7400912",
+                "Map URL": "https://www.google.com/maps/dir//Wali+sons+Architect,+Wadeia+e+sitara,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39226f71e3a0a1bb:0xc0a9aa4151b6743?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "WallNut Architects",
+        "Category": "Construction company",
+        "Website": "http://www.wallnutarchitects.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4470917",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//WallNut+Architects,+34+D,+DHA+Phase+6,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919011389363a81:0x899f04646b8345ea?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Waqas Jamil House Layyah",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Layyah",
+                "Phone Number": "0303 6558961",
+                "Rating": 5.0,
+                "Reviews": 15.0,
+                "Map URL": "https://www.google.com/maps/dir//Waqas+Jamil+House+Layyah,+Waqas+Jamil+House,+Layyah/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925a727d5bf6221:0xedb7694a8af9471b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Wasif Ali & Associates",
+        "Category": "Architecture firm",
+        "Website": "http://waa.com.pk/",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "(042) 35839818",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Wasif+Ali+%26+Associates,+75-B+Ferozepur+Road,+Main+Lahore+%E2%80%93+Kasur+Rd,+Block+L+Gulberg+III,+Lahore,+54600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190589618a6949:0x6dd922fd9aba436c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 35839818",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//Wasif+Ali+%26+Associates,+75-B+Ferozepur+Road,+Main+Lahore+%E2%80%93+Kasur+Rd,+Block+L+Gulberg+III,+Lahore,+54600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190589618a6949:0x6dd922fd9aba436c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Wasim & associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0321 4574820",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//Wasim+%26+associates,+Ura,+Chowk,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391e95169f8a58a9:0x9e92179865c23478?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Winds International",
+        "Category": "Architect",
+        "Website": "https://www.windsinternational.com/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0370 4441138",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//1st+floor,+building+number,+Winds+International,+41,+Sector+K+phase+1DHA,+Lahore,+54770/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905fd1f131b55:0x1c8a2e02d0efb18?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "YARS Architects & Builders",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/YarsArchitects",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0331 3495005",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//YARS+Architects+%26+Builders,+Street+no+01,+Fort+Rd,+Gulshan+Colony+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266d30e39bae27:0x7bd2d67b2571e24a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Dera Ghazi Khan",
+                "Phone Number": "0331 3495005",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//YARS+Architects+%26+Builders,+Street+no+01,+Fort+Rd,+Gulshan+Colony+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266d30e39bae27:0x7bd2d67b2571e24a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Layyah",
+                "Phone Number": "0331 3495005",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//YARS+Architects+%26+Builders,+Street+no+01,+Fort+Rd,+Gulshan+Colony+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266d30e39bae27:0x7bd2d67b2571e24a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0331 3495005",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//YARS+Architects+%26+Builders,+Street+no+01,+Fort+Rd,+Gulshan+Colony+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266d30e39bae27:0x7bd2d67b2571e24a?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0331 3495005",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//YARS+Architects+%26+Builders,+Street+no+01,+Fort+Rd,+Gulshan+Colony+Dera+Ismail+Khan,+29050/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39266d30e39bae27:0x7bd2d67b2571e24a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Yasir Mehmood Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 37503356",
+                "Rating": 4.7,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//Yasir+Mehmood+Associates,+135+Lahore+%E2%80%93+Kasur+Rd,+Fazlia+Colony,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905a6309ae237:0xd1c7fc43b7b21a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Yawar ArchiSpace - Best Architecture & Interior Designer in Lahore",
+        "Category": "Architecture firm",
+        "Website": "https://www.facebook.com/Ar.YawarAli",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0348 4138883",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//Yawar+ArchiSpace+-+Best+Architecture+%26+Interior+Designer+in+Lahore,+231+B2,+Johar+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391903365587a053:0xfed2d580b41008f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Young Engineers Architect and Property Adviser",
+        "Category": "Real estate agent",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0303 4071791",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Young+Engineers+Architect+and+Property+Adviser,+Manzoor+Plaza,+Old+Rasul+Rd,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d3312bf1b99:0xfcc1499047d6ce9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0303 4071791",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Young+Engineers+Architect+and+Property+Adviser,+Manzoor+Plaza,+Old+Rasul+Rd,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d3312bf1b99:0xfcc1499047d6ce9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Yousaf Athar Associates",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0322 6375917",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//Yousaf+Athar+Associates,+Office%23+35-36,+2nd+floor,+Gulberg+Centre,+Gulberg+III,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39190531c03932a9:0x426a938546b2cc24?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Z axis Interiors & Architects",
+        "Category": "Interior designer",
+        "Website": "http://www.zaxisinteriors.com/",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0307 8088379",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//27-J,+M3HM%2B3MM+Z+axis+Interiors+%26+Architects,+Central+Plaza,+Commercial+Center,+W+Block+Farid+Town,+near+Police+Station,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b759cacc96f5:0x731eb8600ede46e5?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sahiwal",
+                "Phone Number": "0307 8088379",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//27-J,+M3HM%2B3MM+Z+axis+Interiors+%26+Architects,+Central+Plaza,+Commercial+Center,+W+Block+Farid+Town,+near+Police+Station,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b759cacc96f5:0x731eb8600ede46e5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Z+Z Architects",
+        "Category": "Architecture firm",
+        "Website": "http://zahidpluszahidarhitects.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0336 0723466",
+                "Rating": 3.3,
+                "Map URL": "https://www.google.com/maps/dir//Z%2BZ+Architects,+office%2308+4th+floor+legacy+tower+koh+e+noor+city,+Jaranwala+Rd,+Kohinoor+City,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39225d91a56980ef:0x14d3997997527423?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Z.R Architecture Designer",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Attock",
+                "Phone Number": "0334 8980067",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//R938%2B699+Z.R+Architecture+Designer/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19005f356651:0xf8279d7c3b29801?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0334 8980067",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//R938%2B699+Z.R+Architecture+Designer/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19005f356651:0xf8279d7c3b29801?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZAFAR & SONS CONSTRUCTION COMPANY",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0301 7044466",
+                "Map URL": "https://www.google.com/maps/dir//F39H%2BMM7+ZAFAR+%26+SONS+CONSTRUCTION+COMPANY,+Sargodha+Rd,+Muslim+Town+2,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224359e71f1839:0x58b9dc3afb50115b?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZAIN MALIK ARCHITECTS",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0333 4767674",
+                "Rating": 4.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//ZAIN+MALIK+ARCHITECTS,+14+CCA,+Second+floor,+Sector+C+Phase+5+D.H.A,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919099e26edbaaf:0xcbadfde758e9df92?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZAK Construction Services",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Rahim Yar Khan",
+                "Phone Number": "0300 8670849",
+                "Rating": 3.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//C7J4%2B8W8+ZAK+Construction+Services,+Rahim+Yar+Khan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39375b3920ffac3f:0xb1088b1ae61eb4b2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZAQ Interiors",
+        "Category": "Interior designer",
+        "Website": "https://linktr.ee/zaq.interiors",
+        "Locations": [
+            {
+                "City": "Sargodha",
+                "Phone Number": "0314 4911022",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//ZAQ+Interiors,+38%2FA,+Istaqlal-Abad+Colony,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921772156e4db0d:0xa74a8ded812964c3?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Sargodha",
+                "Phone Number": "0314 4911022",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//ZAQ+Interiors,+38%2FA,+Istaqlal-Abad+Colony,+Sargodha,+40100/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921772156e4db0d:0xa74a8ded812964c3?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZEESHAN MEHAR Architecture",
+        "Category": "Apartment building",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Map URL": "https://www.google.com/maps/dir//ZEESHAN+MEHAR+Architecture,+763+L+Block+Street+1,+Farid+Town,+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922c90014f21e75:0x1bd56f1891307381?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZIGAR KHAN & Associates- Best Architects in Islamabad",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0333 9325312",
+                "Rating": 4.9,
+                "Reviews": 159.0,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+R,+ZIGAR+KHAN+%26+Associates-+Best+Architects+in+Islamabad,+Arshad+Arcade,+1,+Block+D+PWD,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed4f39b4d261:0xc1be59051cca4faa?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0333 9325312",
+                "Rating": 4.9,
+                "Reviews": 159.0,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+R,+ZIGAR+KHAN+%26+Associates-+Best+Architects+in+Islamabad,+Arshad+Arcade,+1,+Block+D+PWD,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed4f39b4d261:0xc1be59051cca4faa?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Rawalpindi",
+                "Phone Number": "0333 9325312",
+                "Rating": 4.9,
+                "Reviews": 159.0,
+                "Map URL": "https://www.google.com/maps/dir//2nd+Floor,+R,+ZIGAR+KHAN+%26+Associates-+Best+Architects+in+Islamabad,+Arshad+Arcade,+1,+Block+D+PWD,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfed4f39b4d261:0xc1be59051cca4faa?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZM ARCHITECTS",
+        "Category": "Design agency",
+        "Website": "https://www.zmarchitects.net/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "(042) 32175891",
+                "Rating": 4.4,
+                "Map URL": "https://www.google.com/maps/dir//ZM+ARCHITECTS,+Plot+C+116,+Sector+C+DHA+Phase+6,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391909f024b45251:0xc148bd82a0baae6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZN Associates",
+        "Category": "Real estate agency",
+        "Website": "http://www.znassociate.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0333 8333334",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ZN+Associates,+Multan+Public+School+Road,+near+DHA+Head+Office,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b358669b27957:0xc9913a757ba8111c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZR ARCHITECT",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0310 7747913",
+                "Map URL": "https://www.google.com/maps/dir//ZR+ARCHITECT,+NEW+REHMET+SENTER,+Rehman+Shaheed+Rd,+Shadman+Colony,+Gujrat,+50700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b9ef1a7d94b:0x46e754886231fbf9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZR ARCHITECT & ASSOCIATES.",
+        "Category": "Architect",
+        "Website": "https://mzararzain.websites.co.in/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0314 5517005",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//ZR+ARCHITECT+%26+ASSOCIATES.,+Jhang+Rd,+Ali+Housing+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39224547d6759ec3:0x63c0267f37e89921?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZRS Developers",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0323 7931715",
+                "Rating": 4.3,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//FC87%2BQRR+ZRS+Developers,+Sargodha+Mandi+Bahauddin+Rd,+Kuthiala+Shaikhan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3921d90007d94d0d:0xe4b4cbf42e4ef54e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zaha Design Studio",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0314 6264847",
+                "Rating": 4.9,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.538,+Zaha+Design+Studio,+Meezan+Executive+Tower,+Liaqat+Rd,+near+Chiniot+Bazar,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x891c5127fd54dde5:0x9203003db973a1d9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0314 6264847",
+                "Rating": 4.9,
+                "Reviews": 18.0,
+                "Map URL": "https://www.google.com/maps/dir//Office+No.538,+Zaha+Design+Studio,+Meezan+Executive+Tower,+Liaqat+Rd,+near+Chiniot+Bazar,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x891c5127fd54dde5:0x9203003db973a1d9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zaheer Construction and Design Center",
+        "Category": "Home builder",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "0323 5804575",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//XP2W%2BMF9+Zaheer+Construction+and+Design+Center,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91a1b78a3d09:0x66d076ed4b22c28f?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Jhelum",
+                "Phone Number": "0323 5804575",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//XP2W%2BMF9+Zaheer+Construction+and+Design+Center,+Jhelum,+49600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f91a1b78a3d09:0x66d076ed4b22c28f?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zaib arcad",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0347 4809017"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zaid Design Studio (Architect)",
+        "Category": "Architect",
+        "Website": "https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://zaid-design-studio-architect.business.site/&ved=2ahUKEwjQrc-gk6OGAxVLSfEDHTD3CTEQFnoECDsQAQ&usg=AOvVaw0JeyiFU6Q50Dx5tBLwvZr1",
+        "Locations": [
+            {
+                "City": "Sahiwal",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//Zaid+Design+Studio+(Architect),+Midhali+Road,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b90afc19d467:0xbea8d97fc6c2afa7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ZainAssociates",
+        "Category": "Interior designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0300 8808800",
+                "Map URL": "https://www.google.com/maps/dir//ZainAssociates,+Mall+of+Lyallpur,+Office+%23+91,+Main+Blvd,+D+Ground+Block+D+People's+Colony+No+1,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269e19f86620f:0x7b3b0506099c4641?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zawiya Designs",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0301 8409921",
+                "Rating": 4.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//G9F2%2B2Q7+Zawiya+Designs,+Block+P+Gulberg+2,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391904f926f24e53:0x6efd6042881365da?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zawiya, Design & Construction",
+        "Category": "Architecture firm",
+        "Website": "http://zawiya.com.pk/",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0300 5323215",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//Office+%23+50,+Phase,+Zawiya,+Design+%26+Construction,+3,+Garden+Town,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f297796e38a85:0xd091ba17b13ed2ce?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zed Associates",
+        "Category": "Interior architect office",
+        "Website": "https://linktr.ee/zedassociates",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0334 4459698",
+                "Rating": 5.0,
+                "Reviews": 1.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zeeshan Associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0308 7864207",
+                "Map URL": "https://www.google.com/maps/dir//Zeeshan+Associates,+main+Gujrat+-+Jalalpur+Jattan+Rd,+near+bashir+firniture,+Jalalpur+Jattan,+50780/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f03d0d03ed38b:0x2615e2e1af4efb2e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zishan Butt",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0321 7802556",
+                "Rating": 5.0,
+                "Reviews": 4.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "Zohan Architect's & Developer's",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0301 1198181",
+                "Rating": 5.0,
+                "Reviews": 6.0,
+                "Map URL": "https://www.google.com/maps/dir//Zohan+Architect's+%26+Developer's,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b33afc9efb2bd:0xb69a8e610ac1de57?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "aa design home",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0315 6618095",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//aa+design+home,+p-12+imtiaz+shaheed+road,+link+Susan+Road,+near+dig+office,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269eacca9b8fb:0x287074ac38d9d600?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "alkaramah architects & interior designers",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Sialkot",
+                "Phone Number": "0335 1031031",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//alkaramah+architects+%26+interior+designers,+2nd+Floor,+Yousaf+Plaza,+Agha+Kamal,+Haider+Road,+Sialkot+Cantonment,+Sialkot/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391eeb99e40780ad:0x28de4defef29291a?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "arassociates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4809018",
+                "Rating": 5.0,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//arassociates,+58,+Block+B+Model+Town,+Lahore,+54700/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919058be685033b:0x8c422dac694fe181?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "architect valley",
+        "Category": "Architectural designer",
+        "Website": "https://architectvalleypk.blogspot.com/",
+        "Locations": [
+            {
+                "City": "Rajanpur",
+                "Phone Number": "0332 1766663",
+                "Rating": 4.5,
+                "Reviews": 2.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "architecture",
+        "Category": "Landscape architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0306 7979707",
+                "Map URL": "https://www.google.com/maps/dir//architecture,+khursheed+trade+center,+Muhammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a72237c37719:0x5c3d5897c9fa4132?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "0306 7979707",
+                "Map URL": "https://www.google.com/maps/dir//architecture,+khursheed+trade+center,+Muhammad+Ali+Jinnah+Rd,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a72237c37719:0x5c3d5897c9fa4132?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "atta gujjar",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0345 2299645",
+                "Map URL": "https://www.google.com/maps/dir//F34J%2B75J+atta+gujjar,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392243a5447e5f4d:0xfaf196d0871eb12?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "autocad operator (architectural )",
+        "Category": "Drafting service",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0340 7611079"
+            },
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0340 7611079"
+            }
+        ]
+    },
+    {
+        "Shop Name": "city bhakkar",
+        "Category": "Condominium complex",
+        "Locations": [
+            {
+                "City": "Bhakkar",
+                "Phone Number": "0344 2405108",
+                "Rating": 4.3,
+                "Reviews": 42.0,
+                "Map URL": "https://www.google.com/maps/dir//J3H4%2B8VX+city+bhakkar,+Bhakkar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3925d70e332eb091:0x4b2282b63a7cd5a1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "cozy",
+        "Category": "Warehouse",
+        "Website": "http://www.thecozyhomez.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0322 5997157",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//cozy,+Cozy+home,+next+to+swad+restaurant,+Servis+Industries+Gujrat,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1b895801769f:0x53fd96b729e03fe4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "design studio dg khan",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Dera Ghazi Khan",
+                "Rating": 1.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//design+studio+dg+khan,+house+no+54+block+no+8,+Block+8,+Dera+Ghazi+Khan,+32200/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393ab1be702a985f:0x66d67748befe8ae4?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "dreamarchitect871",
+        "Category": "Architectural designer",
+        "Website": "https://armannasir042.wixsite.com/dreamarchitect871",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "0313 7925044",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//dreamarchitect871,+Pak+colony,+Street+Number+3,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7ee46c048a5:0x581e657f55d038e9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Okara",
+                "Phone Number": "0313 7925044",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//dreamarchitect871,+Pak+colony,+Street+Number+3,+Okara,+56300/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7ee46c048a5:0x581e657f55d038e9?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "eGarden Landscape & Architectural Services",
+        "Category": "Landscape architect",
+        "Website": "https://egarden.pk/",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0305 2222455",
+                "Rating": 4.5,
+                "Map URL": "https://www.google.com/maps/dir//eGarden+Landscape+%26+Architectural+Services,+7A,+Main+Gulberg,+Lahore,+54660/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905cce8ed0f5b:0xac7145ac09347662?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "eash Interiors Branch Office",
+        "Category": "Interior architect office",
+        "Website": "https://web.facebook.com/eash-Interiors-302965876857065/?ref=bookmarks",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0337 7000020",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//HFFF%2B7MC+eash+Interiors+Branch+Office,+Green+St,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dcbc41b3b49:0x4ad25abc6d526281?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0337 7000020",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//HFFF%2B7MC+eash+Interiors+Branch+Office,+Green+St,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dcbc41b3b49:0x4ad25abc6d526281?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "hassan Corporation",
+        "Category": "Architectural salvage store",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0306 1287500",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8W2C%2BX6F+hassan+Corporation,+Khanewal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b552bd50bf0ad:0x5603283f12d02a93?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Khanewal",
+                "Phone Number": "0306 1287500",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8W2C%2BX6F+hassan+Corporation,+Khanewal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b552bd50bf0ad:0x5603283f12d02a93?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "house of bamboo",
+        "Category": "Architecture firm",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0300 4739710",
+                "Rating": 2.9,
+                "Reviews": 10.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "iacarchitect",
+        "Category": "Architecture firm",
+        "Website": "https://www.iacarchitects.com/",
+        "Locations": [
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0321 7243575",
+                "Map URL": "https://www.google.com/maps/dir//iacarchitect,+1,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d2aa146610d:0xc8e5f00530c3e880?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Mandi Bahauddin",
+                "Phone Number": "0321 7243575",
+                "Map URL": "https://www.google.com/maps/dir//iacarchitect,+1,+Mandi+Bahauddin,+50400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7d2aa146610d:0xc8e5f00530c3e880?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ilyas associates",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Lahore",
+                "Phone Number": "0321 4461311",
+                "Rating": 4.3,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//ilyas+associates,+New+Jinnah+Plaza,+Office+No+17,+Jinnah+Ave,+New+Super+Town,+defence+chowk,+Lahore,+Punjab,+1+Link+1,+New+Super+Town,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391905c404a7a1b3:0x93a694658732f1c1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "ismail associates anarkali bazar",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Hafizabad",
+                "Phone Number": "0346 6532032",
+                "Map URL": "https://www.google.com/maps/dir//ismail+associates+anarkali+bazar,+anakali+nazar+gujranwala+walaroad,+near+bank+al+habib,+Hafizabad,+67001/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f4d1dbaf87529:0xa28a82413a6d2de?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "kazmi architect solution",
+        "Category": "Real estate developer",
+        "Website": "https://kazmiarchitect.blogspot.com/",
+        "Locations": [
+            {
+                "City": "Multan",
+                "Phone Number": "0315 5407441",
+                "Map URL": "https://www.google.com/maps/dir//kazmi+architect+solution,+Paramount+villas,+Main+Khanewal+Rd,+opp.+Multan+Cng+Pump,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b334b3c9d8b6d:0x7f221be585cef268?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "mohsin Dogar architect",
+        "Category": "Construction company",
+        "Locations": [
+            {
+                "City": "Gujranwala",
+                "Phone Number": "0323 6074100",
+                "Map URL": "https://www.google.com/maps/dir//46G8%2BC3G+mohsin+Dogar+architect,+Ajwa+city+Pakistan,+Gujranwala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f2b004f93bb3f:0xd45627c3d2ff65b7?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "msl interiors and architects",
+        "Category": "Architectural designer",
+        "Website": "https://sites.google.com/view/mslarchitects",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0312 0411414",
+                "Rating": 5.0,
+                "Map URL": "https://www.google.com/maps/dir//msl+interiors+and+architects,+Elite+City,+Kasur,+55051/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b9477e14dfd9:0x39773475f8849009?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "multidesign",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0348 7507300",
+                "Rating": 4.2,
+                "Reviews": 9.0,
+                "Map URL": "https://www.google.com/maps/dir//multidesign,+314%2FC.+Sabir+market.Tariq+Rd,+Jhang+Rd,+Gulfishan+Colony,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392242d8a6c83bc9:0x4d2ed3ba9ef72e51?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "prarthit shah architects",
+        "Category": "Architect",
+        "Website": "http://www.psarajkot.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.7,
+                "Map URL": "https://www.google.com/maps/dir//prarthit+shah+architects,+Bhaktinagar+Society,+Bhakti+Nagar,+Rajkot,+Gujarat+360002,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3959ca0c55e9cced:0x40a87769238dc55?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "qamar associate architect , builder & developers",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Bahawalpur",
+                "Phone Number": "0305 6623876",
+                "Rating": 4.5,
+                "Reviews": 8.0,
+                "Map URL": "https://www.google.com/maps/dir//CM3X%2BQRP+qamar+associate+architect+,+builder+%26+developers,+Girls+College+Rd,+near+dewan+wali+puly,+Garden+Town,+Bahawalpur/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b910718283085:0x3b694cf42a2206d8?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "status architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Okara",
+                "Phone Number": "(044) 2551313",
+                "Rating": 5.0,
+                "Reviews": 3.0,
+                "Map URL": "https://www.google.com/maps/dir//RC5R%2B49C+status+architects,+Wajad+plaza,+Okara/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922a7ca3d5c1645:0x46ba9cc5bcb10b1?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "status.architects",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Vehari",
+                "Phone Number": "0302 5746083",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//5M5G%2BJJG+status.architects,+Vehari+Bazar,+Burewala/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393cdfa8b3b18389:0x851b0f1d044af8b2?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "sts architect",
+        "Category": "Store",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Phone Number": "0300 6280281",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//H3P8%2BC6F+sts+architect,+Rehman+Shaheed+Rd,+Shadman+Colony,+Gujrat/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f1ad20977941b:0x1dea420efebc99a6?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "the interior WORKSHOP",
+        "Category": "Interior architect office",
+        "Website": "http://www.theinteriorworkshop.com/",
+        "Locations": [
+            {
+                "City": "Gujrat",
+                "Rating": 4.8,
+                "Map URL": "https://www.google.com/maps/dir//the+interior+WORKSHOP,+Avadh+Kontina,+311,+VIP+Rd,+Vesu,+Surat,+Gujarat+395007,+India/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3be0539d7b2d0795:0x60b20c438addc17e?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "usmannaqshanavees&ploting",
+        "Category": "Architectural designer",
+        "Website": "https://www.facebook.com/profile.php?id=100068643560899&mibextid=ZbWKwL",
+        "Locations": [
+            {
+                "City": "Chakwal",
+                "Phone Number": "0336 5687001",
+                "Map URL": "https://www.google.com/maps/dir//shop+no.2,+usmannaqshanavees%26ploting,+sajid+nazeer+markeet,+Girls+College+Rd,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d25765c868d:0xe220ba7a1b298862?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Chakwal",
+                "Phone Number": "0336 5687001",
+                "Map URL": "https://www.google.com/maps/dir//shop+no.2,+usmannaqshanavees%26ploting,+sajid+nazeer+markeet,+Girls+College+Rd,+Chakwal,+48800/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39205d25765c868d:0xe220ba7a1b298862?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "yamm",
+        "Category": "Interior architect office",
+        "Website": "http://www.yammgroup.com/",
+        "Locations": [
+            {
+                "City": "Jhelum",
+                "Phone Number": "(0544) 634242",
+                "Rating": 4.9,
+                "Map URL": "https://www.google.com/maps/dir//yamm,+Mian+ameen+plaza,+Yamm,+GT+Rd,+Dina,+49400/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f8d9a31ae6e51:0x44f553e2d65f9beb?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "zameenplan.com",
+        "Category": "Architect",
+        "Website": "https://zameenplan.com/",
+        "Locations": [
+            {
+                "City": "Faisalabad",
+                "Phone Number": "0306 1031381",
+                "Rating": 4.9,
+                "Reviews": 9.0
+            }
+        ]
+    },
+    {
+        "Shop Name": "| Architectural Design Services",
+        "Category": "Architectural designer",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//%7C+Architectural+Design+Services,+15,+50000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f997cfd1de283:0x67b3484c2463a8d5?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "المکہ انٹیرئر وال پیپر۔پیلنگ۔فائبر شیٹ",
+        "Category": "Interior architect office",
+        "Locations": [
+            {
+                "City": "Khanewal",
+                "Phone Number": "0302 2856621",
+                "Rating": 5.0,
+                "Reviews": 1.0,
+                "Map URL": "https://www.google.com/maps/dir//8W6X%2BQCH+%D8%A7%D9%84%D9%85%DA%A9%DB%81+%D8%A7%D9%86%D9%B9%DB%8C%D8%B1%D8%A6%D8%B1+%D9%88%D8%A7%D9%84+%D9%BE%DB%8C%D9%BE%D8%B1%DB%94%D9%BE%DB%8C%D9%84%D9%86%DA%AF%DB%94%D9%81%D8%A7%D8%A6%D8%A8%D8%B1+%D8%B4%DB%8C%D9%B9,+Multan+Lahore+Rd,+Iqbal+Nagar,+Khanewal%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b559570a2da1b:0xa602ad4f923a679c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    },
+    {
+        "Shop Name": "مہر سجاد ٹرنک ہاؤس",
+        "Category": "Architect",
+        "Locations": [
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 7573507",
+                "Rating": 4.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//39QR%2BMHG+%D9%85%DB%81%D8%B1+%D8%B3%D8%AC%D8%A7%D8%AF+%D9%B9%D8%B1%D9%86%DA%A9+%DB%81%D8%A7%D8%A4%D8%B3%D8%8C+%D8%A8%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D9%84+%DA%AF%D9%88%D8%B1%D9%86%D9%85%D9%86%D9%B9+%D8%A7%DB%8C%D9%84%DB%8C%D9%85%D9%86%D9%B9%D8%B1%DB%8C+%D8%B3%DA%A9%D9%88%D9%84,+Bhalla%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b744fb986ae9:0x86a45d17db57049c?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Kasur",
+                "Phone Number": "0300 7573507",
+                "Rating": 4.5,
+                "Reviews": 2.0,
+                "Map URL": "https://www.google.com/maps/dir//39QR%2BMHG+%D9%85%DB%81%D8%B1+%D8%B3%D8%AC%D8%A7%D8%AF+%D9%B9%D8%B1%D9%86%DA%A9+%DB%81%D8%A7%D8%A4%D8%B3%D8%8C+%D8%A8%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D9%84+%DA%AF%D9%88%D8%B1%D9%86%D9%85%D9%86%D9%B9+%D8%A7%DB%8C%D9%84%DB%8C%D9%85%D9%86%D9%B9%D8%B1%DB%8C+%D8%B3%DA%A9%D9%88%D9%84,+Bhalla%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b744fb986ae9:0x86a45d17db57049c?sa=X&ved=1t:57443&ictx=111"
+            }
+        ]
+    }
+];
+
+export const ALL_ARCHITECTS: Architect[] = rawData.map(item => {
+  const locations = item.Locations.map(loc => ({
+    ...loc,
+    citySlug: slugify(loc.City)
+  }));
+  
+  const ratings = locations.filter(l => l.Rating).map(l => l.Rating as number);
+  const globalRating = ratings.length > 0 ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
+  const totalReviews = locations.reduce((acc, loc) => acc + (loc.Reviews || 0), 0);
+
+  return {
+    ...item,
+    Locations: locations,
+    slug: slugify(item['Shop Name']),
+    globalRating,
+    totalReviews
+  } as Architect;
+});
+
+export const ARCHITECT_MAP = new Map(ALL_ARCHITECTS.map(a => [a.slug, a]));
+
+export const CITIES: CityInfo[] = Array.from(
+  new Set(ALL_ARCHITECTS.flatMap(a => a.Locations.map(loc => loc.City)))
+).map(cityName => {
+  const slug = slugify(cityName);
+  const count = ALL_ARCHITECTS.filter(a => a.Locations.some(loc => loc.citySlug === slug)).length;
+  return {
+    name: cityName,
+    slug: slug,
+    count: count,
+    image: `https://picsum.photos/seed/${slug}/800/600`
+  };
+}).sort((a, b) => b.count - a.count);
+
+export const CITY_MAP = new Map(CITIES.map(c => [c.slug, c]));
+
+export const getArchitectBySlug = (slug: string) => ARCHITECT_MAP.get(slug);
+
+export const getArchitectsByCity = (citySlug: string): Architect[] => {
+  return ALL_ARCHITECTS.filter(a => a.Locations.some(loc => loc.citySlug === citySlug));
+};
