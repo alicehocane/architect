@@ -15,11 +15,8 @@ const PAGE_SIZE = 12;
 const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackClick }) => {
   const city = CITY_MAP.get(citySlug);
   
-  // SEO Optimization & Logic: Ensure AAK Architects is always first
   const architects = useMemo(() => {
     const list = getArchitectsByCity(citySlug);
-    
-    // Sort the existing local list by rating
     const sortedLocal = list.sort((a, b) => {
       const ratingA = a.globalRating || 0;
       const ratingB = b.globalRating || 0;
@@ -27,40 +24,26 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       return (b.totalReviews || 0) - (a.totalReviews || 0);
     });
 
-    // Extract AAK Architects index if it exists in the local list
     const aakInCityIndex = sortedLocal.findIndex(a => a.slug === 'aak-architects');
-    
     let finalList: Architect[] = [];
-    
     if (aakInCityIndex > -1) {
-      // If AAK is in this city, move it to front
       const [aak] = sortedLocal.splice(aakInCityIndex, 1);
       finalList = [aak, ...sortedLocal];
     } else {
-      // If AAK is NOT in this city, inject it as the first item (DesignDirectory Recommended)
       const aak = getArchitectBySlug('aak-architects');
-      if (aak) {
-        finalList = [aak, ...sortedLocal];
-      } else {
-        finalList = sortedLocal;
-      }
+      if (aak) finalList = [aak, ...sortedLocal];
+      else finalList = sortedLocal;
     }
-    
     return finalList;
   }, [citySlug]);
 
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  const displayedArchitects = useMemo(() => {
-    return architects.slice(0, visibleCount);
-  }, [architects, visibleCount]);
+  const displayedArchitects = useMemo(() => architects.slice(0, visibleCount), [architects, visibleCount]);
 
   useEffect(() => {
     if (!city) return;
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    
-    // SEO: ItemList Schema (Professional Listings)
     const listSchema = {
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -72,43 +55,7 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
         "url": `https://designdirectory.pk/#architects/${a.slug}`
       }))
     };
-
-    // SEO: Breadcrumb Schema
-    const breadcrumbSchema = {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://designdirectory.pk" },
-        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://designdirectory.pk/#cities" },
-        { "@type": "ListItem", "position": 3, "name": city.name }
-      ]
-    };
-
-    // SEO: FAQ Schema
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": `How many architects are in ${city.name}?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `There are currently ${architects.length} top-rated architectural firms with offices in ${city.name} listed on our directory.`
-          }
-        },
-        {
-          "@type": "Question",
-          "name": `Who is the best architect in ${city.name}?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `Our top-rated firms in ${city.name} include leading practices like ${architects.slice(0, 2).map(a => a["Shop Name"]).join(' and ')}.`
-          }
-        }
-      ]
-    };
-
-    script.text = JSON.stringify([listSchema, breadcrumbSchema, faqSchema]);
+    script.text = JSON.stringify(listSchema);
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
   }, [city, architects]);
@@ -116,25 +63,25 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
   if (!city) return <div className="p-20 text-center text-[#86868b]">City profile not found.</div>;
 
   return (
-    <div className="max-w-[1024px] mx-auto px-6 py-12 page-transition">
+    <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-20 py-12 page-transition">
       <button 
         onClick={onBackClick}
-        className="flex items-center gap-2 text-[#0066cc] mb-12 hover:underline text-[17px] font-medium group"
+        className="flex items-center gap-2 text-[#0066cc] mb-12 hover:underline text-[17px] font-bold group"
       >
-        <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        Explore more cities
+        <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        All Cities
       </button>
 
       <div className="mb-20">
-        <h1 className="text-[48px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f] mb-4 leading-none">
+        <h1 className="text-[48px] sm:text-[72px] lg:text-[88px] font-bold tracking-tight text-[#1d1d1f] mb-6 leading-[0.95]">
           Design in <span className="text-[#0066cc]">{city.name}</span>
         </h1>
-        <p className="text-[21px] sm:text-[24px] text-[#86868b] font-light max-w-[700px]">
+        <p className="text-[21px] sm:text-[26px] text-[#86868b] font-light max-w-[800px]">
           Discover elite practices with active design studios and registered regional branches in {city.name}.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-24">
         {displayedArchitects.map((a) => (
           <ArchitectCard 
             key={a.slug} 
@@ -147,37 +94,36 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       </div>
 
       {architects.length === 0 ? (
-        <div className="bg-[#f5f5f7] rounded-[3rem] p-20 text-center mb-32 border border-dashed border-[#d2d2d7]">
-          <p className="text-[21px] text-[#86868b] font-light">We are verifying more professional studios in {city.name}.</p>
+        <div className="bg-[#f5f5f7] rounded-[4rem] p-24 text-center mb-40 border border-dashed border-[#d2d2d7]">
+          <p className="text-[24px] text-[#86868b] font-light">We are verifying more professional studios in {city.name}.</p>
         </div>
       ) : (
         visibleCount < architects.length && (
-          <div className="flex justify-center mb-32">
+          <div className="flex justify-center mb-40">
             <button 
-              onClick={() => setVisibleCount(prev => Math.min(prev + PAGE_SIZE, architects.length))}
-              className="px-12 py-5 rounded-full bg-white border border-[#d2d2d7] text-[17px] font-bold text-[#1d1d1f] hover:bg-[#f5f5f7] active:scale-95 transition-all shadow-sm"
+              onClick={() => setVisibleCount(prev => Math.min(prev + 8, architects.length))}
+              className="px-14 py-6 rounded-full bg-white border border-[#d2d2d7] text-[18px] font-bold text-[#1d1d1f] hover:bg-[#f5f5f7] active:scale-95 transition-all shadow-sm"
             >
-              Show More in {city.name}
+              Show more in {city.name}
             </button>
           </div>
         )
       )}
 
-      {/* FAQ Section */}
-      <section className="mb-32">
-        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Expert Guide to {city.name}</h2>
+      <section className="mb-40 max-w-[1024px]">
+        <h2 className="text-[34px] font-bold tracking-tight text-[#1d1d1f] mb-12">Expert Guide to {city.name}</h2>
         <FAQAccordion items={[
           {
             question: `How do I hire an architect in ${city.name}?`,
-            answer: `Start by browsing our list of top-rated professionals in ${city.name}. We recommend viewing their Brand Hub profiles to check their specific branch ratings and contact their local studio directly for an initial consultation.`
+            answer: `Start by browsing our list of top-rated professionals in ${city.name}. View their Hub profiles to check branch ratings and contact their local studio directly for an initial consultation.`
           },
           {
             question: `What are the average architectural fees in ${city.name}?`,
-            answer: `Fees can vary based on project complexity and the firm's reputation. Most elite architects in ${city.name} work on a percentage of the total construction cost or a fixed design fee based on covered area.`
+            answer: `Fees vary based on project complexity. Elite architects in ${city.name} typically work on a percentage of construction cost or a fixed fee based on covered area.`
           },
           {
             question: `Are these architects registered?`,
-            answer: `DesignDirectory prioritizes practices with valid professional registrations. We recommend verifying the specific registration status of each professional during your initial meeting.`
+            answer: `We prioritize practices with valid professional registrations. We recommend verifying the specific PCATP status of each professional during your initial consultation.`
           }
         ]} />
       </section>
