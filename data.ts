@@ -124,7 +124,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "5AB Grand Linez by Ch Shoaib Khan Shariq Architect",
+        "Shop Name": "5AB Grand Linez",
         "Category": "Construction company",
         "Website": "https://www.facebook.com/profile.php?id=100086773577053&mibextid=ZbWKwL",
         "Locations": [
@@ -270,7 +270,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "A.R HOME DESIGNER(نقشہ نویس)",
+        "Shop Name": "A.R HOME DESIGNER",
         "Category": "Architect",
         "Locations": [
             {
@@ -1255,7 +1255,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Abdullah Khan Architects - Top Architects in Islamabad, Pakistan",
+        "Shop Name": "Abdullah Khan Architects",
         "Category": "Architect",
         "Website": "https://ak-architects.com/",
         "Locations": [
@@ -10464,7 +10464,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "MUGHAL ARCHITECT & BUILDERS ( نقشہ سے چابی تک )",
+        "Shop Name": "MUGHAL ARCHITECT & BUILDERS",
         "Category": "Architect",
         "Website": "https://web.facebook.com/profile.php?id=100068611386501",
         "Locations": [
@@ -16614,7 +16614,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "| Architectural Design Services",
+        "Shop Name": "Architectural Design Services",
         "Category": "Architectural designer",
         "Locations": [
             {
@@ -16622,39 +16622,6 @@ const rawData = [
                 "Rating": 5.0,
                 "Reviews": 1.0,
                 "Map URL": "https://www.google.com/maps/dir//%7C+Architectural+Design+Services,+15,+50000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f997cfd1de283:0x67b3484c2463a8d5?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "المکہ انٹیرئر وال پیپر۔پیلنگ۔فائبر شیٹ",
-        "Category": "Interior architect office",
-        "Locations": [
-            {
-                "City": "Khanewal",
-                "Phone Number": "0302 2856621",
-                "Rating": 5.0,
-                "Reviews": 1.0,
-                "Map URL": "https://www.google.com/maps/dir//8W6X%2BQCH+%D8%A7%D9%84%D9%85%DA%A9%DB%81+%D8%A7%D9%86%D9%B9%DB%8C%D8%B1%D8%A6%D8%B1+%D9%88%D8%A7%D9%84+%D9%BE%DB%8C%D9%BE%D8%B1%DB%94%D9%BE%DB%8C%D9%84%D9%86%DA%AF%DB%94%D9%81%D8%A7%D8%A6%D8%A8%D8%B1+%D8%B4%DB%8C%D9%B9,+Multan+Lahore+Rd,+Iqbal+Nagar,+Khanewal%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b559570a2da1b:0xa602ad4f923a679c?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "مہر سجاد ٹرنک ہاؤس",
-        "Category": "Architect",
-        "Locations": [
-            {
-                "City": "Kasur",
-                "Phone Number": "0300 7573507",
-                "Rating": 4.5,
-                "Reviews": 2.0,
-                "Map URL": "https://www.google.com/maps/dir//39QR%2BMHG+%D9%85%DB%81%D8%B1+%D8%B3%D8%AC%D8%A7%D8%AF+%D9%B9%D8%B1%D9%86%DA%A9+%DB%81%D8%A7%D8%A4%D8%B3%D8%8C+%D8%A8%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D9%84+%DA%AF%D9%88%D8%B1%D9%86%D9%85%D9%86%D9%B9+%D8%A7%DB%8C%D9%84%DB%8C%D9%85%D9%86%D9%B9%D8%B1%DB%8C+%D8%B3%DA%A9%D9%88%D9%84,+Bhalla%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b744fb986ae9:0x86a45d17db57049c?sa=X&ved=1t:57443&ictx=111"
-            },
-            {
-                "City": "Kasur",
-                "Phone Number": "0300 7573507",
-                "Rating": 4.5,
-                "Reviews": 2.0,
-                "Map URL": "https://www.google.com/maps/dir//39QR%2BMHG+%D9%85%DB%81%D8%B1+%D8%B3%D8%AC%D8%A7%D8%AF+%D9%B9%D8%B1%D9%86%DA%A9+%DB%81%D8%A7%D8%A4%D8%B3%D8%8C+%D8%A8%D8%A7%D9%84%D9%85%D9%82%D8%A7%D8%A8%D9%84+%DA%AF%D9%88%D8%B1%D9%86%D9%85%D9%86%D9%B9+%D8%A7%DB%8C%D9%84%DB%8C%D9%85%D9%86%D9%B9%D8%B1%DB%8C+%D8%B3%DA%A9%D9%88%D9%84,+Bhalla%E2%80%AD/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919b744fb986ae9:0x86a45d17db57049c?sa=X&ved=1t:57443&ictx=111"
             }
         ]
     }
