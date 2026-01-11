@@ -19,27 +19,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://designdirectory.pk/#estimate-calculator</loc>
+    <lastmod>2024-11-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://designdirectory.pk/#about</loc>
     <lastmod>2024-11-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-  <url>
-    <loc>https://designdirectory.pk/#city/lahore</loc>
-    <lastmod>2024-11-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://designdirectory.pk/#city/rawalpindi</loc>
-    <lastmod>2024-11-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://designdirectory.pk/#city/faisalabad</loc>
-    <lastmod>2024-11-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <!-- City Hubs -->
+  <url><loc>https://designdirectory.pk/#city/lahore</loc><priority>0.8</priority></url>
+  <url><loc>https://designdirectory.pk/#city/karachi</loc><priority>0.8</priority></url>
+  <url><loc>https://designdirectory.pk/#city/islamabad</loc><priority>0.8</priority></url>
+  <url><loc>https://designdirectory.pk/#city/rawalpindi</loc><priority>0.8</priority></url>
+  <url><loc>https://designdirectory.pk/#city/faisalabad</loc><priority>0.8</priority></url>
+  <url><loc>https://designdirectory.pk/#city/multan</loc><priority>0.8</priority></url>
+  <url><loc>https://designdirectory.pk/#city/sialkot</loc><priority>0.7</priority></url>
+  <url><loc>https://designdirectory.pk/#city/gujranwala</loc><priority>0.7</priority></url>
 </urlset>
