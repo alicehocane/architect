@@ -10,6 +10,7 @@ import AboutPage from './pages/AboutPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import CalculatorPage from './pages/CalculatorPage';
+import SitemapPage from './pages/SitemapPage';
 import SearchPalette from './components/SearchPalette';
 import { Architect } from './types';
 
@@ -23,13 +24,13 @@ type Page =
   | { type: 'about' }
   | { type: 'privacy' }
   | { type: 'terms' }
-  | { type: 'calculator' };
+  | { type: 'calculator' }
+  | { type: 'sitemap' };
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>({ type: 'home' });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  // SEO: Global Website Schema
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -48,11 +49,10 @@ const App: React.FC = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  // Handle Routing
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      if (!hash) {
+      if (!hash || hash === '/') {
         setCurrentPage({ type: 'home' });
         return;
       }
@@ -60,6 +60,7 @@ const App: React.FC = () => {
       const [type, slug] = hash.split('/');
       if (type === 'city') setCurrentPage({ type: 'city', slug });
       if (type === 'estimate-calculator') setCurrentPage({ type: 'calculator' });
+      if (type === 'sitemap') setCurrentPage({ type: 'sitemap' });
       if (type === 'architects') {
         if (slug === 'aak-architects') {
           setCurrentPage({ type: 'aak-profile' });
@@ -87,6 +88,7 @@ const App: React.FC = () => {
     if (page.type === 'home') window.location.hash = '';
     else if (page.type === 'city') window.location.hash = `city/${page.slug}`;
     else if (page.type === 'calculator') window.location.hash = 'estimate-calculator';
+    else if (page.type === 'sitemap') window.location.hash = 'sitemap';
     else if (page.type === 'profile') window.location.hash = `architects/${page.architect.slug}`;
     else if (page.type === 'aak-profile') window.location.hash = 'architects/aak-architects';
     else if (page.type === 'top-rated') window.location.hash = 'top-rated';
@@ -127,6 +129,9 @@ const App: React.FC = () => {
         )}
         {currentPage.type === 'calculator' && (
           <CalculatorPage />
+        )}
+        {currentPage.type === 'sitemap' && (
+          <SitemapPage onCityClick={(slug) => navigateTo({ type: 'city', slug })} />
         )}
         {currentPage.type === 'profile' && (
           <ProfilePage 
@@ -203,7 +208,6 @@ const App: React.FC = () => {
             </nav>
           </div>
 
-          {/* Legal & Copyright */}
           <div className="pt-8 border-t border-[#d2d2d7]/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
               <p className="text-[11px] text-[#86868b]">Copyright © 2024 DesignDirectory Pakistan. Professional Directory for elite architects.</p>
@@ -212,7 +216,7 @@ const App: React.FC = () => {
                 <span className="text-[#d2d2d7]">|</span>
                 <button onClick={() => navigateTo({ type: 'terms' })} className="hover:underline">Terms of Service</button>
                 <span className="text-[#d2d2d7]">|</span>
-                <button className="hover:underline opacity-60">Architectural Site Map</button>
+                <button onClick={() => navigateTo({ type: 'sitemap' })} className="hover:underline">Architectural Site Map</button>
               </div>
             </div>
             <div className="flex items-center gap-2 cursor-default select-none">
