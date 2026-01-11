@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CITIES } from '../data';
 
@@ -8,21 +7,21 @@ interface CitiesPageProps {
 
 const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
   return (
-    <div className="max-w-[1024px] mx-auto px-6 py-20 page-transition">
+    <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-20 py-20 page-transition">
       <div className="mb-20 text-center">
-        <h1 className="text-[48px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f] mb-6 leading-tight">
+        <h1 className="text-[48px] sm:text-[72px] lg:text-[88px] font-bold tracking-tight text-[#1d1d1f] mb-6 leading-[0.95]">
           Explore Pakistan.
         </h1>
-        <p className="text-[20px] sm:text-[26px] text-[#86868b] font-light max-w-[600px] mx-auto">
-          From the vibrant hubs of Lahore to the industrial power of Faisalabad, find local expertise in every corner.
+        <p className="text-[20px] sm:text-[26px] text-[#86868b] font-light max-w-[700px] mx-auto">
+          From the vibrant hubs of Lahore to the industrial power of Faisalabad, find local expertise in every corner of the nation.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {CITIES.map((city) => (
           <div 
             key={city.slug}
-            className="group relative flex flex-col justify-between p-10 rounded-[2.5rem] bg-white border border-[#d2d2d7]/60 hover:border-[#0071e3] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-all duration-500 cursor-pointer animate-in fade-in zoom-in-95"
+            className="group relative flex flex-col justify-between p-10 rounded-[3rem] bg-white border border-[#d2d2d7]/60 hover:border-[#0071e3] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-all duration-500 cursor-pointer animate-in fade-in zoom-in-95"
             onClick={() => onCityClick(city.slug)}
           >
             <div>
