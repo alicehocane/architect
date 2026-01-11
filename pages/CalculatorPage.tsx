@@ -126,11 +126,9 @@ const CalculatorPage: React.FC = () => {
     }
   ];
 
-  // SEO: Schema.org Structured Data
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
-    
     const applicationSchema = {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
@@ -140,27 +138,22 @@ const CalculatorPage: React.FC = () => {
       "offers": { "@type": "Offer", "price": "0" },
       "description": "Calculate exact house construction costs in Pakistan for 2026. Free tool for 5 Marla, 10 Marla, and 1 Kanal projects with latest material rates."
     };
-
     const faqSchema = {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": faqItems.map(item => ({
         "@type": "Question",
         "name": item.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": item.answer
-        }
+        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
       }))
     };
-
     script.text = JSON.stringify([applicationSchema, faqSchema]);
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
   }, []);
 
   return (
-    <div className="max-w-[1024px] mx-auto px-6 py-20 page-transition">
+    <div className="max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-20 py-20 page-transition">
       <style>{`
         @media print {
           header, .input-sidebar, .cta-buttons, footer, .faq-section, .educational-content { display: none !important; }
@@ -239,7 +232,6 @@ const CalculatorPage: React.FC = () => {
         {/* Results Main Area */}
         <div className="lg:col-span-8">
           <div className="bg-white rounded-[3.5rem] p-10 sm:p-16 border border-[#d2d2d7]/60 shadow-xl relative results-card">
-            {/* Print Header (Only visible in PDF/Print) */}
             <div className="hidden print-header">
               <div className="flex justify-between items-center">
                 <div>
@@ -300,16 +292,10 @@ const CalculatorPage: React.FC = () => {
               </div>
 
               <div className="mt-16 flex flex-col sm:flex-row gap-6 cta-buttons">
-                 <button 
-                   onClick={handleDownloadPDF}
-                   className="flex-1 bg-[#1d1d1f] text-white py-5 rounded-2xl font-bold hover:bg-[#424245] transition-all active:scale-95 text-[17px]"
-                 >
+                 <button onClick={handleDownloadPDF} className="flex-1 bg-[#1d1d1f] text-white py-5 rounded-2xl font-bold hover:bg-[#424245] transition-all active:scale-95 text-[17px]">
                    Download Detailed PDF
                  </button>
-                 <a 
-                   href={whatsappLink} target="_blank" rel="noopener"
-                   className="flex-1 bg-[#0071e3] text-white py-5 rounded-2xl font-bold hover:bg-[#0077ed] transition-all text-center active:scale-95 text-[17px]"
-                 >
+                 <a href={whatsappLink} target="_blank" rel="noopener" className="flex-1 bg-[#0071e3] text-white py-5 rounded-2xl font-bold hover:bg-[#0077ed] transition-all text-center active:scale-95 text-[17px]">
                    Request Official Quote
                  </a>
               </div>
