@@ -14933,19 +14933,6 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Lake City Housing Society Property Office",
-        "Category": "Housing cooperative",
-        "Locations": [
-            {
-                "City": "Lake City",
-                "Address": "Lake City Housing Society property office, 13-KM Main Raiwind Road، Lahore",
-                "Phone Number": "0304 4620082",
-                "Rating": 4.4,
-                "Map URL": "https://www.google.com/maps/dir//Lake+City+Housing+Society+property+office,+13-KM+Main+Raiwind+Road%D8%8C+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919aabe9865d2bd:0xe0ef4a9216599b34?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "Lala Mushtaq Associates",
         "Category": "Architect",
         "Locations": [
@@ -19104,21 +19091,6 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Print It Your Ways",
-        "Category": "Digital printing service",
-        "Website": "https://www.printityourways.com/",
-        "Locations": [
-            {
-                "City": "Malir Cantt",
-                "Address": "Print It Your Ways, S-2, 711, opp. Saudia College for Women, Saudabad Malir, Karachi, 75080",
-                "Phone Number": "0311 0027552",
-                "Rating": 4.8,
-                "Reviews": 12.0,
-                "Map URL": "https://www.google.com/maps/dir//Print+It+Your+Ways,+S-2,+711,+opp.+Saudia+College+for+Women,+Saudabad+Malir,+Karachi,+75080/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3eb3370027a1e9a5:0xd6b7ca919f97a605?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "Pro Building Designer Llc",
         "Category": "Architecture firm",
         "Website": "https://probuildingdesigner.com/",
@@ -20030,19 +20002,6 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Royal Palm City Sahiwal",
-        "Category": "Housing authority",
-        "Locations": [
-            {
-                "City": "Sahiwal",
-                "Address": "M46Q J4P Royal Palm City Sahiwal, Multan Rd, Royal Palm City Sahiwal",
-                "Rating": 4.5,
-                "Reviews": 241.0,
-                "Map URL": "https://www.google.com/maps/dir//M46Q%2BJ4P+Royal+Palm+City+Sahiwal,+Multan+Rd,+Royal+Palm+City+Sahiwal/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b708621e77ab:0xccae22fe06bc7681?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "Ruler And Trees Architects",
         "Category": "Architecture firm",
         "Website": "https://www.instagram.com/p/C6L3oo5CBFN/?igsh=bTN0dGRzcjliMTVo",
@@ -20313,19 +20272,6 @@ const rawData = [
                 "Address": "3rd Floor, SAarchitects, Alam tower, Haji Baba Road, near GGPS, Mingora, 19130",
                 "Phone Number": "0314 9236575",
                 "Map URL": "https://www.google.com/maps/dir//3rd+Floor,+SAarchitects,+Alam+tower,+Haji+Baba+Road,+near+GGPS,+Mingora,+19130/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dc236a9ebf953d:0x749adb28d0d2ec5c?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "Sadar Gate",
-        "Category": "Historical landmark",
-        "Locations": [
-            {
-                "City": "Mandi Bahauddin",
-                "Address": "Hfpr Wm6 Sadar Gate, Saadar Baazar Road, Mandi Bahauddin",
-                "Rating": 4.5,
-                "Reviews": 805.0,
-                "Map URL": "https://www.google.com/maps/dir//HFPR%2BWM6+Sadar+Gate,+Saadar+Baazar+Road,+Mandi+Bahauddin/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f7dc3d49eb573:0xd0d2b58d7d794ecb?sa=X&ved=1t:57443&ictx=111"
             }
         ]
     },
@@ -20907,20 +20853,6 @@ const rawData = [
                 "Rating": 5.0,
                 "Reviews": 8.0,
                 "Map URL": "https://www.google.com/maps/dir//Sensory+Architects,+169,+Block+D+PIA+society,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919059615121afb:0xe9d403dacee16eeb?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "Serene Tower",
-        "Category": "Apartment complex",
-        "Website": "http://www.serenetower.com/",
-        "Locations": [
-            {
-                "City": "Multan",
-                "Address": "Plot Cc, Serene Tower, 006, Main Jinnah Ave, Dha Multan, Multan",
-                "Phone Number": "0300 4111110",
-                "Rating": 4.5,
-                "Map URL": "https://www.google.com/maps/dir//Plot+CC,+Serene+Tower,+006,+Main+Jinnah+Ave,+DHA+Multan,+Multan/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3924cb961f9a91e1:0x944afc964efacd9a?sa=X&ved=1t:57443&ictx=111"
             }
         ]
     },
@@ -22738,20 +22670,6 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Taj Garden Marriage Hall",
-        "Category": "Banquet hall",
-        "Locations": [
-            {
-                "City": "Sanghar",
-                "Address": "Taj Garden Marriage Hall, Royal Mosque, Nawabshah Rd, Sanghar",
-                "Phone Number": "0333 2914826",
-                "Rating": 3.9,
-                "Reviews": 280.0,
-                "Map URL": "https://www.google.com/maps/dir//Taj+Garden+Marriage+Hall,+Royal+Mosque,+Nawabshah+Rd,+Sanghar/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39496225f3dfbd59:0x97bdd58d75193732?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "Tajdeed Design Studio",
         "Category": "Architect",
         "Website": "https://www.facebook.com/TajdeedDesignStudio/",
@@ -23659,19 +23577,6 @@ const rawData = [
                 "Rating": 5.0,
                 "Reviews": 2.0,
                 "Map URL": "https://www.google.com/maps/dir//Trimax+Associates,+Siddique+Centre,+Muslim+Town,+Gujranwala,+52280/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391f29b6b6a01195:0xd54b8b77e77be52a?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "Trust Plaza",
-        "Category": "Distribution service",
-        "Locations": [
-            {
-                "City": "Multan",
-                "Address": "Trust Plaza, Lmq Rd, Nawan Shehar, Tipu Sultan Colony, Multan, 60000",
-                "Rating": 3.9,
-                "Reviews": 637.0,
-                "Map URL": "https://www.google.com/maps/dir//Trust+Plaza,+LMQ+Rd,+Nawan+Shehar,+Tipu+Sultan+Colony,+Multan,+60000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x393b316003ece813:0x39992ced6a40fc10?sa=X&ved=1t:57443&ictx=111"
             }
         ]
     },
