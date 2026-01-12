@@ -45,6 +45,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
             <li><a href="/" onClick={(e) => navigateTo(e, '/')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Directory Home</a></li>
             <li><a href="/top-rated" onClick={(e) => navigateTo(e, '/top-rated')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Top Rated Firms</a></li>
             <li><a href="/cities" onClick={(e) => navigateTo(e, '/cities')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Browse All Cities</a></li>
+            <li><a href="/categories" onClick={(e) => navigateTo(e, '/categories')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Professional Specialties</a></li>
             <li><a href="/estimate-calculator" onClick={(e) => navigateTo(e, '/estimate-calculator')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Cost Estimator Tool</a></li>
             <li><a href="/about" onClick={(e) => navigateTo(e, '/about')} className="hover:text-[#0071e3] transition-colors">About Us</a></li>
             <li><a href="/privacy" onClick={(e) => navigateTo(e, '/privacy')} className="hover:text-[#0071e3] transition-colors">Privacy Policy</a></li>
@@ -109,7 +110,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
             <h3 className="font-bold text-[17px] text-[#1d1d1f] mb-1">Missing your practice?</h3>
             <p className="text-[14px] text-[#86868b]">We are constantly verifying and adding new elite architectural firms.</p>
           </div>
-          <a href="https://api.whatsapp.com/send/?phone=923215201830" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] transition-all">Submit Your Firm</a>
+          <a href="https://api.whatsapp.com/send/?phone=923038001804" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] transition-all">Submit Your Firm</a>
         </div>
       </footer>
     </div>
