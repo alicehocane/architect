@@ -584,7 +584,7 @@ const rawData = [
                 "City": "Rawalpindi",
                 "Address": "Aak Architects, Peshawar Rd, Friends Colony, Rawalpindi, 46000",
                 "Phone Number": "0321 5201830",
-                "Rating": 4.8,
+                "Rating": 5.0,
                 "Reviews": 6.0,
                 "Map URL": "https://www.google.com/maps/dir//Aak+Architects,+Peshawar+Rd,+Friends+Colony,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df969f5594e70d:0x4772db485b5c9431?sa=X&ved=1t:57443&ictx=111"
             }
