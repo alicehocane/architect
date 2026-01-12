@@ -22,7 +22,7 @@ const ArchitectCard: React.FC<ArchitectCardProps> = ({ architect, onClick, cityC
 
   return (
     <div 
-      className={`group bg-white rounded-[2.5rem] border ${isRecommended ? 'border-[#0071e3] ring-1 ring-[#0071e3]/20' : 'border-[#d2d2d7]/60'} p-8 transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:-translate-y-2 cursor-pointer flex flex-col justify-between overflow-hidden min-h-[340px] h-full relative`}
+      className={`group bg-white rounded-[2.5rem] border ${isRecommended ? 'border-[#0071e3] ring-1 ring-[#0071e3]/20' : 'border-[#d2d2d7]/60'} p-8 transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:-translate-y-2 cursor-pointer flex flex-col justify-between overflow-hidden min-h-[340px] relative`}
       onClick={() => onClick(architect)}
     >
       {isRecommended && (
