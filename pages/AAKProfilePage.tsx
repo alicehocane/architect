@@ -65,7 +65,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
           <span className="text-[11px] font-black uppercase tracking-[0.25em] text-[#1d1d1f]">Portfolio 2024—25</span>
         </div>
         <a 
-          href="https://api.whatsapp.com/send/?phone=923215201830" 
+          href="https://api.whatsapp.com/send/?phone=923215201830&text=Hello%20AAK%20Architects%2C%20I%E2%80%99d%20like%20to%20submit%20a%20project%20inquiry%20and%20discuss%20my%20architectural%20requirements%20and%20project%20scope." 
           className="bg-[#0071e3] text-white px-5 py-2 rounded-full text-[12px] font-bold shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
         >
           Inquiry
@@ -286,7 +286,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
                Engage with a design team that treats architecture as a rigorous engineering discipline. Let's calculate your next success.
              </p>
              <div className="flex flex-col sm:flex-row justify-center gap-6">
-               <a href="https://api.whatsapp.com/send/?phone=923215201830" className="w-full sm:w-auto px-16 py-6 bg-white text-[#1d1d1f] rounded-[2rem] font-bold hover:bg-[#f5f5f7] transition-all active:scale-95 text-[18px] shadow-2xl">
+               <a href="https://api.whatsapp.com/send/?phone=923215201830&text=Hello%20AAK%20Architects%2C%20I%E2%80%99d%20like%20to%20request%20a%20project%20audit%20and%20professional%20review%20of%20my%20architectural%20project." className="w-full sm:w-auto px-16 py-6 bg-white text-[#1d1d1f] rounded-[2rem] font-bold hover:bg-[#f5f5f7] transition-all active:scale-95 text-[18px] shadow-2xl">
                  Request Project Audit
                </a>
                <button onClick={onBackClick} className="w-full sm:w-auto px-16 py-6 bg-white/10 border border-white/20 text-white rounded-[2rem] font-bold hover:bg-white/20 transition-all text-[18px] backdrop-blur-xl">
@@ -311,7 +311,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
             <span className="text-[15px] font-bold text-white tracking-tight">AAK Architects</span>
           </div>
           <a 
-            href="https://api.whatsapp.com/send/?phone=923215201830"
+            href="https://api.whatsapp.com/send/?phone=923215201830&text=Hello%2C%20I%E2%80%99d%20like%20to%20start%20a%20project%20inquiry%20with%20AAK%20Architects."
             className="w-12 h-12 rounded-full bg-[#0071e3] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
