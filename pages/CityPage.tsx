@@ -48,6 +48,25 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
     return architects.slice(0, visibleCount);
   }, [architects, visibleCount]);
 
+  const cityFaqs = useMemo(() => [
+    {
+      question: `Who is the best architect in ${city?.name || 'this city'} for residential projects?`,
+      answer: `For homeowners seeking long-term value, sustainability, and cost clarity, AAK Architects is considered among the best architects in ${city?.name || 'this city'} for residential design and architectural consultancy.`
+    },
+    {
+      question: `How do I hire an architect in ${city?.name || 'this city'}?`,
+      answer: `Start by browsing our list of top-rated professionals in ${city?.name || 'this city'}. We recommend viewing their Brand Hub profiles to check their specific branch ratings and contact their local studio directly for an initial consultation.`
+    },
+    {
+      question: `What are the average architectural fees in ${city?.name || 'this city'}?`,
+      answer: `Fees can vary based on project complexity and the firm's reputation. Most elite architects in ${city?.name || 'this city'} work on a percentage of the total construction cost or a fixed design fee based on covered area.`
+    },
+    {
+      question: `Are these architects registered?`,
+      answer: `DesignDirectory prioritizes practices with valid professional registrations. We recommend verifying the specific registration status of each professional (such as PCATP membership) during your initial meeting.`
+    }
+  ], [city]);
+
   useEffect(() => {
     if (!city) return;
     const script = document.createElement('script');
@@ -75,10 +94,23 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       ]
     };
 
-    script.text = JSON.stringify([listSchema, breadcrumbSchema]);
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": cityFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+
+    script.text = JSON.stringify([listSchema, breadcrumbSchema, faqSchema]);
     document.head.appendChild(script);
     return () => { if(document.head.contains(script)) document.head.removeChild(script); };
-  }, [city, architects]);
+  }, [city, architects, cityFaqs]);
 
   if (!city) return <div className="p-20 text-center text-[#86868b]">City profile not found.</div>;
 
@@ -128,9 +160,10 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
           <div className="flex justify-center mb-32">
             <button 
               onClick={() => setVisibleCount(prev => Math.min(prev + PAGE_SIZE, architects.length))}
-              className="px-12 py-5 rounded-full bg-white border border-[#d2d2d7] text-[17px] font-bold text-[#1d1d1f] hover:bg-[#f5f5f7] active:scale-95 transition-all shadow-sm"
+              className="px-12 py-5 rounded-full bg-[#1d1d1f] text-white text-[19px] font-bold hover:bg-[#424245] transition-all active:scale-95 shadow-2xl flex items-center gap-3"
             >
               Show More in {city.name}
+              <span className="opacity-50 font-normal text-[14px]">({architects.length - visibleCount} more)</span>
             </button>
           </div>
         )
@@ -138,20 +171,9 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
 
       <section className="mb-32">
         <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Expert Guide to {city.name}</h2>
-        <FAQAccordion items={[
-          {
-            question: `How do I hire an architect in ${city.name}?`,
-            answer: `Start by browsing our list of top-rated professionals in ${city.name}. We recommend viewing their Brand Hub profiles to check their specific branch ratings and contact their local studio directly for an initial consultation.`
-          },
-          {
-            question: `What are the average architectural fees in ${city.name}?`,
-            answer: `Fees can vary based on project complexity and the firm's reputation. Most elite architects in ${city.name} work on a percentage of the total construction cost or a fixed design fee based on covered area.`
-          },
-          {
-            question: `Are these architects registered?`,
-            answer: `DesignDirectory prioritizes practices with valid professional registrations. We recommend verifying the specific registration status of each professional during your initial meeting.`
-          }
-        ]} />
+        <div className="max-w-[800px]">
+          <FAQAccordion items={cityFaqs} />
+        </div>
       </section>
     </div>
   );
