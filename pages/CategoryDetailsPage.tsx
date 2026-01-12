@@ -2,6 +2,7 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { CATEGORY_MAP, getArchitectsByCategory, getArchitectBySlug } from '../data';
 import { Architect } from '../types';
 import ArchitectCard from '../components/ArchitectCard';
+import FAQAccordion from '../components/FAQAccordion';
 
 interface CategoryDetailsPageProps {
   categorySlug: string;
@@ -52,10 +53,32 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
     return architects.slice(0, visibleCount);
   }, [architects, visibleCount]);
 
+  const categoryName = category?.name || 'Professional';
+
+  const categoryFaqs = useMemo(() => [
+    {
+      question: `How do I find the best ${categoryName} in Pakistan?`,
+      answer: `To find the best ${categoryName}, browse our curated list of top-rated professionals. We recommend looking for firms with high global ratings, a strong regional presence, and a portfolio that aligns with your specific project requirements. Verified practices like AAK Architects are featured for their consistent excellence.`
+    },
+    {
+      question: `What is the typical cost of hiring a professional ${categoryName}?`,
+      answer: `Costs vary depending on the firm's reputation and project complexity. Most ${categoryName}s in Pakistan charge either a percentage of the total construction cost (typically 3% to 8%) or a fixed fee per square foot. It is advisable to request a detailed quote after an initial consultation.`
+    },
+    {
+      question: `Are the ${categoryName}s listed here verified for quality?`,
+      answer: `Yes, DesignDirectory focuses on elite practices with legitimate physical studios and proven track records. We prioritize firms that maintain professional standards and have active registrations with relevant Pakistani design and planning councils.`
+    },
+    {
+      question: `Can a specialized ${categoryName} help with sustainable design?`,
+      answer: `Absolutely. Many top-tier ${categoryName}s, such as AAK Architects, specialize in research-driven and sustainable design strategies. They utilize advanced modeling to improve energy efficiency and long-term asset value for your property.`
+    }
+  ], [categoryName]);
+
   useEffect(() => {
     if (!category) return;
     const script = document.createElement('script');
     script.type = 'application/ld+json';
+    
     const collectionSchema = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
@@ -70,10 +93,24 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
         }))
       }
     };
-    script.text = JSON.stringify(collectionSchema);
+
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": categoryFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+
+    script.text = JSON.stringify([collectionSchema, faqSchema]);
     document.head.appendChild(script);
     return () => { if(document.head.contains(script)) document.head.removeChild(script); };
-  }, [category, architects]);
+  }, [category, architects, categoryFaqs]);
 
   if (!category) return <div className="p-20 text-center text-[#86868b]">Specialty not found.</div>;
 
@@ -125,6 +162,13 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
           <p className="text-[21px] text-[#86868b] font-light">No practices currently categorized under "{category.name}".</p>
         </div>
       )}
+
+      <section className="mt-32 pt-20 border-t border-[#d2d2d7]/50 mb-32">
+        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Industry Insights: {category.name}s</h2>
+        <div className="max-w-[800px]">
+          <FAQAccordion items={categoryFaqs} />
+        </div>
+      </section>
     </div>
   );
 };
