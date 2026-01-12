@@ -248,11 +248,13 @@ const App: React.FC = () => {
 
           <div className="pt-8 border-t border-[#d2d2d7]/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <p className="text-[11px] text-[#86868b]">Copyright © 2024 DesignDirectory Pakistan. Professional Directory for elite architects.</p>
+              <p className="text-[11px] text-[#86868b]">Copyright © 2026 DesignDirectory Pakistan.</p>
               <div className="flex gap-4 text-[11px] text-[#424245]">
                 <button onClick={() => navigateTo({ type: 'privacy' })} className="hover:underline">Privacy Policy</button>
                 <span className="text-[#d2d2d7]">|</span>
                 <button onClick={() => navigateTo({ type: 'terms' })} className="hover:underline">Terms of Service</button>
+                <span className="text-[#d2d2d7]">|</span>
+                <button onClick={() => navigateTo({ type: 'about' })} className="hover:underline">About Us</button>
                 <span className="text-[#d2d2d7]">|</span>
                 <button onClick={() => navigateTo({ type: 'sitemap' })} className="hover:underline">Architectural Site Map</button>
               </div>
