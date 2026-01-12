@@ -1760,29 +1760,6 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Ak Architects",
-        "Category": "Architecture firm",
-        "Website": "http://akarchitects.pk/",
-        "Locations": [
-            {
-                "City": "Kasur",
-                "Address": "Office No:203, First Floor, Ak Architects, Top, Prime Mall, Kunwar Block, City-L, Islamabad, 43701",
-                "Phone Number": "0336 8000925",
-                "Rating": 5.0,
-                "Reviews": 74.0,
-                "Map URL": "https://www.google.com/maps/dir//Office+No:203,+First+Floor,+AK+Architects,+Top,+Prime+Mall,+Kunwar+Block,+City-l,+Islamabad,+43701/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df950dde08d48b:0xcea6a475fdb92908?sa=X&ved=1t:57443&ictx=111"
-            },
-            {
-                "City": "Qambar",
-                "Address": "AK Architects, Office No:183, Mian Akhtar Avenue, Block B, MPCJS B-17, Gate:2, Multi Gardens B-17, Islamabad, 43701",
-                "Phone Number": "0336 8000925",
-                "Rating": 5.0,
-                "Reviews": 74.0,
-                "Map URL": "https://www.google.com/maps/dir//AK+Architects,+Office+No:183,+Mian+Akhtar+Avenue,+Block+B,+MPCJS+B-17,+Gate:2,+Multi+Gardens+B-17,+Islamabad,+43701/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df950dde08d48b:0xcea6a475fdb92908?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "Ak Associates",
         "Category": "Association / Organization",
         "Locations": [
