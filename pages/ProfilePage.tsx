@@ -187,7 +187,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
                <h4 className="text-[26px] font-bold text-[#1d1d1f] mb-2 tracking-tight">Get a Free Project Estimate</h4>
                <p className="text-[#86868b] font-light text-[18px]">No obligation • Expert-led review by AAK Architects</p>
              </div>
-             <a href="/estimate-calculator" target="_blank" rel="noopener noreferrer" className="bg-[#0071e3] text-white px-10 py-5 rounded-2xl font-bold hover:bg-[#0077ed] transition-all shadow-xl shadow-blue-500/10 active:scale-95 whitespace-nowrap text-[18px]">Free Estimate</a>
+             <a href="/estimate-calculator" rel="noopener noreferrer" className="bg-[#0071e3] text-white px-10 py-5 rounded-2xl font-bold hover:bg-[#0077ed] transition-all shadow-xl shadow-blue-500/10 active:scale-95 whitespace-nowrap text-[18px]">Free Estimate</a>
           </div>
         </div>
         <div className="space-y-10">
