@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { CATEGORY_MAP, getArchitectsByCategory } from '../data';
 import { Architect } from '../types';
 import ArchitectCard from '../components/ArchitectCard';
@@ -9,9 +9,17 @@ interface CategoryDetailsPageProps {
   onBackClick: () => void;
 }
 
+const PAGE_SIZE = 12;
+
 const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug, onArchitectClick, onBackClick }) => {
   const category = CATEGORY_MAP.get(categorySlug);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   
+  // Reset pagination when category changes
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [categorySlug]);
+
   const architects = useMemo(() => {
     return getArchitectsByCategory(categorySlug).sort((a, b) => {
       const ratingA = a.globalRating || 0;
@@ -19,6 +27,10 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
       return ratingB - ratingA;
     });
   }, [categorySlug]);
+
+  const displayedArchitects = useMemo(() => {
+    return architects.slice(0, visibleCount);
+  }, [architects, visibleCount]);
 
   useEffect(() => {
     if (!category) return;
@@ -64,8 +76,8 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-32 items-stretch">
-        {architects.map((a) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 items-stretch">
+        {displayedArchitects.map((a) => (
           <div key={a.slug} className="relative flex flex-col h-full">
             <ArchitectCard 
               architect={a} 
@@ -75,6 +87,18 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
           </div>
         ))}
       </div>
+
+      {visibleCount < architects.length && (
+        <div className="flex justify-center mb-32">
+          <button 
+            onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
+            className="px-12 py-5 rounded-full bg-[#1d1d1f] text-white text-[19px] font-bold hover:bg-[#424245] transition-all active:scale-95 shadow-2xl flex items-center gap-3"
+          >
+            Show more {category.name.toLowerCase()} firms
+            <span className="opacity-50 font-normal text-[14px]">({architects.length - visibleCount} more)</span>
+          </button>
+        </div>
+      )}
       
       {architects.length === 0 && (
         <div className="bg-[#f5f5f7] rounded-[3rem] p-24 text-center border border-dashed border-[#d2d2d7]">
