@@ -218,24 +218,30 @@ const App: React.FC = () => {
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'karachi' })} className="hover:underline hover:text-black">Architects in Karachi</button></li>
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'islamabad' })} className="hover:underline hover:text-black">Architects in Islamabad</button></li>
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'rawalpindi' })} className="hover:underline hover:text-black">Architects in Rawalpindi</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'faisalabad' })} className="hover:underline hover:text-black">Architects in Faisalabad</button></li>
+
               </ul>
             </nav>
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Regional Branches</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'multan' })} className="hover:underline hover:text-black">Architects in Multan</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sialkot' })} className="hover:underline hover:text-black">Architects in Sialkot</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'bahawalpur' })} className="hover:underline hover:text-black">Architects in Bahawalpur</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'gujrat' })} className="hover:underline hover:text-black">Architects in Gujrat</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'gujranwala' })} className="hover:underline hover:text-black">Architects in Gujranwala</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'attock' })} className="hover:underline hover:text-black">Architects in Attock</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'rahim-yar-khan' })} className="hover:underline hover:text-black">Architects in Rahim Yar Khan</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'kasur' })} className="hover:underline hover:text-black">Architects in Kasur</button></li>
+
               </ul>
             </nav>
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Emerging Markets</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'attock' })} className="hover:underline hover:text-black">Architects in Attock</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'rahim-yar-khan' })} className="hover:underline hover:text-black">Architects in Rahim Yar Khan</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'mandi-bahauddin' })} className="hover:underline hover:text-black">Architects in Mandi Bahauddin</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sahiwal' })} className="hover:underline hover:text-black">Architects in Sahiwal</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'bahawalpur' })} className="hover:underline hover:text-black">Architects in Bahawalpur</button></li>
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'jhelum' })} className="hover:underline hover:text-black">Architects in Jhelum</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sheikhupura' })} className="hover:underline hover:text-black">Architects in Sheikhupura</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'Sialkot' })} className="hover:underline hover:text-black">Architects in Sialkot</button></li>
+
               </ul>
             </nav>
           </div>
