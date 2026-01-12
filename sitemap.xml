@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Core Pages -->
@@ -12,7 +11,6 @@
   <url><loc>https://designdirectory.pk/city/lahore</loc><lastmod>2026-01-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://designdirectory.pk/city/karachi</loc><lastmod>2026-01-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://designdirectory.pk/city/islamabad</loc><lastmod>2026-01-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://designdirectory.pk/city/rawalpindi</loc><lastmod>2026-01-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   
   <!-- High Priority Profiles -->
   <url><loc>https://designdirectory.pk/architects/aak-architects</loc><lastmod>2026-01-20</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
