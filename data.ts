@@ -123,7 +123,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "3Dfrontelevation-Co Architect Interior'S Islamabad",
+        "Shop Name": "3Dfrontelevation Architect Interior's",
         "Category": "Architect",
         "Locations": [
             {
@@ -10384,7 +10384,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Edify Studio - Builders | Architects | Marketers Islamabad",
+        "Shop Name": "Edify Studio",
         "Category": "Architect",
         "Website": "https://edifystudio.com.pk/",
         "Locations": [
@@ -10508,7 +10508,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Elite Spaces Studio | Architecture - Interior Design - Construction - Project Management",
+        "Shop Name": "Elite Spaces Studio",
         "Category": "Architecture firm",
         "Locations": [
             {
