@@ -205,8 +205,10 @@ const App: React.FC = () => {
               <ul className="text-[12px] text-[#424245] space-y-3">
                 <li><button onClick={() => navigateTo({ type: 'home' })} className="hover:underline hover:text-black">All Architectural Firms</button></li>
                 <li><button onClick={() => navigateTo({ type: 'top-rated' })} className="hover:underline hover:text-black">Top Rated Architects</button></li>
+                <li><button onClick={() => navigateTo({ type: 'cities' })} className="hover:underline hover:text-black">Browse by City</button></li>
                 <li><button onClick={() => navigateTo({ type: 'categories' })} className="hover:underline hover:text-black">Professional Specialties</button></li>
                 <li><button onClick={() => navigateTo({ type: 'calculator' })} className="hover:underline hover:text-black">Construction Cost Calculator</button></li>
+
               </ul>
             </nav>
             <nav className="space-y-4">
