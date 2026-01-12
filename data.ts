@@ -123,20 +123,6 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "3Dfrontelevation Architect Interior's",
-        "Category": "Architect",
-        "Locations": [
-            {
-                "City": "Bahria Town Lahore",
-                "Address": "969M H26 3dfrontelevation-co Architect interior's Islamabad, Raiwind Rd, Lahore",
-                "Phone Number": "0300 1378494",
-                "Rating": 5.0,
-                "Reviews": 20.0,
-                "Map URL": "https://www.google.com/maps/dir//969M%2BH26+3dfrontelevation-co+Architect+interior's+Islamabad,+Raiwind+Rd,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919abc2aba7145f:0x77437256ed0156c6?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "3Dfrontelevation.Co",
         "Category": "Architecture firm",
         "Website": "https://www.artstation.com/frontelevation3d",
@@ -147,6 +133,14 @@ const rawData = [
                 "Phone Number": "0313 7748494",
                 "Rating": 4.7,
                 "Map URL": "https://www.google.com/maps/dir//3dFrontElevation.co,+CCA,+77,+Sector+C+Phase+5+D.H.A,+Lahore,+54000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3918ff8e3c836879:0x80cd7120f919fff9?sa=X&ved=1t:57443&ictx=111"
+            },
+            {
+                "City": "Bahria Town Lahore",
+                "Address": "969M H26 3dfrontelevation-co Architect interior's Islamabad, Raiwind Rd, Lahore",
+                "Phone Number": "0300 1378494",
+                "Rating": 5.0,
+                "Reviews": 20.0,
+                "Map URL": "https://www.google.com/maps/dir//969M%2BH26+3dfrontelevation-co+Architect+interior's+Islamabad,+Raiwind+Rd,+Lahore/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3919abc2aba7145f:0x77437256ed0156c6?sa=X&ved=1t:57443&ictx=111"
             }
         ]
     },
