@@ -15,6 +15,8 @@ import CalculatorPage from './pages/CalculatorPage';
 import SitemapPage from './pages/SitemapPage';
 import SearchPalette from './components/SearchPalette';
 import { Architect } from './types';
+import { getSitemapXML } from './sitemap';
+
 
 type Page = 
   | { type: 'home' } 
@@ -81,6 +83,16 @@ const App: React.FC = () => {
   useEffect(() => {
     window.addEventListener('popstate', handleRouting);
     handleRouting(); // Initial load
+
+    // Developer helper: Generate sitemap XML for copy-paste
+    (window as any).getLatestSitemap = () => {
+      console.log('--- GENERATING SITEMAP XML ---');
+      console.log(getSitemapXML());
+      console.log('--- END OF SITEMAP XML ---');
+      return "Copied XML to console! Check your developer tools (F12).";
+    };
+
+
     return () => window.removeEventListener('popstate', handleRouting);
   }, []);
 
