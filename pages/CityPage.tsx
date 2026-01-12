@@ -15,11 +15,8 @@ const PAGE_SIZE = 12;
 const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackClick }) => {
   const city = CITY_MAP.get(citySlug);
   
-  // SEO Optimization & Logic: Ensure AAK Architects is always first
   const architects = useMemo(() => {
     const list = getArchitectsByCity(citySlug);
-    
-    // Sort the existing local list by rating
     const sortedLocal = list.sort((a, b) => {
       const ratingA = a.globalRating || 0;
       const ratingB = b.globalRating || 0;
@@ -27,17 +24,13 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       return (b.totalReviews || 0) - (a.totalReviews || 0);
     });
 
-    // Extract AAK Architects index if it exists in the local list
     const aakInCityIndex = sortedLocal.findIndex(a => a.slug === 'aak-architects');
-    
     let finalList: Architect[] = [];
     
     if (aakInCityIndex > -1) {
-      // If AAK is in this city, move it to front
       const [aak] = sortedLocal.splice(aakInCityIndex, 1);
       finalList = [aak, ...sortedLocal];
     } else {
-      // If AAK is NOT in this city, inject it as the first item (DesignDirectory Recommended)
       const aak = getArchitectBySlug('aak-architects');
       if (aak) {
         finalList = [aak, ...sortedLocal];
@@ -60,7 +53,6 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
-    // SEO: ItemList Schema (Professional Listings)
     const listSchema = {
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -69,61 +61,42 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
         "@type": "ListItem",
         "position": i + 1,
         "name": a["Shop Name"],
-        "url": `https://designdirectory.pk/#architects/${a.slug}`
+        "url": `https://designdirectory.pk/architects/${a.slug}`
       }))
     };
 
-    // SEO: Breadcrumb Schema
     const breadcrumbSchema = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://designdirectory.pk" },
-        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://designdirectory.pk/#cities" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://designdirectory.pk/" },
+        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://designdirectory.pk/cities" },
         { "@type": "ListItem", "position": 3, "name": city.name }
       ]
     };
 
-    // SEO: FAQ Schema
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": `How many architects are in ${city.name}?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `There are currently ${architects.length} top-rated architectural firms with offices in ${city.name} listed on our directory.`
-          }
-        },
-        {
-          "@type": "Question",
-          "name": `Who is the best architect in ${city.name}?`,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `Our top-rated firms in ${city.name} include leading practices like ${architects.slice(0, 2).map(a => a["Shop Name"]).join(' and ')}.`
-          }
-        }
-      ]
-    };
-
-    script.text = JSON.stringify([listSchema, breadcrumbSchema, faqSchema]);
+    script.text = JSON.stringify([listSchema, breadcrumbSchema]);
     document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
+    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
   }, [city, architects]);
 
   if (!city) return <div className="p-20 text-center text-[#86868b]">City profile not found.</div>;
 
+  const navigateBack = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onBackClick();
+  };
+
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-12 page-transition">
-      <button 
-        onClick={onBackClick}
+      <a 
+        href="/cities"
+        onClick={navigateBack}
         className="flex items-center gap-2 text-[#0066cc] mb-12 hover:underline text-[17px] font-medium group"
       >
         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         Explore more cities
-      </button>
+      </a>
 
       <div className="mb-20">
         <h1 className="text-[48px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f] mb-4 leading-none">
@@ -163,7 +136,6 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
         )
       )}
 
-      {/* FAQ Section */}
       <section className="mb-32">
         <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Expert Guide to {city.name}</h2>
         <FAQAccordion items={[

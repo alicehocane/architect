@@ -7,17 +7,12 @@ interface SitemapPageProps {
 }
 
 const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
-  const handleLinkClick = (e: React.MouseEvent, slug: string) => {
+  const navigateTo = (e: React.MouseEvent, url: string) => {
     e.preventDefault();
-    onCityClick(slug);
+    window.history.pushState({}, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
   };
 
-  const navTo = (e: React.MouseEvent, hash: string) => {
-    e.preventDefault();
-    window.location.hash = hash;
-  };
-
-  // Group architects alphabetically for a complete brand index
   const groupedArchitects = useMemo(() => {
     const groups: { [key: string]: Architect[] } = {};
     [...ALL_ARCHITECTS]
@@ -43,23 +38,21 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
         </p>
       </header>
 
-      {/* 1. Main Infrastructure Links */}
       <section className="mb-24">
         <h2 className="text-[17px] font-bold text-[#1d1d1f] mb-8 pb-4 border-b border-[#d2d2d7]">Directory Hubs</h2>
         <nav aria-label="Main sections">
           <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-[15px] text-[#424245]">
-            <li><a href="#" onClick={(e) => navTo(e, '')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Directory Home</a></li>
-            <li><a href="#top-rated" onClick={(e) => navTo(e, 'top-rated')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Top Rated Firms</a></li>
-            <li><a href="#cities" onClick={(e) => navTo(e, 'cities')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Browse All Cities</a></li>
-            <li><a href="#estimate-calculator" onClick={(e) => navTo(e, 'estimate-calculator')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Cost Estimator Tool</a></li>
-            <li><a href="#about" onClick={(e) => navTo(e, 'about')} className="hover:text-[#0071e3] transition-colors">About Us</a></li>
-            <li><a href="#privacy" onClick={(e) => navTo(e, 'privacy')} className="hover:text-[#0071e3] transition-colors">Privacy Policy</a></li>
-            <li><a href="#terms" onClick={(e) => navTo(e, 'terms')} className="hover:text-[#0071e3] transition-colors">Terms of Service</a></li>
+            <li><a href="/" onClick={(e) => navigateTo(e, '/')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Directory Home</a></li>
+            <li><a href="/top-rated" onClick={(e) => navigateTo(e, '/top-rated')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Top Rated Firms</a></li>
+            <li><a href="/cities" onClick={(e) => navigateTo(e, '/cities')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Browse All Cities</a></li>
+            <li><a href="/estimate-calculator" onClick={(e) => navigateTo(e, '/estimate-calculator')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Cost Estimator Tool</a></li>
+            <li><a href="/about" onClick={(e) => navigateTo(e, '/about')} className="hover:text-[#0071e3] transition-colors">About Us</a></li>
+            <li><a href="/privacy" onClick={(e) => navigateTo(e, '/privacy')} className="hover:text-[#0071e3] transition-colors">Privacy Policy</a></li>
+            <li><a href="/terms" onClick={(e) => navigateTo(e, '/terms')} className="hover:text-[#0071e3] transition-colors">Terms of Service</a></li>
           </ul>
         </nav>
       </section>
 
-      {/* 2. Complete City Directory */}
       <section className="mb-24">
         <h2 className="text-[17px] font-bold text-[#1d1d1f] mb-8 pb-4 border-b border-[#d2d2d7]">Cities & Regions</h2>
         <nav aria-label="City directories">
@@ -67,8 +60,8 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
             {CITIES.map(city => (
               <a 
                 key={city.slug} 
-                href={`#city/${city.slug}`}
-                onClick={(e) => handleLinkClick(e, city.slug)}
+                href={`/city/${city.slug}`}
+                onClick={(e) => navigateTo(e, `/city/${city.slug}`)}
                 className="hover:text-[#0071e3] transition-colors flex justify-between items-center group"
               >
                 <span>Architects in {city.name}</span>
@@ -79,13 +72,12 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
         </nav>
       </section>
 
-      {/* 3. Alphabetical Brand Index (The "Complete" coverage part) */}
       <section className="mb-24">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-[#d2d2d7] gap-4">
           <h2 className="text-[17px] font-bold text-[#1d1d1f]">Professional Practice Index</h2>
           <div className="flex flex-wrap gap-2">
             {letters.map(letter => (
-              <a key={letter} href={`#index-${letter}`} className="text-[11px] font-bold text-[#0066cc] w-6 h-6 flex items-center justify-center bg-[#f5f5f7] rounded hover:bg-[#0071e3] hover:text-white transition-all uppercase">{letter}</a>
+              <button key={letter} onClick={() => { const el = document.getElementById(`index-${letter}`); el?.scrollIntoView({ behavior: 'smooth' }); }} className="text-[11px] font-bold text-[#0066cc] w-6 h-6 flex items-center justify-center bg-[#f5f5f7] rounded hover:bg-[#0071e3] hover:text-white transition-all uppercase">{letter}</button>
             ))}
           </div>
         </div>
@@ -98,8 +90,8 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
                 {groupedArchitects[letter].map(a => (
                   <a 
                     key={a.slug} 
-                    href={`#architects/${a.slug}`}
-                    onClick={(e) => navTo(e, `architects/${a.slug}`)}
+                    href={`/architects/${a.slug}`}
+                    onClick={(e) => navigateTo(e, `/architects/${a.slug}`)}
                     className="text-[13px] text-[#424245] hover:text-[#0071e3] hover:underline truncate"
                   >
                     {a["Shop Name"]}

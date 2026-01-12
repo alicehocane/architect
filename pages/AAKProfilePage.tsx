@@ -20,24 +20,13 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         "name": "Ayyaz Ahmed Karni",
         "jobTitle": "Principal Architect",
         "affiliation": { "@type": "Organization", "name": "AAK Architects" },
-        "url": "https://designdirectory.pk/#architects/aak-architects",
+        "url": "https://designdirectory.pk/architects/aak-architects",
         "image": "https://designdirectory.pk/aak-featured.jpg",
         "description": "Elite certified architect in Pakistan with international PhD research from Sapienza Rome.",
         "alumniOf": [
           { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
           { "@type": "CollegeOrUniversity", "name": "Purdue University" }
         ]
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "ProfessionalService",
-        "name": "AAK Architects",
-        "description": "High-performance architectural consultancy specializing in luxury residential and urban design.",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Rawalpindi",
-          "addressCountry": "PK"
-        }
       }
     ];
     script.text = JSON.stringify(schema);
@@ -45,17 +34,22 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
     return () => { if (document.head.contains(script)) document.head.removeChild(script); };
   }, []);
 
+  const navigateToDirectory = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onBackClick();
+  };
+
   return (
     <div className="page-transition bg-white min-h-screen pb-32">
-      {/* Premium Navigation Header */}
       <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-xl border-b border-[#f5f5f7] px-6 h-16 flex items-center justify-between">
-        <button 
-          onClick={onBackClick} 
+        <a 
+          href="/" 
+          onClick={navigateToDirectory}
           className="flex items-center gap-2 text-[#1d1d1f] hover:text-[#0066cc] transition-colors font-medium text-[14px]"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
           Directory
-        </button>
+        </a>
         <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#86868b]">Portfolio 2024</span>
         <a 
           href="https://api.whatsapp.com/send/?phone=923215201830" 
@@ -65,7 +59,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </a>
       </nav>
 
-      {/* Hero Section - The Brand Identity */}
       <section className="pt-20 pb-24 px-6 max-w-[1200px] mx-auto">
         <div className="flex flex-col gap-8">
           <div className="inline-flex items-center gap-3">
@@ -85,7 +78,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
             
             <div className="space-y-4 max-w-[400px]">
               <p className="text-[17px] text-[#424245] font-light leading-relaxed">
-                Ayyaz Ahmed Karni bridges the gap between global urban science and architectural practice. Currently a PhD researcher at Sapienza Rome and Visiting Scholar at Purdue USA, his work redefines the built environment through engineering-based aesthetics.
+                Ayyaz Ahmed Karni bridges the gap between **global urban science** and **architectural practice**. Currently a PhD researcher at Sapienza Rome and Visiting Scholar at Purdue USA, his work redefines the built environment through engineering-based aesthetics.
               </p>
               <div className="flex items-center gap-3">
                 <span className="text-[13px] font-black border-b-2 border-[#0071e3] pb-0.5">PCATP LICENSED A-05898</span>
@@ -95,7 +88,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* Philosophy - Dark Mode Interlude */}
       <section className="bg-[#1d1d1f] py-32 px-6 overflow-hidden relative">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -126,7 +118,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* Folio Typologies - The "Investment" Section */}
       <section className="py-32 px-6 max-w-[1200px] mx-auto">
         <div className="mb-20">
           <h4 className="text-[32px] font-bold tracking-tight mb-4">Core Typologies</h4>
@@ -134,7 +125,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          {/* Typology 1 */}
           <div className="group cursor-default">
             <div className="aspect-[16/10] bg-[#f5f5f7] rounded-[2.5rem] mb-8 overflow-hidden flex items-center justify-center border border-[#d2d2d7]/30 transition-all group-hover:border-[#0071e3]/30 group-hover:shadow-2xl group-hover:shadow-blue-500/5">
               <svg className="w-24 h-24 text-[#d2d2d7] group-hover:text-[#0071e3] transition-all duration-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
@@ -150,7 +140,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
             </div>
           </div>
 
-          {/* Typology 2 */}
           <div className="group cursor-default">
             <div className="aspect-[16/10] bg-[#f5f5f7] rounded-[2.5rem] mb-8 overflow-hidden flex items-center justify-center border border-[#d2d2d7]/30 transition-all group-hover:border-[#0071e3]/30 group-hover:shadow-2xl group-hover:shadow-blue-500/5">
               <svg className="w-24 h-24 text-[#d2d2d7] group-hover:text-[#0071e3] transition-all duration-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="0.5">
@@ -168,7 +157,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* Global Academic Journey */}
       <section className="py-32 bg-[#fbfbfd] px-6 border-y border-[#f5f5f7]">
         <div className="max-w-[900px] mx-auto">
           <div className="flex flex-col items-center text-center mb-24">
@@ -195,7 +183,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* FAQ - Addressing Professional Concerns */}
       <section className="py-32 px-6 max-w-[800px] mx-auto">
         <div className="mb-16">
           <h4 className="text-[32px] font-bold tracking-tight mb-4">Practice FAQ</h4>
@@ -204,7 +191,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         <FAQAccordion items={faqItems} />
       </section>
 
-      {/* Final CTA - The "Consultancy" approach */}
       <section className="px-6 mb-20">
         <div className="max-w-[1200px] mx-auto p-12 sm:p-24 rounded-[4rem] bg-[#1d1d1f] text-white text-center shadow-3xl relative overflow-hidden group">
            <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-transparent to-purple-600/20 opacity-40 group-hover:scale-110 transition-transform duration-[3s]"></div>
@@ -225,7 +211,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* Mobile Floating Action Dock */}
       <div className="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-[400px] z-[100]">
         <div className="bg-[#1d1d1f]/90 backdrop-blur-2xl p-2 rounded-[2rem] shadow-2xl flex items-center justify-between border border-white/10">
           <button 

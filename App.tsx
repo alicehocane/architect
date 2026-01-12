@@ -31,6 +31,77 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>({ type: 'home' });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  // Synchronize state with URL Pathname
+  const handleRouting = async () => {
+    const path = window.location.pathname;
+    
+    if (path === '/' || !path) {
+      setCurrentPage({ type: 'home' });
+    } else if (path.startsWith('/city/')) {
+      const slug = path.split('/')[2];
+      setCurrentPage({ type: 'city', slug });
+    } else if (path === '/estimate-calculator') {
+      setCurrentPage({ type: 'calculator' });
+    } else if (path === '/sitemap') {
+      setCurrentPage({ type: 'sitemap' });
+    } else if (path.startsWith('/architects/')) {
+      const slug = path.split('/')[2];
+      if (slug === 'aak-architects') {
+        setCurrentPage({ type: 'aak-profile' });
+      } else {
+        const { getArchitectBySlug } = await import('./data');
+        const architect = getArchitectBySlug(slug);
+        if (architect) setCurrentPage({ type: 'profile', architect });
+        else setCurrentPage({ type: 'home' });
+      }
+    } else if (path === '/top-rated') {
+      setCurrentPage({ type: 'top-rated' });
+    } else if (path === '/cities') {
+      setCurrentPage({ type: 'cities' });
+    } else if (path === '/about') {
+      setCurrentPage({ type: 'about' });
+    } else if (path === '/privacy') {
+      setCurrentPage({ type: 'privacy' });
+    } else if (path === '/terms') {
+      setCurrentPage({ type: 'terms' });
+    } else {
+      setCurrentPage({ type: 'home' });
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('popstate', handleRouting);
+    handleRouting(); // Initial load
+    return () => window.removeEventListener('popstate', handleRouting);
+  }, []);
+
+  const navigateTo = (page: Page) => {
+    let url = '/';
+    if (page.type === 'home') url = '/';
+    else if (page.type === 'city') url = `/city/${page.slug}`;
+    else if (page.type === 'calculator') url = '/estimate-calculator';
+    else if (page.type === 'sitemap') url = '/sitemap';
+    else if (page.type === 'profile') url = `/architects/${page.architect.slug}`;
+    else if (page.type === 'aak-profile') url = '/architects/aak-architects';
+    else if (page.type === 'top-rated') url = '/top-rated';
+    else if (page.type === 'cities') url = '/cities';
+    else if (page.type === 'about') url = '/about';
+    else if (page.type === 'privacy') url = '/privacy';
+    else if (page.type === 'terms') url = '/terms';
+    
+    window.history.pushState({}, '', url);
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleArchitectClick = (architect: Architect) => {
+    if (architect.slug === 'aak-architects') {
+      navigateTo({ type: 'aak-profile' });
+    } else {
+      navigateTo({ type: 'profile', architect });
+    }
+  };
+
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
@@ -41,73 +112,13 @@ const App: React.FC = () => {
       "url": "https://designdirectory.pk",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://designdirectory.pk/#search?q={search_term_string}",
+        "target": "https://designdirectory.pk/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     });
     document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
+    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
   }, []);
-
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#', '');
-      if (!hash || hash === '/') {
-        setCurrentPage({ type: 'home' });
-        return;
-      }
-      
-      const [type, slug] = hash.split('/');
-      if (type === 'city') setCurrentPage({ type: 'city', slug });
-      if (type === 'estimate-calculator') setCurrentPage({ type: 'calculator' });
-      if (type === 'sitemap') setCurrentPage({ type: 'sitemap' });
-      if (type === 'architects') {
-        if (slug === 'aak-architects') {
-          setCurrentPage({ type: 'aak-profile' });
-          return;
-        }
-        import('./data').then(data => {
-          const architect = data.getArchitectBySlug(slug);
-          if (architect) setCurrentPage({ type: 'profile', architect });
-          else setCurrentPage({ type: 'home' });
-        });
-      }
-      if (type === 'top-rated') setCurrentPage({ type: 'top-rated' });
-      if (type === 'cities') setCurrentPage({ type: 'cities' });
-      if (type === 'about') setCurrentPage({ type: 'about' });
-      if (type === 'privacy') setCurrentPage({ type: 'privacy' });
-      if (type === 'terms') setCurrentPage({ type: 'terms' });
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange();
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  const navigateTo = (page: Page) => {
-    if (page.type === 'home') window.location.hash = '';
-    else if (page.type === 'city') window.location.hash = `city/${page.slug}`;
-    else if (page.type === 'calculator') window.location.hash = 'estimate-calculator';
-    else if (page.type === 'sitemap') window.location.hash = 'sitemap';
-    else if (page.type === 'profile') window.location.hash = `architects/${page.architect.slug}`;
-    else if (page.type === 'aak-profile') window.location.hash = 'architects/aak-architects';
-    else if (page.type === 'top-rated') window.location.hash = 'top-rated';
-    else if (page.type === 'cities') window.location.hash = 'cities';
-    else if (page.type === 'about') window.location.hash = 'about';
-    else if (page.type === 'privacy') window.location.hash = 'privacy';
-    else if (page.type === 'terms') window.location.hash = 'terms';
-    
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleArchitectClick = (architect: Architect) => {
-    if (architect.slug === 'aak-architects' || architect.slug === 'aak-architects-1') {
-      navigateTo({ type: 'aak-profile' });
-    } else {
-      navigateTo({ type: 'profile', architect });
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfbfd]">
@@ -159,7 +170,6 @@ const App: React.FC = () => {
 
       <footer className="bg-[#f5f5f7] pt-16 pb-8 px-6 mt-20 border-t border-[#d2d2d7]/40" role="contentinfo">
         <div className="max-w-[1024px] mx-auto">
-          {/* SEO Breadcrumb Navigation */}
           <nav className="flex items-center gap-2 mb-10 text-[12px] text-[#424245]" aria-label="Breadcrumb">
             <button onClick={() => navigateTo({ type: 'home' })} className="hover:text-black transition-colors">Architecture Directory</button>
             <svg className="w-3 h-3 text-[#86868b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
@@ -168,7 +178,6 @@ const App: React.FC = () => {
             </span>
           </nav>
 
-          {/* SEO Optimized Link Matrix */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-14">
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Directory Services</h4>
