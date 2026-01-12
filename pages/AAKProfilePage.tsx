@@ -85,7 +85,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
             
             <div className="space-y-4 max-w-[400px]">
               <p className="text-[17px] text-[#424245] font-light leading-relaxed">
-                Ayyaz Ahmed Karni bridges the gap between **global urban science** and **architectural practice**. Currently a PhD researcher at Sapienza Rome and Visiting Scholar at Purdue USA, his work redefines the built environment through engineering-based aesthetics.
+                Ayyaz Ahmed Karni bridges the gap between global urban science and architectural practice. Currently a PhD researcher at Sapienza Rome and Visiting Scholar at Purdue USA, his work redefines the built environment through engineering-based aesthetics.
               </p>
               <div className="flex items-center gap-3">
                 <span className="text-[13px] font-black border-b-2 border-[#0071e3] pb-0.5">PCATP LICENSED A-05898</span>
