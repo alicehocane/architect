@@ -23500,13 +23500,7 @@ const rawData = [
                 "Rating": 5.0,
                 "Reviews": 13.0,
                 "Map URL": "https://www.google.com/maps/dir//G2H4%2BFF6+The+vision+Associates,+DCO+Office+Rd,+M%C4%ABrpur+Kh%C4%81s/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x394eadd1bcf5d7b5:0xab75d87c93284894?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "The Vision Associates \"Town Planners, Architects,Designers,Estimaters,",
-        "Category": "Architecture firm",
-        "Locations": [
+            },
             {
                 "City": "Jamshoro",
                 "Address": "The Vision Associates \"Town Planners, Architects,Designers,Estimaters,, Hina Luxury Cottage G-2 Ground Floor Block A, Latifabad Unit No. 9 Mir Fazal Town Latifabad Unit 9 Latifabad, Hyderabad, 71000",
