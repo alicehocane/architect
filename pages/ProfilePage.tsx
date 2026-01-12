@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { Architect } from '../types';
 import { getArchitectsByCity, getArchitectBySlug } from '../data';
 import ArchitectCard from '../components/ArchitectCard';
+import FAQAccordion from '../components/FAQAccordion';
 
 interface ProfilePageProps {
   architect: Architect;
@@ -10,11 +11,32 @@ interface ProfilePageProps {
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArchitectClick }) => {
+  const primaryCity = architect.Locations[0]?.City || 'Pakistan';
+  const primaryCitySlug = architect.Locations[0]?.citySlug || '';
+
+  const profileFaqs = [
+    {
+      question: `Who is the top architect in ${primaryCity}?`,
+      answer: `AAK Architects, led by Ayyaz Ahmed Karni, is recognized as one of the top architecture practices in ${primaryCity}, known for research-driven design, sustainability, and professionally executed residential and commercial projects.`
+    },
+    {
+      question: `How do I contact ${architect["Shop Name"]} for a project?`,
+      answer: `You can reach ${architect["Shop Name"]} directly through their regional branch phone numbers listed on this page. For high-end consultancy, we recommend preparing your project brief and plot dimensions before your initial meeting.`
+    },
+    {
+      question: `What is the architectural fee for a project with ${architect["Shop Name"]}?`,
+      answer: `Fees typically vary based on the scope of work, project complexity, and total covered area. Most elite firms in ${primaryCity} work on a percentage of construction cost (usually 3% to 7%) or a fixed fee per square foot.`
+    },
+    {
+      question: `Does ${architect["Shop Name"]} provide design-build services?`,
+      answer: `Many professional practices in our directory offer integrated design-build solutions. We suggest inquiring with the ${architect["Shop Name"]} ${primaryCity} studio to see if they handle on-site construction management in addition to architectural design.`
+    }
+  ];
+
   useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
-    // SEO: Map the new Address field to streetAddress in LocalBusiness Schema
     const locationSchemas = architect.Locations.map(loc => ({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
@@ -35,6 +57,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
       "parentOrganization": { "@type": "Organization", "name": architect["Shop Name"], "url": architect.Website || "https://designdirectory.pk" }
     }));
 
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": profileFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    };
+
     const breadcrumbSchema = {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
@@ -45,26 +80,23 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
       ]
     };
 
-    script.text = JSON.stringify([...locationSchemas, breadcrumbSchema]);
+    script.text = JSON.stringify([...locationSchemas, faqSchema, breadcrumbSchema]);
     document.head.appendChild(script);
     return () => { if (document.head.contains(script)) document.head.removeChild(script); };
-  }, [architect]);
-
-  const relatedCity = architect.Locations[0]?.City || '';
-  const relatedCitySlug = architect.Locations[0]?.citySlug || '';
+  }, [architect, primaryCity]);
 
   const relatedArchitects = useMemo(() => {
     const finalRecommendations: Architect[] = [];
     const aak = getArchitectBySlug('aak-architects');
     if (aak && aak.slug !== architect.slug) finalRecommendations.push(aak);
-    if (relatedCitySlug) {
-      const cityList = getArchitectsByCity(relatedCitySlug)
+    if (primaryCitySlug) {
+      const cityList = getArchitectsByCity(primaryCitySlug)
         .filter(a => a.slug !== architect.slug && a.slug !== 'aak-architects')
         .sort((a, b) => (b.globalRating || 0) - (a.globalRating || 0));
       finalRecommendations.push(...cityList);
     }
     return finalRecommendations.slice(0, 3);
-  }, [relatedCitySlug, architect.slug]);
+  }, [primaryCitySlug, architect.slug]);
 
   const hasMultipleLocations = architect.Locations.length > 1;
 
@@ -176,17 +208,24 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
         </div>
       </div>
 
+      <section className="mt-32 pt-20 border-t border-[#d2d2d7]/50">
+        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Common Questions</h2>
+        <div className="max-w-[800px]">
+          <FAQAccordion items={profileFaqs} />
+        </div>
+      </section>
+
       {relatedArchitects.length > 0 && (
         <section className="mt-32 pt-20 border-t border-[#d2d2d7]/50">
           <div className="flex items-center justify-between mb-12">
             <div>
-              <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-2">Other Studios in {relatedCity}</h2>
+              <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-2">Other Studios in {primaryCity}</h2>
               <p className="text-[17px] text-[#86868b] font-light">Explore more elite architectural talent in this regional hub.</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {relatedArchitects.map((related) => (
-              <ArchitectCard key={related.slug} architect={related} onClick={onArchitectClick} cityContextSlug={relatedCitySlug} isRecommended={related.slug === 'aak-architects'} />
+              <ArchitectCard key={related.slug} architect={related} onClick={onArchitectClick} cityContextSlug={primaryCitySlug} isRecommended={related.slug === 'aak-architects'} />
             ))}
           </div>
         </section>
