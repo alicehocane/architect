@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { CATEGORY_MAP, getArchitectsByCategory } from '../data';
+import { CATEGORY_MAP, getArchitectsByCategory, getArchitectBySlug } from '../data';
 import { Architect } from '../types';
 import ArchitectCard from '../components/ArchitectCard';
 
@@ -21,11 +21,31 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
   }, [categorySlug]);
 
   const architects = useMemo(() => {
-    return getArchitectsByCategory(categorySlug).sort((a, b) => {
+    const list = getArchitectsByCategory(categorySlug);
+    const sortedLocal = list.sort((a, b) => {
       const ratingA = a.globalRating || 0;
       const ratingB = b.globalRating || 0;
-      return ratingB - ratingA;
+      if (ratingB !== ratingA) return ratingB - ratingA;
+      return (b.totalReviews || 0) - (a.totalReviews || 0);
     });
+
+    const aakInCatIndex = sortedLocal.findIndex(a => a.slug === 'aak-architects');
+    let finalList: Architect[] = [];
+    
+    if (aakInCatIndex > -1) {
+      const [aak] = sortedLocal.splice(aakInCatIndex, 1);
+      finalList = [aak, ...sortedLocal];
+    } else {
+      // If AAK is not in this specific category, we still prepend it as the recommended firm
+      const aak = getArchitectBySlug('aak-architects');
+      if (aak) {
+        finalList = [aak, ...sortedLocal];
+      } else {
+        finalList = sortedLocal;
+      }
+    }
+    
+    return finalList;
   }, [categorySlug]);
 
   const displayedArchitects = useMemo(() => {
@@ -43,7 +63,7 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
       "description": `A curated list of ${category.count} top-rated ${category.name} professionals currently practicing in Pakistan.`,
       "mainEntity": {
         "@type": "ItemList",
-        "itemListElement": architects.slice(0, 10).map((a, i) => ({
+        "itemListElement": architects.slice(0, 15).map((a, i) => ({
           "@type": "ListItem",
           "position": i + 1,
           "url": `https://designdirectory.pk/architects/${a.slug}`
