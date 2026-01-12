@@ -65,7 +65,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "3D Designer,Interior&Exterior Designing Services",
+        "Shop Name": "Interior & Designing Services",
         "Category": "Architect",
         "Website": "https://www.instagram.com/design_arch94/",
         "Locations": [
