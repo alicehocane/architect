@@ -12,21 +12,6 @@ export const slugify = (text: string): string => {
 
 const rawData = [
     {
-        "Shop Name": "\"Design Bureau\" Consulting Architects, Engineers, Interior Designers & Planners ( Architect In Islamabad )",
-        "Category": "Architecture firm",
-        "Website": "http://www.designbureau.pk/",
-        "Locations": [
-            {
-                "City": "Bubak",
-                "Address": "\"Design Bureau\" Consulting Architects, Engineers, Interior Designers & Planners ( Architect In Islamabad ), Office - 202, A & K Plaza, 2nd Floor, F-10 Markaz, near D.Watson, markaz F-10, Islamabad, 44000",
-                "Phone Number": "0333 7488379",
-                "Rating": 5.0,
-                "Reviews": 22.0,
-                "Map URL": "https://www.google.com/maps/dir//%22Design+Bureau%22+Consulting+Architects,+Engineers,+Interior+Designers+%26+Planners+(+Architect+In+Islamabad+),+Office+-+202,+A+%26+K+Plaza,+2nd+Floor,+F-10+Markaz,+near+D.Watson,+markaz+F-10,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbf06b716eeff:0xb3ca516aa4107075?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
         "Shop Name": "1X1 Design Studios",
         "Category": "Architectural designer",
         "Website": "http://www.instagram.com/1x1designstudios",
@@ -7364,6 +7349,7 @@ const rawData = [
                 "Map URL": "https://www.google.com/maps/dir//BLUE+ARC+Design+%26+Development+(Architect+%26+Construction+Company),+BlueArc,+Bahria+Eiffel+Tower,+Commercial+Main+Expressway,+Bahria+Greens,+Phase+7+Sector+1+Bahria+Town,+Rawalpindi,+46000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dff3c17929b23b:0x229abf6b024b1257?sa=X&ved=1t:57443&ictx=111"
             },
             {
+                "City": "Islamabad",
                 "Phone Number": "0331 1110272",
                 "Rating": 4.4,
                 "Reviews": 81.0
@@ -7958,6 +7944,7 @@ const rawData = [
         "Website": "https://www.cite.com.pk/",
         "Locations": [
             {
+                "City": "Islamabad",
                 "Address": "First floor, CITE Planning and Design Group, 452A Street 2, F-11/1 Islamabad, 44000",
                 "Phone Number": "0300 8563799",
                 "Rating": 4.3,
@@ -9030,8 +9017,17 @@ const rawData = [
     },
     {
         "Shop Name": "Design Bureau",
-        "Category": "Architectural designer",
+        "Category": "Architecture firm",
+        "Website": "http://www.designbureau.pk/",
         "Locations": [
+            {
+                "City": "Bubak",
+                "Address": "\"Design Bureau\" Consulting Architects, Engineers, Interior Designers & Planners ( Architect In Islamabad ), Office - 202, A & K Plaza, 2nd Floor, F-10 Markaz, near D.Watson, markaz F-10, Islamabad, 44000",
+                "Phone Number": "0333 7488379",
+                "Rating": 5.0,
+                "Reviews": 22.0,
+                "Map URL": "https://www.google.com/maps/dir//%22Design+Bureau%22+Consulting+Architects,+Engineers,+Interior+Designers+%26+Planners+(+Architect+In+Islamabad+),+Office+-+202,+A+%26+K+Plaza,+2nd+Floor,+F-10+Markaz,+near+D.Watson,+markaz+F-10,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbf06b716eeff:0xb3ca516aa4107075?sa=X&ved=1t:57443&ictx=111"
+            },
             {
                 "City": "Swat",
                 "Address": "Q986 W45 Design Bureau, Saidu Sharif Rd, Mingora",
@@ -9186,6 +9182,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
+                "City": "Islamabad",
                 "Address": "Design Evolution Studios, Street 1, Korang Town House No 4 Korang, Town, Islamabad, 54720",
                 "Phone Number": "0331 9404934",
                 "Rating": 4.8,
@@ -10364,6 +10361,7 @@ const rawData = [
         "Website": "https://www.google.com/aclk?sa=L&ai=DChsSEwi7_aGeu4WSAxUAj1AGHXeVPJcYACICCAEQAhoCZGc&co=1&ase=2&gclid=EAIaIQobChMIu_2hnruFkgMVAI9QBh13lTyXEBAYASAAEgIEmfD_BwE&cid=CAASugHkaLzUWLbx-bMIw5KPcO-4vpBRTWU91N4UC_V9fwRTnWQKfOAQG-Fly3sputwlRWz1Z9faQ3rzb6lRwtfZc8XiCqfiLBihkfUavfMKx_Rx_OfWQfe2_o_wjU5HX62TtWbGml3qWvvk--ccHkfco2zzasg2pbXXL_vou_RY8VhxpuFE4GRpsR0lp1ev9-W5HjUuokozjrq2dpyW81C6bGWspmulKL7kl-BNVGAK6aDQ7_NuYIzZCXqxCeg&cce=2&category=acrcp_v1_32&sig=AOD64_3RC78AcSUjlIcTIJaj8DbeX9JrYg&q=&nis=4&ctype=99&ved=2ahUKEwj5ppyeu4WSAxVeVEEAHcQtB7sQhKwBegQIORAQ&adurl=",
         "Locations": [
             {
+                "City": "Islamabad",
                 "Phone Number": "0333 3335197",
                 "Rating": 4.2,
                 "Reviews": 75.0
@@ -10405,6 +10403,7 @@ const rawData = [
         "Website": "https://edifystudio.com.pk/",
         "Locations": [
             {
+                "City": "Islamabad",
                 "Address": "Plaza No 5, Edify Studio - Builders | Architects | Marketers Islamabad, Main GT Rd, near Gate # 1, Sector A DHA Phase II, Islamabad, 44000",
                 "Phone Number": "0330 2000321",
                 "Rating": 5.0,
@@ -10487,6 +10486,7 @@ const rawData = [
         "Website": "https://www.google.com/aclk?sa=L&ai=DChsSEwi7_aGeu4WSAxUAj1AGHXeVPJcYACICCAEQABoCZGc&co=1&ase=2&gclid=EAIaIQobChMIu_2hnruFkgMVAI9QBh13lTyXEBAYAiAAEgKQgPD_BwE&cid=CAASugHkaLzUWLbx-bMIw5KPcO-4vpBRTWU91N4UC_V9fwRTnWQKfOAQG-Fly3sputwlRWz1Z9faQ3rzb6lRwtfZc8XiCqfiLBihkfUavfMKx_Rx_OfWQfe2_o_wjU5HX62TtWbGml3qWvvk--ccHkfco2zzasg2pbXXL_vou_RY8VhxpuFE4GRpsR0lp1ev9-W5HjUuokozjrq2dpyW81C6bGWspmulKL7kl-BNVGAK6aDQ7_NuYIzZCXqxCeg&cce=2&category=acrcp_v1_32&sig=AOD64_1l1SivznfgNTCxEdKfZyPXII7FYw&q=&nis=4&ctype=99&ved=2ahUKEwj5ppyeu4WSAxVeVEEAHcQtB7sQhKwBegQIORAk&adurl=",
         "Locations": [
             {
+                "City": "Islamabad",
                 "Phone Number": "0331 4222224",
                 "Rating": 4.7,
                 "Reviews": 59.0
