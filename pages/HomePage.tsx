@@ -174,13 +174,7 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
                   </a>
                 </div>
               </div>
-              <div className="flex-shrink-0 hidden lg:block">
-                <div className="w-80 h-80 rounded-[3rem] bg-gradient-to-br from-white/10 to-transparent border border-white/5 backdrop-blur-2xl flex items-center justify-center">
-                   <svg className="w-32 h-32 text-white/10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                     <path d="M6 22V4c0-.5.2-1 .6-1.4.4-.4.9-.6 1.4-.6h4c.5 0 1 .2 1.4.6.4.4.6.9.6 1.4v18"/><path d="M6 18h12"/><path d="M12 18v4"/><path d="M18 22V7c0-.5-.2-1-.6-1.4-.4-.4-.9-.6-1.4-.6h-4c-.5 0-1 .2-1.4.6-.4.4-.6.9-.6 1.4v15"/>
-                   </svg>
-                </div>
-              </div>
+              
             </div>
           </div>
         </section>
