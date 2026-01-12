@@ -25414,6 +25414,26 @@ export const CITIES: CityInfo[] = Array.from(
 
 export const CITY_MAP = new Map(CITIES.map(c => [c.slug, c]));
 
+
+// NEW: Category Logic
+export const CATEGORIES = Array.from(
+  new Set(ALL_ARCHITECTS.map(a => a.Category).filter(Boolean))
+).map(catName => {
+  const name = catName as string;
+  const slug = slugify(name);
+  const count = ALL_ARCHITECTS.filter(a => a.Category === name).length;
+  return { name, slug, count };
+}).sort((a, b) => b.count - a.count);
+
+export const CATEGORY_MAP = new Map(CATEGORIES.map(c => [c.slug, c]));
+
+export const getArchitectsByCategory = (categorySlug: string): Architect[] => {
+  const cat = CATEGORIES.find(c => c.slug === categorySlug);
+  if (!cat) return [];
+  return ALL_ARCHITECTS.filter(a => a.Category === cat.name);
+};
+
+
 export const getArchitectBySlug = (slug: string) => ARCHITECT_MAP.get(slug);
 
 export const getArchitectsByCity = (citySlug: string): Architect[] => {

@@ -6,6 +6,8 @@ import ProfilePage from './pages/ProfilePage';
 import AAKProfilePage from './pages/AAKProfilePage';
 import TopRatedPage from './pages/TopRatedPage';
 import CitiesPage from './pages/CitiesPage';
+import CategoriesPage from './pages/CategoriesPage';
+import CategoryDetailsPage from './pages/CategoryDetailsPage';
 import AboutPage from './pages/AboutPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
@@ -20,6 +22,8 @@ type Page =
   | { type: 'profile'; architect: Architect }
   | { type: 'aak-profile' }
   | { type: 'top-rated' }
+  | { type: 'categories' }
+  | { type: 'category-details'; slug: string }
   | { type: 'cities' }
   | { type: 'about' }
   | { type: 'privacy' }
@@ -40,6 +44,11 @@ const App: React.FC = () => {
     } else if (path.startsWith('/city/')) {
       const slug = path.split('/')[2];
       setCurrentPage({ type: 'city', slug });
+    } else if (path === '/categories') {
+      setCurrentPage({ type: 'categories' });
+    } else if (path.startsWith('/category/')) {
+      const slug = path.split('/')[2];
+      setCurrentPage({ type: 'category-details', slug });
     } else if (path === '/estimate-calculator') {
       setCurrentPage({ type: 'calculator' });
     } else if (path === '/sitemap') {
@@ -138,6 +147,16 @@ const App: React.FC = () => {
             onBackClick={() => navigateTo({ type: 'cities' })}
           />
         )}
+        {currentPage.type === 'categories' && (
+          <CategoriesPage onCategoryClick={(slug) => navigateTo({ type: 'category-details', slug })} />
+        )}
+        {currentPage.type === 'category-details' && (
+          <CategoryDetailsPage 
+            categorySlug={currentPage.slug}
+            onArchitectClick={handleArchitectClick}
+            onBackClick={() => navigateTo({ type: 'categories' })}
+          />
+        )}
         {currentPage.type === 'calculator' && (
           <CalculatorPage />
         )}
@@ -184,6 +203,7 @@ const App: React.FC = () => {
               <ul className="text-[12px] text-[#424245] space-y-3">
                 <li><button onClick={() => navigateTo({ type: 'home' })} className="hover:underline hover:text-black">All Architectural Firms</button></li>
                 <li><button onClick={() => navigateTo({ type: 'top-rated' })} className="hover:underline hover:text-black">Top Rated Architects</button></li>
+                <li><button onClick={() => navigateTo({ type: 'categories' })} className="hover:underline hover:text-black">Professional Specialties</button></li>
                 <li><button onClick={() => navigateTo({ type: 'cities' })} className="hover:underline hover:text-black">Browse by City</button></li>
                 <li><button onClick={() => navigateTo({ type: 'calculator' })} className="hover:underline hover:text-black">Construction Cost Calculator</button></li>
               </ul>
