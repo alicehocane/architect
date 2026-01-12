@@ -22,9 +22,9 @@ type Page =
   | { type: 'profile'; architect: Architect }
   | { type: 'aak-profile' }
   | { type: 'top-rated' }
+  | { type: 'cities' }
   | { type: 'categories' }
   | { type: 'category-details'; slug: string }
-  | { type: 'cities' }
   | { type: 'about' }
   | { type: 'privacy' }
   | { type: 'terms' }
@@ -88,6 +88,8 @@ const App: React.FC = () => {
     let url = '/';
     if (page.type === 'home') url = '/';
     else if (page.type === 'city') url = `/city/${page.slug}`;
+    else if (page.type === 'categories') url = '/categories';
+    else if (page.type === 'category-details') url = `/category/${page.slug}`;
     else if (page.type === 'calculator') url = '/estimate-calculator';
     else if (page.type === 'sitemap') url = '/sitemap';
     else if (page.type === 'profile') url = `/architects/${page.architect.slug}`;
@@ -204,7 +206,6 @@ const App: React.FC = () => {
                 <li><button onClick={() => navigateTo({ type: 'home' })} className="hover:underline hover:text-black">All Architectural Firms</button></li>
                 <li><button onClick={() => navigateTo({ type: 'top-rated' })} className="hover:underline hover:text-black">Top Rated Architects</button></li>
                 <li><button onClick={() => navigateTo({ type: 'categories' })} className="hover:underline hover:text-black">Professional Specialties</button></li>
-                <li><button onClick={() => navigateTo({ type: 'cities' })} className="hover:underline hover:text-black">Browse by City</button></li>
                 <li><button onClick={() => navigateTo({ type: 'calculator' })} className="hover:underline hover:text-black">Construction Cost Calculator</button></li>
               </ul>
             </nav>
@@ -212,9 +213,9 @@ const App: React.FC = () => {
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Major Design Hubs</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'lahore' })} className="hover:underline hover:text-black">Architects in Lahore</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'karachi' })} className="hover:underline hover:text-black">Architects in Karachi</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'islamabad' })} className="hover:underline hover:text-black">Architects in Islamabad</button></li>
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'rawalpindi' })} className="hover:underline hover:text-black">Architects in Rawalpindi</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'faisalabad' })} className="hover:underline hover:text-black">Architects in Faisalabad</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'gujranwala' })} className="hover:underline hover:text-black">Architects in Gujranwala</button></li>
               </ul>
             </nav>
             <nav className="space-y-4">
