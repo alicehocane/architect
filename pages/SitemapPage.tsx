@@ -46,7 +46,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
             <li><a href="/top-rated" onClick={(e) => navigateTo(e, '/top-rated')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Top Rated Firms</a></li>
             <li><a href="/cities" onClick={(e) => navigateTo(e, '/cities')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Browse All Cities</a></li>
             <li><a href="/categories" onClick={(e) => navigateTo(e, '/categories')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Professional Specialties</a></li>
-            <li><a href="/estimate-calculator" onClick={(e) => navigateTo(e, '/estimate-calculator')} className="font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">Cost Estimator Tool</a></li>
+            <li><a href="/estimate-calculator" onClick={(e) => navigateTo(e, '/estimate-calculator')} className="hover:text-[#0071e3] transition-colors">Cost Estimator Tool</a></li>
             <li><a href="/about" onClick={(e) => navigateTo(e, '/about')} className="hover:text-[#0071e3] transition-colors">About Us</a></li>
             <li><a href="/privacy" onClick={(e) => navigateTo(e, '/privacy')} className="hover:text-[#0071e3] transition-colors">Privacy Policy</a></li>
             <li><a href="/terms" onClick={(e) => navigateTo(e, '/terms')} className="hover:text-[#0071e3] transition-colors">Terms of Service</a></li>
