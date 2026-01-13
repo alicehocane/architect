@@ -34,7 +34,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
         <span className="text-[13px] font-bold text-[#0066cc] uppercase tracking-[0.2em] mb-4 block">Index & Directory</span>
         <h1 className="text-[48px] sm:text-[64px] font-bold tracking-tight text-[#1d1d1f] mb-4">Site Map.</h1>
         <p className="text-[21px] text-[#86868b] font-light max-w-[800px]">
-          A complete index of Pakistan's architectural landscape, categorized by region and professional practice.
+          A full list of all the buildings in Pakistan, organized by region and type of work.
         </p>
       </header>
 
@@ -108,7 +108,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
         <div className="bg-[#f5f5f7] rounded-[2rem] p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="font-bold text-[17px] text-[#1d1d1f] mb-1">Missing your practice?</h3>
-            <p className="text-[14px] text-[#86868b]">We are constantly verifying and adding new elite architectural firms.</p>
+            <p className="text-[14px] text-[#86868b]">We are always checking and adding new top-notch architecture businesses.</p>
           </div>
           <a href="https://api.whatsapp.com/send/?phone=923038001804" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] transition-all">Submit Your Firm</a>
         </div>
