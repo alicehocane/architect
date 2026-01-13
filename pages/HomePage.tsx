@@ -69,7 +69,7 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#5e5ce6]">future of Pakistan.</span>
           </h1>
           <p className="text-[20px] sm:text-[26px] text-[#86868b] font-light leading-snug mb-14 max-w-[620px] mx-auto">
-            Get in touch with the best architects in the country. Get the best in architecture right at your fingertips.
+            Get in touch with the best architects in the country. Get the best architecture right at your fingertips.
           </p>
           
           <div className="relative max-w-[660px] mx-auto group">
