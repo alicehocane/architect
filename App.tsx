@@ -131,11 +131,11 @@ const App: React.FC = () => {
     script.text = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "DesignDirectory Pakistan",
-      "url": "https://designdirectory.pk",
+      "name": "Architectorly Pakistan",
+      "url": "https://architectorly.com",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://designdirectory.pk/search?q={search_term_string}",
+        "target": "https://architectorly.com/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     });
@@ -260,7 +260,7 @@ const App: React.FC = () => {
 
           <div className="pt-8 border-t border-[#d2d2d7]/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <p className="text-[11px] text-[#86868b]">Copyright © 2026 DesignDirectory Pakistan.</p>
+              <p className="text-[11px] text-[#86868b]">Copyright © 2026 Architectorly Pakistan.</p>
               <div className="flex gap-4 text-[11px] text-[#424245]">
                 <button onClick={() => navigateTo({ type: 'privacy' })} className="hover:underline">Privacy Policy</button>
                 <span className="text-[#d2d2d7]">|</span>

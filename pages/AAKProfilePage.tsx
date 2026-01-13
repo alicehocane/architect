@@ -18,8 +18,8 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "name": "Ayyaz Ahmed Karni",
       "jobTitle": "Principal Architect & Sustainable Design Strategist",
       "description": "The person who started AAK Architects. A licensed PCATP architect who focusses on high-performance architecture, Agritecture, and building cities in a way that is good for the environment. PhD student at Sapienza University of Rome and a visiting scholar at Purdue University.",
-      "url": "https://designdirectory.pk/architects/aak-architects",
-      "image": "https://designdirectory.pk/aak-featured.jpg",
+      "url": "https://architectorly.com/architects/aak-architects",
+      "image": "https://architectorly.com/aak-featured.jpg",
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
       "alumniOf": [
         { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
