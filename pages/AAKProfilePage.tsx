@@ -94,7 +94,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
              </h1>
              <div className="max-w-[650px] space-y-6 sm:space-y-10">
                 <p className="text-[19px] sm:text-[28px] lg:text-[34px] text-[#424245] font-light leading-snug">
-                  Architecture is based on Research, Precision, and Trust. Creating spaces that are ready for the future for Pakistan's most picky investors.
+                  Architectures is based on Research, Precision, and Trust. Creating spaces that are ready for the future for Pakistan's most picky investors.
                 </p>
                 
                 {/* Stats Row - Responsive Grid */}
