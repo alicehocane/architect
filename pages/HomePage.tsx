@@ -69,7 +69,7 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#5e5ce6]">future of Pakistan.</span>
           </h1>
           <p className="text-[20px] sm:text-[26px] text-[#86868b] font-light leading-snug mb-14 max-w-[620px] mx-auto">
-            Connect with elite architects across the nation. Experience architectural mastery at your fingertips.
+            Get in touch with the best architects in the country. Get the best in architecture right at your fingertips.
           </p>
           
           <div className="relative max-w-[660px] mx-auto group">
@@ -152,7 +152,7 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
                   Let’s Build Something <br className="hidden sm:block" /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">Meaningful.</span>
                 </h2>
                 <p className="text-[20px] sm:text-[22px] text-white/70 font-light leading-relaxed mb-12 max-w-[620px]">
-                  If you’re looking for an architect who combines design intelligence, research depth, and execution clarity, 
+                  If you want an architect that is smart about design, does a lot of research, and is clear on how to carry out a project, 
                   <span className="text-white font-semibold"> AAK Architects</span> is ready to collaborate.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-6">
