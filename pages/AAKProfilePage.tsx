@@ -17,7 +17,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "@type": "Person",
       "name": "Ayyaz Ahmed Karni",
       "jobTitle": "Principal Architect & Sustainable Design Strategist",
-      "description": "Founder of AAK Architects. Licensed PCATP architect specializing in high-performance architecture, Agritecture, and sustainable urban planning. PhD Candidate at Sapienza University of Rome and Visiting Scholar at Purdue University.",
+      "description": "The person who started AAK Architects. A licensed PCATP architect who focusses on high-performance architecture, Agritecture, and building cities in a way that is good for the environment. PhD student at Sapienza University of Rome and a visiting scholar at Purdue University.",
       "url": "https://designdirectory.pk/architects/aak-architects",
       "image": "https://designdirectory.pk/aak-featured.jpg",
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
@@ -94,7 +94,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
              </h1>
              <div className="max-w-[650px] space-y-6 sm:space-y-10">
                 <p className="text-[19px] sm:text-[28px] lg:text-[34px] text-[#424245] font-light leading-snug">
-                  Architecture built on **Research, Precision & Trust**. Designing future-ready environments for Pakistan’s most discerning investors.
+                  Architecture is based on Research, Precision, and Trust. Creating spaces that are ready for the future for Pakistan's most picky investors.
                 </p>
                 
                 {/* Stats Row - Responsive Grid */}
@@ -126,7 +126,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
                      <h3 className="text-[14px] sm:text-[16px] font-black uppercase tracking-widest text-[#1d1d1f]">Private Desk</h3>
                    </div>
                    <p className="text-[16px] sm:text-[17px] text-[#424245] leading-relaxed mb-8 sm:mb-10 font-light italic">
-                     "We don't treat architecture as decoration—it is a rigorous, calculated investment decision."
+                     "We don't think of architecture as decoration; it's a serious, well-thought-out investment choice."
                    </p>
                    <div className="space-y-4 sm:space-y-6 mb-10 sm:mb-12">
                      {['Sustainable Strategy Audit', 'PhD-Led Technical Review', 'BIM Construction Mapping'].map((item, i) => (
@@ -162,7 +162,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
             <span className="text-blue-400 font-black uppercase tracking-[0.4em] text-[10px] sm:text-[12px] mb-4 sm:mb-6 block underline underline-offset-8 decoration-blue-500/50">Design Intelligence</span>
             <h2 className="text-[34px] sm:text-[56px] lg:text-[76px] font-bold tracking-tight mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05]">Protecting your <br /> <span className="text-blue-500">Long-term Asset.</span></h2>
             <p className="text-[17px] sm:text-[22px] lg:text-[26px] text-white/50 font-light max-w-[700px]">
-              Every square foot is engineered to perform. We bridge global PhD research with local construction mastery.
+              Every square foot is designed to work. We connect PhD research from around the world with local building skills.
             </p>
           </div>
           
@@ -191,16 +191,16 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
             <div className="flex-1 space-y-8 sm:space-y-12 text-center lg:text-left">
               <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] sm:text-[12px] font-black uppercase tracking-widest">Global Laboratory</span>
-              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">World-Class Research. <br className="hidden sm:block" /> <span className="text-[#86868b]">Local Mastery.</span></h2>
+              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Research of the highest quality. <br className="hidden sm:block" /> <span className="text-[#86868b]">Mastery in the area.</span></h2>
               <div className="text-[17px] sm:text-[21px] text-[#424245] font-light max-w-none space-y-6">
                 <p>
-                  As a PhD researcher at **Sapienza University of Rome** and Visiting Scholar at **Purdue University**, Ayyaz Ahmed Karni translates international urban science into buildable solutions for Pakistan.
+                  Ayyaz Ahmed Karni is a PhD researcher at Sapienza University of Rome and a Visiting Scholar at Purdue University. He turns worldwide urban science into solutions that may be built in Pakistan.
                 </p>
                 <div className="bg-white p-6 sm:p-10 rounded-[2.5rem] sm:rounded-[3.5rem] border border-[#d2d2d7]/50 shadow-sm mt-8 sm:mt-10 relative overflow-hidden group/box text-left">
                   <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 bg-blue-50 rounded-bl-full -mr-12 sm:-mr-16 -mt-12 sm:-mt-16 group-hover/box:scale-110 transition-transform"></div>
                   <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest block mb-4 italic">Core Publication Focus</span>
-                  <h4 className="text-[20px] sm:text-[26px] font-bold text-[#1d1d1f] leading-tight mb-4 sm:mb-6">"Fostering Agritecture: A Sustainable Approach to Overcome Housing Shortage and Food Insecurity in Pakistan."</h4>
-                  <p className="text-[14px] sm:text-[16px] text-[#86868b]">Exploring the integration of architecture and edible infrastructure to create resilient, future-proof environments.</p>
+                  <h4 className="text-[20px] sm:text-[26px] font-bold text-[#1d1d1f] leading-tight mb-4 sm:mb-6">"Agritecture: A Long-Term Solution to Pakistan's Housing Shortage and Food Insecurity."</h4>
+                  <p className="text-[14px] sm:text-[16px] text-[#86868b]">Looking into how design and edible infrastructure can work together to make environments that are strong and ready for the future.</p>
                 </div>
               </div>
             </div>
@@ -209,9 +209,9 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-transparent to-black/80 z-10"></div>
                   <div className="absolute inset-0 flex flex-col justify-end p-8 sm:p-16 z-20">
                      <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-400 mb-4 sm:mb-6 block">International Scholar</span>
-                     <h4 className="text-[28px] sm:text-[42px] font-bold text-white mb-6 sm:mb-8 leading-tight">Bridging the Global <br className="hidden sm:block" /> Design Divide.</h4>
+                     <h4 className="text-[28px] sm:text-[42px] font-bold text-white mb-6 sm:mb-8 leading-tight">Bridging the Global <br className="hidden sm:block" /> Design Gap.</h4>
                      <p className="text-white/60 text-[14px] sm:text-[17px] font-light leading-relaxed mb-8 sm:mb-10">
-                       Translating PhD research into buildable, high-yield architectural assets for private clients and developers across Pakistan.
+                       Turning PhD research into buildable, high-yield architectural assets for private clients and developers all around Pakistan.
                      </p>
                      <a href={whatsappInquiry} className="text-white font-bold flex items-center gap-4 hover:gap-6 transition-all group/link text-[15px] sm:text-base">
                        Research Integration
@@ -228,8 +228,8 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       <section className="py-16 sm:py-32 bg-white px-6 border-t border-[#f5f5f7]">
         <div className="max-w-[900px] mx-auto">
           <div className="text-center mb-16 sm:mb-24">
-            <h2 className="text-[36px] sm:text-[48px] font-bold tracking-tight text-[#1d1d1f]">Professional Pedigree.</h2>
-            <p className="text-[17px] sm:text-[20px] text-[#86868b] font-light mt-4 italic">"True architecture is continuous learning and legal accountability."</p>
+            <h2 className="text-[36px] sm:text-[48px] font-bold tracking-tight text-[#1d1d1f]">Professional Background.</h2>
+            <p className="text-[17px] sm:text-[20px] text-[#86868b] font-light mt-4 italic">"Real architecture is about always learning and being responsible for what you do."</p>
           </div>
           
           <div className="space-y-12 sm:space-y-16">
@@ -262,7 +262,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
            <div className="relative z-10">
              <h2 className="text-[38px] sm:text-[80px] lg:text-[110px] font-bold tracking-[-0.06em] mb-8 sm:mb-12 leading-[1] sm:leading-[0.92]">Build with <br /> <span className="italic font-light text-white/50">Calculated Confidence.</span></h2>
              <p className="text-[18px] sm:text-[28px] lg:text-[34px] text-white/70 font-light mb-12 sm:mb-20 max-w-[900px] mx-auto leading-relaxed">
-               Engage with a design lead who treats architecture as a rigorous engineering discipline. Let’s begin your legacy.
+               Talk to a design lead who thinks of architecture as a strict field of engineering. Allow us to begin your legacy.
              </p>
              <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
                <a 
@@ -287,7 +287,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       <section className="py-16 sm:py-32 px-6 max-w-[850px] mx-auto">
         <div className="mb-12 sm:mb-20 text-center">
           <h4 className="text-[32px] sm:text-[42px] font-bold tracking-tight text-[#1d1d1f] mb-4 sm:mb-6">Strategic Insights.</h4>
-          <p className="text-[17px] sm:text-[19px] text-[#86868b] font-light italic">"Informed clients make better architectural investments."</p>
+          <p className="text-[17px] sm:text-[19px] text-[#86868b] font-light italic">"Clients who know more about architecture make better decisions."</p>
         </div>
         <FAQAccordion items={faqItems} />
       </section>
@@ -320,23 +320,23 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
 const faqItems = [
   { 
     question: "Who is the founder of AAK Architects?", 
-    answer: "AAK Architects is founded by Ayyaz Ahmed Karni, a PCATP-licensed architect, PhD researcher at Sapienza University of Rome, and visiting scholar at Purdue University (USA). His approach focuses on translating global research into buildable, high-performance environments." 
+    answer: "Ayyaz Ahmed Karni, a PCATP-licensed architect, a PhD researcher at Sapienza University of Rome, and a visiting scholar at Purdue University in the US, started AAK Architects. His method is to turn studies from around the world into surroundings that can be built and work well." 
   },
   { 
     question: "What type of projects does AAK Architects specialize in?", 
-    answer: "We specialize in high-end residential housing, sustainable urban planning, and research-driven architectural consultancy. Our focus is on projects that require technical precision, climate-responsive strategies, and long-term investment security." 
+    answer: "We focus on high-end homes, eco-friendly city planning, and architectural consulting based on research. We focus on projects that need accurate technical work, tactics that work with the climate, and investments that will be safe for a long time." 
   },
   { 
     question: "Is AAK Architects suitable for long-term investment projects?", 
-    answer: "Absolutely. We treat architecture as a financial decision. By integrating BIM Level 2 and scientific thermal modeling, we reduce operational costs and increase the market valuation of your property through superior technical design." 
+    answer: "Yes, for sure. We think of architecture as a business choice. By combining BIM Level 2 with scientific thermal modelling, we improve the technical design of your property, which lowers operating costs and raises its market value." 
   },
   { 
     question: "Does AAK Architects provide project audits?", 
-    answer: "Yes. We offer independent architectural audits. This involves a PhD-led review of design integrity, material efficiency, cost-benefit analysis, and structural constructability for projects already in development." 
+    answer: "Yes. We do impartial audits of buildings. This includes an evaluation of design integrity, material efficiency, cost-benefit analysis, and structural constructability for projects that are already in the works by a PhD." 
   },
   { 
     question: "Can I get a free estimate?", 
-    answer: "Yes. AAK Architects offers a preliminary free estimate and technical review. This session is designed to give you initial clarity on scope, feasibility, and technical challenges before you commit to a full commission." 
+    answer: "Yes. AAK Architects will give you a free initial estimate and technical review. Before you agree to a full commission, this session is meant to help you understand the scope, practicality, and technical problems that may arise." 
   }
 ];
 
