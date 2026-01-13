@@ -93,36 +93,36 @@ const CalculatorPage: React.FC = () => {
 
   const faqItems = [
     {
-      question: "What is the construction cost per square foot in Pakistan for 2026?",
-      answer: "As of January 2026, construction rates in Pakistan average between PKR 3,200 to PKR 3,800 for Grey Structure and PKR 3,000 to PKR 4,500 for Finishing. Premium projects in areas like DHA or Bahria Town typically lean towards the higher end due to superior material quality and labor skill requirements."
+      question: "How much does it cost to build in Pakistan per square foot in 2026??",
+      answer: "As of January 2026, the average cost of building in Pakistan is between PKR 3,200 and PKR 3,800 for Grey Structure and between PKR 3,000 and PKR 4,500 for Finishing. High-end projects in places like DHA or Bahria Town usually cost more since they require better materials and more skilled workers."
     },
     {
       question: "How much does it cost to build a 5 Marla house in 2026?",
-      answer: "A standard single-story 5 Marla house (approx. 1,100 sq. ft. covered area) costs roughly PKR 65 Lakh to 80 Lakh. A double-story 5 Marla house can range from PKR 1.1 Crore to 1.4 Crore, depending on whether you choose Standard or Premium finishing materials."
+      answer: "A normal 5 Marla house with one story (around 1,100 square feet of living space) costs between PKR 65 Lakh and 80 Lakh. A double-story 5 Marla house can cost between PKR 1.1 Crore and 1.4 Crore, depending on whether you choose Standard or Premium finishing materials."
     },
     {
-      question: "What is the cost of a 10 Marla house grey structure?",
-      answer: "The grey structure cost for a 10 Marla house in Pakistan (approx. 3,300 sq. ft. for double story) ranges from PKR 1.05 Crore to 1.25 Crore. This includes all masonry, high-grade steel, cement, and basic internal wiring/plumbing."
+      question: "How much does a grey structure for a 10 Marla house cost?",
+      answer: "The cost of the grey construction for a 10 Marla house in Pakistan (around 3,300 square feet for a double story) is between PKR 1.05 Crore and 1.25 Crore. This includes all the bricks, high-quality steel, cement, and basic wiring and plumbing within."
     },
     {
       question: "What is included in a Grey Structure estimate?",
-      answer: "A comprehensive grey structure includes the foundation, boundary walls, roof slabs, underground water tanks, high-grade steel (60 grade), first-class bricks, cement (OPC), sand (Ravi and Chenab), crush (Bajri), plumbing pipes, and electrical conduits."
+      answer: "A complete grey construction has the foundation, boundary walls, roof slabs, underground water tanks, high-quality steel (60 grade), first-class bricks, cement (OPC), sand (Ravi and Chenab), crush (Bajri), plumbing pipes, and electrical conduits."
     },
     {
-      question: "What defines 'Premium' finishing in Pakistani house construction?",
-      answer: "Premium finishing involves imported or high-end local tiles (PKR 750+/sqft), designer kitchen cabinetry, solid wood doors (Ash or Teak), double-glazed aluminum windows, designer fall ceilings, and high-tier sanitary fittings (Grohe/Totto or equivalent)."
+      question: "What does \"premium\" finishing mean in the construction of Pakistani homes?",
+      answer: "High-end finishing includes imported or high-end local tiles (PKR 750+/sqft), designer kitchen cabinets, solid wood doors (Ash or Teak), double-glazed aluminium windows, designer fall ceilings and high-end sanitary fixtures (Grohe/Totto or something like that)."
     },
     {
-      question: "Why does the calculator add a 10% contingency buffer?",
-      answer: "Pakistan's construction material market is subject to frequent price fluctuations in steel, cement, and fuel. A 10% contingency ensures your financial planning remains robust enough to absorb weekly market adjustments without halting project progress."
+      question: "Why does the calculator add a 10% safety net?",
+      answer: "Steel, cement, and fuel prices change often in Pakistan's construction materials industry. A 10% contingency makes sure that your financial planning is strong enough to handle weekly changes in the market without stopping work on the project."
     },
     {
-      question: "What are the latest labor rates for construction in Lahore and Islamabad?",
-      answer: "Skilled labor rates for standard grey structure currently range from PKR 550 to PKR 650 per sq. ft. for ground floors, while premium architectural projects involving complex designs can command rates up to PKR 750 per sq. ft."
+      question: "What are the most recent building labour rates in Lahore and Islamabad?",
+      answer: "For ground floors, skilled labour costs for standard grey structure vary from PKR 550 to PKR 650 per square foot. For premium architectural projects with complicated designs, rates can go up to PKR 750 per square foot."
     },
     {
       question: "Can I save costs by buying materials myself?",
-      answer: "While self-procurement can save 5-8% on material margins, it requires significant technical knowledge to avoid waste. Professional architects like AAK Architects provide material management that often results in better overall efficiency and structural integrity."
+      answer: "Self-procurement can save 5–8% on material margins, but you need a lot of technical knowledge to avoid waste. Professional architects, like AAK Architects, manage materials in a way that usually makes the whole project run more smoothly and keeps the structure strong."
     }
   ];
 

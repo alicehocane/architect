@@ -323,11 +323,11 @@ const faqItems = [
     answer: "Ayyaz Ahmed Karni, a PCATP-licensed architect, a PhD researcher at Sapienza University of Rome, and a visiting scholar at Purdue University in the US, started AAK Architects. His method is to turn studies from around the world into surroundings that can be built and work well." 
   },
   { 
-    question: "What type of projects does AAK Architects specialize in?", 
+    question: "What kinds of projects does AAK Architects work on?", 
     answer: "We focus on high-end homes, eco-friendly city planning, and architectural consulting based on research. We focus on projects that need accurate technical work, tactics that work with the climate, and investments that will be safe for a long time." 
   },
   { 
-    question: "Is AAK Architects suitable for long-term investment projects?", 
+    question: "Is AAK Architects a good choice for long-term investment projects??", 
     answer: "Yes, for sure. We think of architecture as a business choice. By combining BIM Level 2 with scientific thermal modelling, we improve the technical design of your property, which lowers operating costs and raises its market value." 
   },
   { 
