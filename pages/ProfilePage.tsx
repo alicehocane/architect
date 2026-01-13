@@ -17,19 +17,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
   const profileFaqs = [
     {
       question: `Who is the top architect in ${primaryCity}?`,
-      answer: `AAK Architects, led by Ayyaz Ahmed Karni, is recognized as one of the top architecture practices in ${primaryCity}, known for research-driven design, sustainability, and professionally executed residential and commercial projects.`
+      answer: `AAK Architects, which is managed by Ayyaz Ahmed Karni, is one of the best architecture firms in ${primaryCity}. They are known for their research-based designs, commitment to sustainability, and high-quality work on both residential and commercial projects.`
     },
     {
       question: `How do I contact ${architect["Shop Name"]} for a project?`,
-      answer: `You can reach ${architect["Shop Name"]} directly through their regional branch phone numbers listed on this page. For high-end consultancy, we recommend preparing your project brief and plot dimensions before your initial meeting.`
+      answer: `You can call ${architect["Shop Name"]} directly using the phone numbers for their regional branches that are mentioned on this site. We suggest that you make your project brief and layout dimensions ready before your first appointment with a high-end consultant.`
     },
     {
       question: `What is the architectural fee for a project with ${architect["Shop Name"]}?`,
-      answer: `Fees typically vary based on the scope of work, project complexity, and total covered area. Most elite firms in ${primaryCity} work on a percentage of construction cost (usually 3% to 7%) or a fixed fee per square foot.`
+      answer: `Fees usually depend on how much work needs to be done, how hard the job is, and how big the region is that needs to be covered. Most top companies in ${primaryCity} charge a percentage of the building cost (typically between 3% and 7%) or a set fee for each square foot.`
     },
     {
       question: `Does ${architect["Shop Name"]} provide design-build services?`,
-      answer: `Many professional practices in our directory offer integrated design-build solutions. We suggest inquiring with the ${architect["Shop Name"]} ${primaryCity} studio to see if they handle on-site construction management in addition to architectural design.`
+      answer: `A lot of the professionals in our database offer design-build services that work together. We recommend asking the ${architect["Shop Name"]} ${primaryCity} studio if they also do on-site construction management in addition to architectural design.`
     }
   ];
 
@@ -184,8 +184,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
           </div>
           <div className="p-12 bg-[#f5f5f7] rounded-[3rem] border border-[#e5e5e7] flex flex-col md:flex-row items-center gap-8 shadow-sm">
              <div className="flex-1">
-               <h4 className="text-[26px] font-bold text-[#1d1d1f] mb-2 tracking-tight">Get a Free Project Estimate</h4>
-               <p className="text-[#86868b] font-light text-[18px]">No obligation • Expert-led review by AAK Architects</p>
+               <h4 className="text-[26px] font-bold text-[#1d1d1f] mb-2 tracking-tight">Not sure how much your home will cost?</h4>
+               <p className="text-[#86868b] font-light text-[18px]">Before you build, use our free home construction estimate calculator to get an instant, exact breakdown of the costs.</p>
              </div>
              <a href="/estimate-calculator" rel="noopener noreferrer" className="bg-[#0071e3] text-white px-10 py-5 rounded-2xl font-bold hover:bg-[#0077ed] transition-all shadow-xl shadow-blue-500/10 active:scale-95 whitespace-nowrap text-[18px]">Free Estimate</a>
           </div>
