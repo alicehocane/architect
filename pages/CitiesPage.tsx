@@ -116,13 +116,13 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
               In Pakistan, architectural requirements vary significantly from one province to another. A studio based in <strong>Islamabad</strong> is well-versed in CDA regulations, while a firm in <strong>Karachi</strong> understands the unique structural challenges posed by coastal humidity and SBCA bylaws.
             </p>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              By browsing our city-specific hubs, you ensure that you are connecting with professionals who not only possess design talent but also have the regional footprint to handle local approvals and site management effectively.
+              By looking through our city-specific hubs, you can be confident that you are getting in touch with people who not only have design skills but also know how to handle local approvals and site management well.
             </p>
           </div>
           <div className="space-y-6">
             <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f]">Major Design Hubs</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              Our directory highlights primary architectural clusters in Pakistan. Lahore and Karachi remain the largest hubs for technical innovation, but emerging markets like <strong>Gujranwala</strong> and <strong>Multan</strong> are seeing a surge in high-performance residential developments.
+              Our directory shows the main architectural clusters in Pakistan. Lahore and Karachi are still the biggest centers for technical innovation, but new markets such as <strong>Gujranwala</strong> and <strong>Multan</strong> are seeing a surge in high-performance residential developments.
             </p>
             <ul className="grid grid-cols-2 gap-4 text-[15px] text-[#86868b] font-medium">
               <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#0071e3]"></div> Lahore (Punjab)</li>
@@ -145,27 +145,27 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
 const cityFaqs = [
   {
     question: "Which city in Pakistan has the best architects?",
-    answer: "Lahore and Karachi are traditionally the hubs for the highest-rated architectural firms in Pakistan. However, Islamabad is known for high-end residential mastery and sustainable planning. Architectorly helps you find elite talent in all major cities by ranking them based on verified branch performance."
+    answer: "Lahore and Karachi have long been home to the best-rated architecture firms in Pakistan. Islamabad, on the other hand, is noted for its high-end residential design and long-term planning. Architectorly helps you uncover top talent in all major cities by grading them based on how well they've done in their field."
   },
   {
     question: "How can I find a local architect for my project?",
-    answer: "You can use the city filter on this page to view all verified practices in your specific area. Local architects are often preferred as they have better relationships with local development authorities like LDA, CDA, or DHA for plan approvals."
+    answer: "You can use the city filter on this page to see all the confirmed practices in your region. Local architects are generally selected since they have better connections with local development agencies like LDA, CDA, or DHA when it comes to getting plans approved."
   },
   {
     question: "Do architects in smaller cities provide the same quality as those in Lahore?",
-    answer: "Quality is subjective, but many leading firms from major cities now have active branches in smaller cities like Sialkot, Rahim Yar Khan, and Jhelum. Our directory allows you to check the 'Global Rating' of a firm across all its locations to ensure consistency."
+    answer: "Quality is subjective, yet many top companies from big cities now have outposts in smaller places like Sialkot, Rahim Yar Khan, and Jhelum. You can use our directory to check a company's \"Global Rating\" at all of its locations to make sure they are all the same."
   },
   {
     question: "How does the location of a firm affect my project costs?",
-    answer: "Hiring a firm from a different city might incur additional site-visit and mobilization costs. We recommend choosing a firm with a legitimate branch in your city to reduce overheads and ensure better on-site supervision."
+    answer: "If you hire a company from another city, you may have to pay extra for site visits and moving. To save money and make sure better on-site supervision, we suggest picking a company that has a real branch in your city."
   },
   {
     question: "Are there architectural services available in Northern Pakistan?",
-    answer: "Yes, we are actively cataloging firms in Peshawar and Abbottabad. These architects specialize in hilly terrain construction and climate-responsive designs suited for colder regions."
+    answer: "Yes, we are actively keeping track of businesses in Abbottabad and Peshawar. These architects are experts in building on hills and making buildings that work well in colder climates."
   },
   {
     question: "Can I find commercial designers in industrial cities like Faisalabad?",
-    answer: "Absolutely. Industrial cities like Faisalabad and Gujranwala have highly specialized firms focused on factory design, commercial warehouses, and industrial urbanism."
+    answer: "Yes, of course. Faisalabad and Gujranwala are industrial cities with companies that specialize in factory design, commercial warehouses, and industrial urbanism."
   }
 ];
 

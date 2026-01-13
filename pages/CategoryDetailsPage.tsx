@@ -58,19 +58,19 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
   const categoryFaqs = useMemo(() => [
     {
       question: `How do I find the best ${categoryName} in Pakistan?`,
-      answer: `To find the best ${categoryName}, browse our curated list of top-rated professionals. We recommend looking for firms with high global ratings, a strong regional presence, and a portfolio that aligns with your specific project requirements. Verified practices like AAK Architects are featured for their consistent excellence.`
+      answer: `To find the best ${categoryName}, Look through our carefully chosen selection of the best pros. We suggest looking for companies who have excellent ratings around the world, a significant presence in your area, and a portfolio that fits the needs of your project. Verified practices like AAK Architects are highlighted because they always do great work.`
     },
     {
       question: `What is the typical cost of hiring a professional ${categoryName}?`,
-      answer: `Costs vary depending on the firm's reputation and project complexity. Most ${categoryName}s in Pakistan charge either a percentage of the total construction cost (typically 3% to 8%) or a fixed fee per square foot. It is advisable to request a detailed quote after an initial consultation.`
+      answer: `Costs vary depending on the firm's reputation and project complexity. Most ${categoryName}s In Pakistan, they charge either a percentage of the overall cost of building (usually 3% to 8%) or a set amount per square foot. After the first meeting, it's a good idea to ask for a thorough quote.`
     },
     {
       question: `Are the ${categoryName}s listed here verified for quality?`,
-      answer: `Yes, Architectorly focuses on elite practices with legitimate physical studios and proven track records. We prioritize firms that maintain professional standards and have active registrations with relevant Pakistani design and planning councils.`
+      answer: `Yes, Architectorly only works with top-notch studios that have real studios and a history of success. We give preference to companies who follow professional standards and are registered with the appropriate Pakistani design and planning bodies.`
     },
     {
       question: `Can a specialized ${categoryName} help with sustainable design?`,
-      answer: `Absolutely. Many top-tier ${categoryName}s, such as AAK Architects, specialize in research-driven and sustainable design strategies. They utilize advanced modeling to improve energy efficiency and long-term asset value for your property.`
+      answer: `Of course. Many of the best ${categoryName}s, like AAK Architects, focus on design strategies that are based on research and are good for the environment. They use advanced modelling to make your property more energy-efficient and increase its long-term value.`
     }
   ], [categoryName]);
 
