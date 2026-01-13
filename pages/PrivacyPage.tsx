@@ -30,7 +30,7 @@ const PrivacyPage: React.FC = () => {
 
         <section className="pt-12 border-t border-[#d2d2d7]/50">
           <p className="text-[14px] text-[#86868b]">
-            Last updated: January 2026. For privacy inquiries, please contact privacy@architectorly.com
+            Last updated: January 2026. For privacy inquiries, please contact architectorly.
           </p>
         </section>
       </div>
