@@ -22,12 +22,12 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ onCategoryClick }) => {
       "@context": "https://schema.org",
       "@type": "ItemList",
       "name": "Architectural and Design Specialties in Pakistan",
-      "description": "Browse professional design services by specialty including Architecture, Interior Design, Construction, and Urban Planning.",
+      "description": "Look through professional design services by area of expertise, such as architecture, interior design, construction, and urban planning.",
       "itemListElement": CATEGORIES.map((cat, i) => ({
         "@type": "ListItem",
         "position": i + 1,
         "name": cat.name,
-        "url": `https://designdirectory.pk/category/${cat.slug}`
+        "url": `https://architectorly.com/category/${cat.slug}`
       }))
     };
     
@@ -57,7 +57,7 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ onCategoryClick }) => {
           Specialties in <br /> <span className="text-[#86868b]">Pakistan Design.</span>
         </h1>
         <p className="text-[21px] sm:text-[24px] text-[#424245] font-light max-w-[700px] leading-relaxed">
-          From high-performance structural engineering to bespoke interior curation, find the exact expertise your project demands across our curated professional silos.
+          Look through our handpicked professional silos to locate the exact skills your project needs, from high-performance structural engineering to custom interior design.
         </p>
       </div>
 
@@ -103,10 +103,10 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ onCategoryClick }) => {
           <div className="space-y-6">
             <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f]">Why Professional Categorization Matters</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              In Pakistan's rapidly evolving real estate landscape, selecting a firm based on their niche expertise is critical for project success. A specialized <strong>Architecture Firm</strong> understands municipal bylaws differently than a dedicated <strong>Interior Designer</strong>.
+              In Pakistan's quickly changing real estate market, it's very important to choose a company based on their area of expertise for a project to be successful. A specialized <strong>Architecture Firm</strong> understands municipal bylaws differently than a dedicated <strong>Interior Designer</strong>.
             </p>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              Our directory silos help you filter through the noise, ensuring that whether you're looking for sustainable urban planning or luxury residential craftsmanship, you connect with the right tier of professional.
+              Our directory silos help you cut through the noise so that you can find the correct level of professional, whether you're seeking for sustainable urban planning or high-end residential workmanship.
             </p>
           </div>
           <div className="space-y-6">
@@ -134,27 +134,27 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ onCategoryClick }) => {
 const categoryFaqs = [
   {
     question: "What is the difference between an Architect and an Architectural Designer?",
-    answer: "In Pakistan, a 'Licensed Architect' is registered with the PCATP (Pakistan Council of Architects and Town Planners), allowing them to legally sign off on structural plans. An 'Architectural Designer' may focus more on the aesthetic and spatial conceptualization but often works under a licensed lead for final approvals."
+    answer: "A \"Licensed Architect\" in Pakistan is someone who is registered with the PCATP (Pakistan Council of Architects and Town Planners) and may legally sign off on building plans. An \"Architectural Designer\" may focus more on how things look and how they fit together, although they usually work under a licensed lead to get final approvals."
   },
   {
     question: "How do I choose between an Interior Designer and an Interior Architect?",
-    answer: "Interior Architects focus on the structural aspects and 'bones' of a room (remodeling, electrical layouts, plumbing placement). Interior Designers focus more on the 'skin' and soul of the space (furniture selection, color theory, soft finishes, and ambiance)."
+    answer: "Interior architects work on the \"bones\" and structure of a room, such as how to remodel it, where to put the plumbing, and how to lay out the electrical system. Interior designers pay more attention to the \"skin\" and \"soul\" of a room, such as the furniture, colour theory, soft finishes, and atmosphere."
   },
   {
     question: "Are construction companies listed here also designers?",
-    answer: "Many top-tier construction companies in Pakistan offer 'Design-Build' services. This integrated approach means the firm handles both the architectural blueprints and the actual on-site construction, often leading to better budget control and faster execution."
+    answer: "A lot of the best construction companies in Pakistan offer \"Design-Build\" services. This integrated strategy means that the company takes care of both the architectural plans and the actual building on site. This generally leads to better budget control and speedier completion."
   },
   {
     question: "How do I verify a firm's specialty?",
-    answer: "We categorize firms based on their primary output and public business data. You can further verify a firm's specialty by looking at their brand hub on our directory, which highlights their most frequent project types and client reviews specific to those categories."
+    answer: "We put companies into groups based on what they do well and the public business data they have. You may also check out a company's speciality by looking at their brand hub on our directory. This shows their most common types of projects and client reviews for those types of projects."
   },
   {
     question: "What does the 'Urban Planner' specialty involve?",
-    answer: "Urban Planners on DesignDirectory typically handle large-scale land development, housing society masterplans, and public infrastructure projects. They focus on zoning, traffic flow, and community sustainability rather than individual building design."
+    answer: "Urban planners on DesignDirectory usually work on big projects including building new homes, developing land, and improving public infrastructure. Instead of focussing on how each building looks, they focus on zoning, traffic movement, and the long-term health of the city."
   },
   {
     question: "Why should I hire a specialized Landscape Architect?",
-    answer: "Landscape Architects specialize in the integration of outdoor spaces with the environment. In Pakistan's climate, they are essential for creating sustainable gardens, water features, and outdoor living areas that utilize native flora and smart irrigation."
+    answer: "Landscape architects are experts in making outdoor areas fit in with the environment. In Pakistan's environment, they are necessary for making gardens, water features, and outdoor living spaces that last using native plants and smart irrigation."
   }
 ];
 
