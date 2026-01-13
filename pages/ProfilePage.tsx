@@ -179,7 +179,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
           <div>
             <h3 className="text-[28px] font-bold text-[#1d1d1f] mb-6">Expertise & Regional Presence</h3>
             <p className="text-[21px] text-[#424245] leading-relaxed font-light">
-              As a unified architectural practice operating in {architect.Locations.map(l => l.City).join(', ')}, {architect["Shop Name"]} maintains a commitment to architectural innovation tailored to local urban conditions. Their integrated studio model ensures project consistency across the nation.
+              As a single architectural firm working in {architect.Locations.map(l => l.City).join(', ')}, {architect["Shop Name"]} is dedicated to coming up with new architectural ideas that work well in cities. Their integrated studio model makes sure that projects are the same all throughout the country.
             </p>
           </div>
           <div className="p-12 bg-[#f5f5f7] rounded-[3rem] border border-[#e5e5e7] flex flex-col md:flex-row items-center gap-8 shadow-sm">
