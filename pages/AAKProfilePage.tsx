@@ -42,6 +42,23 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
 
   const whatsappInquiry = "https://api.whatsapp.com/send/?phone=923215201830&text=Hello%20Ayyaz%2C%20I%20saw%20your%20Master%20Folio.%20I'm%20looking%20for%20a%20Scientific%20Design%20Review%20for%20my%20upcoming%20project.";
 
+  // Dynamic Portfolio Data reflecting the provided images
+  const portfolio = [
+    { title: "Global Food Horizon", category: "Commercial Architecture", area: "Corporate HQ", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop" },
+    { title: "Gloria Residency", category: "Mixed-Use Development", area: "Urban Living", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop" },
+    { title: "The Geometric Villa", category: "Residential Masterpiece", area: "DHA District", img: "https://images.unsplash.com/photo-1600585154340-be6199f7e009?q=80&w=1000&auto=format&fit=crop" },
+    { title: "Bake & Brew Atelier", category: "Boutique Interior", area: "Commercial Studio", img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop" },
+    { title: "Brick & Louver House", category: "Contemporary Residential", area: "Climate Responsive", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop" },
+    { title: "Transitional Manor", category: "Luxury Estate", area: "Private Commission", img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1000&auto=format&fit=crop" }
+  ];
+
+  const testimonials = [
+    { name: "Sikandar Malik", role: "CEO, Global Food Horizon", quote: "Ayyaz doesn't just design buildings; he engineers assets. His PhD-backed approach to thermal efficiency saved us millions in long-term HVAC costs." },
+    { name: "Arshad Khan", role: "Lead Developer, Gloria Residency", quote: "The level of BIM precision provided by AAK Architects is unprecedented in the Pakistani market. Zero clash on site meant zero delays during execution." },
+    { name: "Fatima Jamil", role: "Private Estate Owner", quote: "Sophisticated, minimalist, and deeply research-oriented. A truly international studio experience right here in Pakistan. My home performs better than I ever expected." }
+  ];
+
+
   return (
     <div className="page-transition bg-white min-h-screen text-[#1d1d1f] pb-24 lg:pb-0">
       {/* 1. ELITE STATUS HEADER */}
