@@ -60,7 +60,7 @@ const SearchPalette: React.FC<SearchPaletteProps> = ({ isOpen, onClose, onSelect
         <div className="max-h-[60vh] overflow-y-auto p-4">
           {query.length <= 1 ? (
             <div className="py-12 text-center text-[#86868b]">
-              <p className="text-[15px]">Start typing to explore Pakistan's elite designers...</p>
+              <p className="text-[15px]">To learn more about Pakistan's top designers, start typing...</p>
             </div>
           ) : (
             <>
