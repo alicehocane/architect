@@ -252,7 +252,7 @@ const App: React.FC = () => {
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'sahiwal' })} className="hover:underline hover:text-black">Architects in Sahiwal</button></li>
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'bahawalpur' })} className="hover:underline hover:text-black">Architects in Bahawalpur</button></li>
                 <li><button onClick={() => navigateTo({ type: 'city', slug: 'jhelum' })} className="hover:underline hover:text-black">Architects in Jhelum</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'Sialkot' })} className="hover:underline hover:text-black">Architects in Sialkot</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sialkot' })} className="hover:underline hover:text-black">Architects in Sialkot</button></li>
 
               </ul>
             </nav>
