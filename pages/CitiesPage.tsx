@@ -32,7 +32,7 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
         "@type": "ListItem",
         "position": i + 1,
         "name": `Architects in ${city.name}`,
-        "url": `https://designdirectory.pk/city/${city.slug}`
+        "url": `https://architectorly.com/city/${city.slug}`
       }))
     };
 
@@ -145,7 +145,7 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
 const cityFaqs = [
   {
     question: "Which city in Pakistan has the best architects?",
-    answer: "Lahore and Karachi are traditionally the hubs for the highest-rated architectural firms in Pakistan. However, Islamabad is known for high-end residential mastery and sustainable planning. DesignDirectory helps you find elite talent in all major cities by ranking them based on verified branch performance."
+    answer: "Lahore and Karachi are traditionally the hubs for the highest-rated architectural firms in Pakistan. However, Islamabad is known for high-end residential mastery and sustainable planning. Architectorly helps you find elite talent in all major cities by ranking them based on verified branch performance."
   },
   {
     question: "How can I find a local architect for my project?",

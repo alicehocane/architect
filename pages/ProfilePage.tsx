@@ -40,11 +40,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
     const locationSchemas = architect.Locations.map(loc => ({
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      "@id": `https://designdirectory.pk/#architects/${architect.slug}/${loc.citySlug}`,
+      "@id": `https://architectorly.com/#architects/${architect.slug}/${loc.citySlug}`,
       "name": `${architect["Shop Name"]} - ${loc.City} Studio`,
       "image": `https://picsum.photos/seed/${architect.slug}/600/600`,
       "telephone": loc["Phone Number"],
-      "url": architect.Website || `https://designdirectory.pk/#architects/${architect.slug}`,
+      "url": architect.Website || `https://architectorly.com/#architects/${architect.slug}`,
       "hasMap": loc["Map URL"],
       "priceRange": "$$$",
       "address": { 
@@ -54,7 +54,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
         "addressCountry": "PK" 
       },
       "aggregateRating": loc.Rating ? { "@type": "AggregateRating", "ratingValue": loc.Rating, "reviewCount": loc.Reviews || 1 } : undefined,
-      "parentOrganization": { "@type": "Organization", "name": architect["Shop Name"], "url": architect.Website || "https://designdirectory.pk" }
+      "parentOrganization": { "@type": "Organization", "name": architect["Shop Name"], "url": architect.Website || "https://architectorly.com" }
     }));
 
     const faqSchema = {
@@ -74,8 +74,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://designdirectory.pk" },
-        { "@type": "ListItem", "position": 2, "name": "Architects", "item": "https://designdirectory.pk/#cities" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://architectorly.com" },
+        { "@type": "ListItem", "position": 2, "name": "Architects", "item": "https://architectorly.com/#cities" },
         { "@type": "ListItem", "position": 3, "name": architect["Shop Name"] }
       ]
     };

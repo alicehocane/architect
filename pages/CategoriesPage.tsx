@@ -150,7 +150,7 @@ const categoryFaqs = [
   },
   {
     question: "What does the 'Urban Planner' specialty involve?",
-    answer: "Urban planners on DesignDirectory usually work on big projects including building new homes, developing land, and improving public infrastructure. Instead of focussing on how each building looks, they focus on zoning, traffic movement, and the long-term health of the city."
+    answer: "Urban planners on Architectorly usually work on big projects including building new homes, developing land, and improving public infrastructure. Instead of focussing on how each building looks, they focus on zoning, traffic movement, and the long-term health of the city."
   },
   {
     question: "Why should I hire a specialized Landscape Architect?",

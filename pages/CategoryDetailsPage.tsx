@@ -66,7 +66,7 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
     },
     {
       question: `Are the ${categoryName}s listed here verified for quality?`,
-      answer: `Yes, DesignDirectory focuses on elite practices with legitimate physical studios and proven track records. We prioritize firms that maintain professional standards and have active registrations with relevant Pakistani design and planning councils.`
+      answer: `Yes, Architectorly focuses on elite practices with legitimate physical studios and proven track records. We prioritize firms that maintain professional standards and have active registrations with relevant Pakistani design and planning councils.`
     },
     {
       question: `Can a specialized ${categoryName} help with sustainable design?`,
@@ -89,7 +89,7 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
         "itemListElement": architects.slice(0, 15).map((a, i) => ({
           "@type": "ListItem",
           "position": i + 1,
-          "url": `https://designdirectory.pk/architects/${a.slug}`
+          "url": `https://architectorly.com/architects/${a.slug}`
         }))
       }
     };

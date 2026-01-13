@@ -63,7 +63,7 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
     },
     {
       question: `Are these architects registered?`,
-      answer: `DesignDirectory prioritizes practices with valid professional registrations. We recommend verifying the specific registration status of each professional (such as PCATP membership) during your initial meeting.`
+      answer: `Architectorly prioritizes practices with valid professional registrations. We recommend verifying the specific registration status of each professional (such as PCATP membership) during your initial meeting.`
     }
   ], [city]);
 
@@ -80,7 +80,7 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
         "@type": "ListItem",
         "position": i + 1,
         "name": a["Shop Name"],
-        "url": `https://designdirectory.pk/architects/${a.slug}`
+        "url": `https://architectorly.com/architects/${a.slug}`
       }))
     };
 
@@ -88,8 +88,8 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://designdirectory.pk/" },
-        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://designdirectory.pk/cities" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://architectorly.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://architectorly.com/cities" },
         { "@type": "ListItem", "position": 3, "name": city.name }
       ]
     };

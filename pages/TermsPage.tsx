@@ -12,7 +12,7 @@ const TermsPage: React.FC = () => {
         <section>
           <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">1. Scope of Service</h2>
           <p className="text-[#424245] leading-relaxed font-light text-[18px]">
-            DesignDirectory Pakistan provides a digital platform for the discovery and evaluation of architectural professionals. We facilitate connections but do not guarantee project outcomes or financial transactions between users and professionals.
+            Architectorly provides a digital platform for the discovery and evaluation of architectural professionals. We facilitate connections but do not guarantee project outcomes or financial transactions between users and professionals.
           </p>
         </section>
 
@@ -26,7 +26,7 @@ const TermsPage: React.FC = () => {
         <section>
           <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">3. Data Accuracy</h2>
           <p className="text-[#424245] leading-relaxed font-light text-[18px]">
-            Directory data is aggregated from public records and verified firm submissions. While we strive for absolute accuracy, DesignDirectory is not liable for errors in office locations, contact details, or historical ratings.
+            Directory data is aggregated from public records and verified firm submissions. While we strive for absolute accuracy, Architectorly is not liable for errors in office locations, contact details, or historical ratings.
           </p>
         </section>
 

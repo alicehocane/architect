@@ -10,7 +10,7 @@ const PrivacyPage: React.FC = () => {
         <section>
           <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">1. Information We Collect</h2>
           <p className="text-[#424245] leading-relaxed">
-            DesignDirectory Pakistan collects information that is publicly available through professional registries and data provided voluntarily by firms. This includes business names, contact details, office locations, and professional specializations.
+            Architectorly collects information that is publicly available through professional registries and data provided voluntarily by firms. This includes business names, contact details, office locations, and professional specializations.
           </p>
         </section>
 
@@ -30,7 +30,7 @@ const PrivacyPage: React.FC = () => {
 
         <section className="pt-12 border-t border-[#d2d2d7]/50">
           <p className="text-[14px] text-[#86868b]">
-            Last updated: November 2025. For privacy inquiries, please contact privacy@designdirectory.pk
+            Last updated: November 2025. For privacy inquiries, please contact privacy@architectorly.com
           </p>
         </section>
       </div>

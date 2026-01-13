@@ -5,7 +5,7 @@ import { ALL_ARCHITECTS, CITIES, CATEGORIES } from './data';
  * Returns an array of URL objects for XML generation.
  */
 export const generateSitemapData = () => {
-  const baseUrl = 'https://designdirectory.pk';
+  const baseUrl = 'https://architectorly.com';
   const today = new Date().toISOString().split('T')[0];
   
   const staticPages = [

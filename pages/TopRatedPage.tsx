@@ -50,7 +50,7 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
         "item": {
           "@type": "LocalBusiness",
           "name": a["Shop Name"],
-          "url": `https://designdirectory.pk/architects/${a.slug}`,
+          "url": `https://architectorly.com/architects/${a.slug}`,
           "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": a.globalRating || 5.0,
@@ -128,7 +128,7 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
           <div>
             <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">Selection Criteria for Top Architects</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed mb-6">
-              Being ranked as a "Top Rated" architect on DesignDirectory is a distinction earned through consistent performance. We evaluate firms based on three primary pillars:
+              Being ranked as a "Top Rated" architect on Architectorly is a distinction earned through consistent performance. We evaluate firms based on three primary pillars:
             </p>
             <ul className="space-y-4 text-[16px] text-[#86868b]">
               <li className="flex gap-3">
@@ -187,7 +187,7 @@ const faqItems = [
   },
   {
     question: "How do I verify if an architect is top-rated?",
-    answer: "A top-rated architect should have a global rating of 4.0 or above. On DesignDirectory, we calculate this by aggregating ratings across all their active regional branches and verifying their physical studio presence."
+    answer: "A top-rated architect should have a global rating of 4.0 or above. On Architectorly, we calculate this by aggregating ratings across all their active regional branches and verifying their physical studio presence."
   },
   {
     question: "What is the average fee for a top-rated architect in Lahore or Karachi?",
@@ -199,7 +199,7 @@ const faqItems = [
   },
   {
     question: "Are all firms on the top-rated list PCATP registered?",
-    answer: "DesignDirectory prioritizes PCATP-licensed professionals. While we display various designers, our 'Top Rated' status is reserved for firms that demonstrate professional accountability and legal standing in the Pakistani market."
+    answer: "Architectorly prioritizes PCATP-licensed professionals. While we display various designers, our 'Top Rated' status is reserved for firms that demonstrate professional accountability and legal standing in the Pakistani market."
   }
 ];
 
