@@ -39,7 +39,7 @@ const TermsPage: React.FC = () => {
 
         <footer className="pt-12 border-t border-[#d2d2d7]/50">
           <p className="text-[14px] text-[#86868b] font-medium">
-            Last modified: January 2025.
+            Last modified: January 2026.
           </p>
         </footer>
       </div>
