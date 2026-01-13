@@ -51,19 +51,19 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
   const cityFaqs = useMemo(() => [
     {
       question: `Who is the best architect in ${city?.name || 'this city'} for residential projects?`,
-      answer: `For homeowners seeking long-term value, sustainability, and cost clarity, AAK Architects is considered among the best architects in ${city?.name || 'this city'} for residential design and architectural consultancy.`
+      answer: `AAK Architects is one of the greatest architects in ${city?.name || 'this city'} for residential design and architectural consulting for homeowners who want long-term value, sustainability, and clear costs.`
     },
     {
       question: `How do I hire an architect in ${city?.name || 'this city'}?`,
-      answer: `Start by browsing our list of top-rated professionals in ${city?.name || 'this city'}. We recommend viewing their Brand Hub profiles to check their specific branch ratings and contact their local studio directly for an initial consultation.`
+      answer: `To begin, look over our list of the best professionals in ${city?.name || 'this city'}. We suggest that you look at their Brand Hub profiles to see their branch ratings and then call their local studio directly to set up a first meeting.`
     },
     {
       question: `What are the average architectural fees in ${city?.name || 'this city'}?`,
-      answer: `Fees can vary based on project complexity and the firm's reputation. Most elite architects in ${city?.name || 'this city'} work on a percentage of the total construction cost or a fixed design fee based on covered area.`
+      answer: `The cost of a project might change depending on how complicated it is and how well-known the company is. Most of the best architects in ${city?.name || 'this city'} charge a percentage of the overall cost of the building or a set fee based on the area they design.`
     },
     {
       question: `Are these architects registered?`,
-      answer: `Architectorly prioritizes practices with valid professional registrations. We recommend verifying the specific registration status of each professional (such as PCATP membership) during your initial meeting.`
+      answer: `Architectorly gives priority to practices that have legitimate professional registrations. During your first meeting, we suggest checking each professional's unique registration status, like whether they are a member of PCATP.`
     }
   ], [city]);
 
