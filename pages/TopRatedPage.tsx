@@ -43,7 +43,7 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
       "@context": "https://schema.org",
       "@type": "ItemList",
       "name": "Top Rated Architects in Pakistan 2026",
-      "description": "A curated list of the highest-rated architectural firms and designers across Pakistan based on client reviews and technical mastery.",
+      "description": "A list of the best-rated architects and designers in Pakistan, based on client feedback and technical skills.",
       "itemListElement": topRated.slice(0, 15).map((a, i) => ({
         "@type": "ListItem",
         "position": i + 1,
@@ -87,10 +87,10 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
         </h1>
         <div className="max-w-[720px] space-y-6">
           <p className="text-[21px] sm:text-[26px] text-[#424245] font-light leading-snug">
-            Our algorithm cross-references public data, peer reviews, and technical track records to identify firms that consistently deliver high-performance architecture.
+            Our algorithm looks at public data, peer reviews, and technical track records to find companies that always build high-performance architecture.
           </p>
           <p className="text-[17px] text-[#86868b] leading-relaxed">
-            From sustainable residential villas in Lahore to complex commercial landmarks in Karachi, these professionals represent the vanguard of the Pakistani architectural community.
+            These specialists are at the top of the Pakistani architectural world. They design anything from eco-friendly homes in Lahore to complicated commercial buildings in Karachi.
           </p>
         </div>
       </div>
@@ -128,40 +128,40 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
           <div>
             <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">Selection Criteria for Top Architects</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed mb-6">
-              Being ranked as a "Top Rated" architect on Architectorly is a distinction earned through consistent performance. We evaluate firms based on three primary pillars:
+              To be called a "Top Rated" architect on Architectorly, you have to do well all the time. We judge companies based on three main pillars:
             </p>
             <ul className="space-y-4 text-[16px] text-[#86868b]">
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span><strong>Verification:</strong> Active registration with the PCATP and a physical studio presence.</span>
+                <span><strong>Verification:</strong> Active registration with the PCATP and a studio presence in person.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span><strong>Client Satisfaction:</strong> A global rating of 4.0 or higher across multiple verified reviews.</span>
+                <span><strong>Client Satisfaction:</strong>A global rating of 4.0 or above based on a number of verified reviews.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span><strong>Regional Impact:</strong> Influence and successful project execution within major Pakistani cities.</span>
+                <span><strong>Regional Impact:</strong> Make a difference and get projects done well in big cities in Pakistan.</span>
               </li>
             </ul>
           </div>
           <div>
             <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">Why Hire a Top-Rated Professional?</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed mb-6">
-              Hiring a high-tier architect ensures that your property is not just built, but engineered for longevity. Top-rated firms often provide:
+              When you hire a top-tier architect, you can be sure that your property will last. Many of the best companies offer:
             </p>
             <ul className="space-y-4 text-[16px] text-[#86868b]">
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span>Lower operational costs through climate-responsive design.</span>
+                <span>Design that responds to climate can lower operational expenses.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span>Higher market resale value due to premium aesthetic and structural integrity.</span>
+                <span>Higher resale value on the market because of the high quality of the look and structure.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span>Access to the latest Building Information Modeling (BIM) technology.</span>
+                <span>Access to the newest Building Information Modeling (BIM) tools.</span>
               </li>
             </ul>
           </div>
@@ -183,23 +183,23 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
 const faqItems = [
   {
     question: "Who are the best architects in Pakistan for 2026?",
-    answer: "The best architects in Pakistan include high-performance studios like AAK Architects, Nayyar Ali Dada & Associates, and Amer Adnan Associates. These firms are recognized for their technical precision, professional PCATP licensure, and high client satisfaction ratings."
+    answer: "AAK Architects, Nayyar Ali Dada & Associates, and Amer Adnan Associates are some of the top architects in Pakistan. These companies are known for being very accurate, having PCATP licenses, and getting great marks from customers."
   },
   {
     question: "How do I verify if an architect is top-rated?",
-    answer: "A top-rated architect should have a global rating of 4.0 or above. On Architectorly, we calculate this by aggregating ratings across all their active regional branches and verifying their physical studio presence."
+    answer: "A highly rated architect should have a rating of 4.0 or higher over the world. We figure this up on Architectorly by adding up the ratings from all of their active regional branches and making sure they have a real studio."
   },
   {
     question: "What is the average fee for a top-rated architect in Lahore or Karachi?",
-    answer: "Top-rated firms typically charge a premium based on their expertise. Fees can range from 3% to 7% of total construction costs, or a fixed per-square-foot design fee starting from PKR 100 to PKR 350 for luxury residential projects."
+    answer: "Most of the time, the best companies charge more because they are experts. Fees can be between 3% and 7% of the overall cost of building, or a set amount per square foot, starting at PKR 100 for luxury residential projects and going up to PKR 350."
   },
   {
     question: "Can top-rated architects help reduce construction costs?",
-    answer: "Yes. Premium firms like AAK Architects utilize advanced research and BIM modeling to eliminate site waste and optimize material usage, often saving homeowners 10-15% in long-term maintenance and construction errors."
+    answer: "Yes. High-end companies like AAK Architects use extensive research and BIM modeling to cut down on waste on the job site and make the best use of materials. This can save homeowners 10–15% on long-term maintenance and building mistakes."
   },
   {
     question: "Are all firms on the top-rated list PCATP registered?",
-    answer: "Architectorly prioritizes PCATP-licensed professionals. While we display various designers, our 'Top Rated' status is reserved for firms that demonstrate professional accountability and legal standing in the Pakistani market."
+    answer: "Architectorly gives PCATP-licensed experts top priority. We show a lot of different designers, but only companies who are legally and professionally responsible in the Pakistani market can be \"Top Rated.\""
   }
 ];
 
