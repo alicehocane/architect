@@ -1132,7 +1132,7 @@ const rawData = [
         "Category": "Architect",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "Adeel Shahzad & Associates, Malik heights, 2 Main Double Rd, PMCHS E 11/3 E-11, Islamabad, 45200",
                 "Phone Number": "0345 5396660",
                 "Rating": 4.8,
@@ -3177,7 +3177,7 @@ const rawData = [
         "Category": "Architect",
         "Locations": [
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "Office 103, Ar. Ikram Ullah, HyperStart Plaza, Street 87, G-13/1 Islamabad",
                 "Phone Number": "0348 9241440",
                 "Rating": 5.0,
@@ -3685,7 +3685,7 @@ const rawData = [
         "Category": "Architect",
         "Locations": [
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "floor , office no 13, Archi Design Studio ( Architects Islamabad ), Select Center, Street 2, F-11 Markaz E-9, Islamabad, 44000",
                 "Phone Number": "0333 5125485",
                 "Rating": 4.5,
@@ -3933,7 +3933,7 @@ const rawData = [
         "Website": "https://archistan.com/",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "3-C, Basement Floor, Archistan, Street 65, F-10/3 F 10/3 F-10, Islamabad, 46000",
                 "Phone Number": "0331 2266645",
                 "Rating": 5.0,
@@ -3997,7 +3997,7 @@ const rawData = [
                 "Phone Number": "0315 9241357"
             },
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "Architect, G 16/1 Islamabad",
                 "Phone Number": "0313 9534547",
                 "Map URL": "https://www.google.com/maps/dir//Architect,+G+16%2F1+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df97f9620f71f7:0xee7970553a36aaf7?sa=X&ved=1t:57443&ictx=111"
@@ -4751,7 +4751,7 @@ const rawData = [
         "Website": "http://architectsinc.org/?fbclid=IwAR3o80VGtZz9OA6tMF5pcJgd1sz3GLtsdbwPub0nY53f1EtiW-5qWtm6fHU",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "MXMP 2HM Architects Inc. Islamabad, Hamza Rd, F 11/2 F-11, Islamabad",
                 "Rating": 5.0,
                 "Reviews": 4.0,
@@ -4778,7 +4778,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "3rd floor 40 number building, Architects inn, PHA Apartments, G-11, Islamabad, 44000",
                 "Phone Number": "0333 4969143",
                 "Rating": 5.0,
@@ -4793,7 +4793,7 @@ const rawData = [
         "Website": "https://www.arcodesk.com/",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "PX2H JF7 Architects Islamabad, MPCHS E-11/3 MPCHS E 11/3 E-11, Islamabad",
                 "Phone Number": "0333 8890670",
                 "Rating": 5.0,
@@ -4846,7 +4846,7 @@ const rawData = [
         "Category": "Architect",
         "Locations": [
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "Architectural Building Solutions، Main Double Road Flat No 102, Above IDC Lab,Main, G-13 Markaz Islamabad, 44000",
                 "Phone Number": "0300 8351340",
                 "Rating": 5.0,
@@ -5301,7 +5301,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "H, Archius Architecture studio, 352 Street 68, MPCHS E-11/3 E 11/3 Islamabad, 45510",
                 "Phone Number": "0345 8944675",
                 "Rating": 5.0,
@@ -6286,7 +6286,7 @@ const rawData = [
         "Category": "Engineering consultant",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "ATAC Engineering Consultants, 23D Street 100, G-11/3 Islamabad, 44000",
                 "Phone Number": "0322 8555126",
                 "Rating": 4.8,
@@ -6617,7 +6617,7 @@ const rawData = [
         "Category": "Architectural designer",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "Azar Raza Architects, f -10 markaz, capital trade center, 3rd floor , office # 13, F 10/3 F-10, Islamabad, 44000",
                 "Phone Number": "0321 8545444",
                 "Rating": 4.4,
@@ -7667,7 +7667,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "suite # 14, Ground Floor, Capital Builders & Developers, Abu Dhabi Towers, F-11 Markaz F-11, Islamabad, 44000",
                 "Phone Number": "0333 5334610",
                 "Rating": 4.7,
@@ -8259,7 +8259,7 @@ const rawData = [
         "Website": "https://www.facebook.com/conceptstudiof10/",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "M2V7 QP5 Concept Designs, Service Rd E, F-10 Markaz F 10/4 F-10, Islamabad",
                 "Phone Number": "(051) 2223014",
                 "Rating": 4.2,
@@ -9244,7 +9244,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "house no, Design HQ. Architects, 97 Street 77, SCHS E 11/2 E-11, Islamabad, 44000",
                 "Phone Number": "0322 6650238",
                 "Rating": 4.0,
@@ -9551,7 +9551,7 @@ const rawData = [
                 "Map URL": "https://www.google.com/maps/dir//Q9V3%2BFPV+DESIGN'S+ARCHITECT,+Peoples+Colony,+Attock/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df19003f5f40e7:0x63107e2b3bf7b76f?sa=X&ved=1t:57443&ictx=111"
             },
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "DESIGN'S ARCHITECT, JXRG XH6, St 1, H-13, Islamabad, Islamabad Capital Territory H13, Islamabad, 44000",
                 "Phone Number": "0333 5478685",
                 "Map URL": "https://www.google.com/maps/dir//DESIGN'S+ARCHITECT,+JXRG%2BXH6,+St+1,+H-13,+Islamabad,+Islamabad+Capital+Territory+H13,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df97e8aa665e21:0x499775ed77072cf0?sa=X&ved=1t:57443&ictx=111"
@@ -9710,7 +9710,7 @@ const rawData = [
         "Website": "https://dezaistudios.com/",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "Flat 8D, DEZI' STUDIOS, Block Number 39, G-11/3 Islamabad, 44000",
                 "Phone Number": "0344 9524471",
                 "Rating": 5.0,
@@ -9815,7 +9815,7 @@ const rawData = [
         "Category": "Interior architect office",
         "Locations": [
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "Dimensions Studio, House 42 Street 128, G-13/4 G 13/4 G-13, Islamabad",
                 "Phone Number": "0300 8189791",
                 "Map URL": "https://www.google.com/maps/dir//Dimensions+Studio,+House+42+Street+128,+G-13%2F4+G+13%2F4+G-13,+Islamabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df9786521a4cd1:0x3d751b72e133bb24?sa=X&ved=1t:57443&ictx=111"
@@ -10417,7 +10417,7 @@ const rawData = [
         "Website": "http://ejaad.us/",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "Ejaad Interior, Architectural & Landscape, House 328 Service Rd E, MPCHS E 11/3 E-11, Islamabad, 44000",
                 "Phone Number": "(051) 2375360",
                 "Rating": 4.2,
@@ -10934,7 +10934,7 @@ const rawData = [
         "Category": "Architect",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "M2W6 QPW FAM Civil & Structural Services, F 10/3 F-10, Islamabad",
                 "Phone Number": "0314 5101333",
                 "Rating": 4.5,
@@ -11579,7 +11579,7 @@ const rawData = [
         "Website": "http://grapesarchitect.com/",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "Grapes Architect International, 11, F-6/1 Islamabad, 44000",
                 "Phone Number": "0345 5021021",
                 "Rating": 5.0,
@@ -11593,7 +11593,7 @@ const rawData = [
         "Category": "Corporate office",
         "Locations": [
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "Gravity Architects, 28 Street 133, G-13/4 G 13/4 G-13, Islamabad",
                 "Phone Number": "0346 1520899",
                 "Rating": 5.0,
@@ -11731,7 +11731,7 @@ const rawData = [
         "Website": "https://www.facebook.com/cube2studio?mibextid=LQQJ4d",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "H-A Architects, Al-Mustafa Towers, F-10/3 F-10, Islamabad, 46000",
                 "Phone Number": "0312 9811914",
                 "Rating": 5.0,
@@ -12473,7 +12473,7 @@ const rawData = [
                 "Map URL": "https://www.google.com/maps/dir//3rd+Floor,+HK+Architects,+Burj-ul-Kuwait+Plaza,+Kohinoor+Rd,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x392269d87b5de057:0x1fd8208a69c3514a?sa=X&ved=1t:57443&ictx=111"
             },
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "HK ARCHITECTS, Markaz Rd, MPCHS E-11/3 E-11, Islamabad, 44000",
                 "Phone Number": "(051) 2375003",
                 "Rating": 4.9,
@@ -12726,7 +12726,7 @@ const rawData = [
                 "Map URL": "https://www.google.com/maps/dir//HR+Design+Studio,+Ferozwala+Road,+near+UBL+Bank+Bazar+CH+Rasheed+wala,+Gujranwala,+25250/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x391ed5950ebec933:0xeb0a6a5c71ac01a7?sa=X&ved=1t:57443&ictx=111"
             },
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "HR Design Studio, 3, Street 7A, F-10/3 Islamabad, 44000",
                 "Phone Number": "(051) 4718852",
                 "Map URL": "https://www.google.com/maps/dir//HR+Design+Studio,+3,+Street+7A,+F-10%2F3+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbf958e6b88b5:0xa6cd06ecbf38446d?sa=X&ved=1t:57443&ictx=111"
@@ -13011,7 +13011,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "S, icon marketing and Builder’s, Trade Centre، Plot 18 Hilal Rd, F-11 Markaz F-11, Islamabad, 44000",
                 "Phone Number": "0332 9301261",
                 "Map URL": "https://www.google.com/maps/dir//S,+icon+marketing+and+Builder%E2%80%99s,+Trade+Centre%D8%8C+Plot+18+Hilal+Rd,+F-11+Markaz+F-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbd60a88393a5:0xd31ebc5cf86a0946?sa=X&ved=1t:57443&ictx=111"
@@ -14366,7 +14366,7 @@ const rawData = [
         "Website": "https://www.kasibdesignstudio.com/",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "Kasib Design Studio, Aura Square, Markaz, F-11 Markaz F-11, Islamabad, 43701",
                 "Phone Number": "(051) 22421592",
                 "Rating": 5.0,
@@ -15019,7 +15019,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "MXQP HGC Landmark Consultants, Street No. 35, F-11/3 F 11/3 F-11, Islamabad",
                 "Phone Number": "(051) 8740142",
                 "Rating": 5.0,
@@ -15127,7 +15127,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "G-13",
+                "City": "Islamabad",
                 "Address": "G13, Leo's Arch Studio, 2 Street 49, G-13/2 Islamabad, 22222",
                 "Phone Number": "0335 2840960",
                 "Map URL": "https://www.google.com/maps/dir//G13,+Leo's+Arch+Studio,+2+Street+49,+G-13%2F2+Islamabad,+22222/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df971f2c9567a3:0xb938588262a6cb87?sa=X&ved=1t:57443&ictx=111"
@@ -15546,7 +15546,7 @@ const rawData = [
         "Website": "https://madxpr.com/",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "MadXpr, WARDA HAMNA Residencia, 4 Street 98, G-11/3 G 11/3 Islamabad, 44000",
                 "Rating": 5.0,
                 "Reviews": 2.0,
@@ -15737,7 +15737,7 @@ const rawData = [
         "Category": "Architectural designer",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "MAMAAR Architecture Studio, Office 03, Second floor,Shalimar Plaza (Junaid Jamshed outlet, F-10 Markaz Islamabad, 04521",
                 "Phone Number": "0300 2024422",
                 "Map URL": "https://www.google.com/maps/dir//MAMAAR+Architecture+Studio,+Office+03,+Second+floor,Shalimar+Plaza+(Junaid+Jamshed+outlet,+F-10+Markaz+Islamabad,+04521/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfbd459e8eaa71:0x9638808a12fa4d65?sa=X&ved=1t:57443&ictx=111"
@@ -16835,7 +16835,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "Office 12, 3rd Floor, Mirza Developers (MD), Allied Plaza, Islamabad, 44000",
                 "Phone Number": "0332 5611656",
                 "Rating": 5.0,
@@ -17391,7 +17391,7 @@ const rawData = [
         "Category": "Architect",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "Moss architects, Select Center, office num 16-17, F-11 Markaz F 11 Markaz F-11, Islamabad, 44000",
                 "Phone Number": "0333 5999859",
                 "Rating": 5.0,
@@ -17813,7 +17813,7 @@ const rawData = [
         "Website": "http://the-nvision.net/",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Phone Number": "(051) 2229149",
                 "Rating": 5.0,
                 "Reviews": 1.0
@@ -17909,7 +17909,7 @@ const rawData = [
         "Website": "http://www.naqashi.pk/",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "2nd Floor, Naqashi interior, Capital Plaza, G11 markaz, Islamabad",
                 "Phone Number": "0345 8595986",
                 "Rating": 5.0,
@@ -18077,7 +18077,7 @@ const rawData = [
         "Category": "Interior architect office",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "Nasolutions, G11 Service Rd W, G-11/1 G 11/1 G-11, Islamabad, 44000",
                 "Phone Number": "0315 3999939",
                 "Map URL": "https://www.google.com/maps/dir//Nasolutions,+G11+Service+Rd+W,+G-11%2F1+G+11%2F1+G-11,+Islamabad,+44000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38df95a02320f053:0x460c6bbd5283a533?sa=X&ved=1t:57443&ictx=111"
@@ -18703,7 +18703,7 @@ const rawData = [
         "Website": "http://www.orad.space/",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "ORAD، ACE UPTOWN, Service Rd N, E 11/2 Islamabad, 44000",
                 "Phone Number": "0321 9100330",
                 "Rating": 4.9,
@@ -19505,7 +19505,7 @@ const rawData = [
         "Website": "http://www.fb.com/rahihomes",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "Plot 6-E, RAHI HOMES, SARF Plaza, F-10 Markaz 2nd Floor, F-10 Markaz Islamabad, 44000",
                 "Phone Number": "0300 5514775",
                 "Rating": 5.0,
@@ -19898,7 +19898,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "Office No.1, Basement, RK STUDIOS, Nasr Chambers, Street 70, E 11/3 Islamabad, 44000",
                 "Phone Number": "0309 6968080",
                 "Rating": 4.9,
@@ -20107,7 +20107,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "E-11",
+                "City": "Islamabad",
                 "Address": "S O Design Studio, House 283, 4 Street 18, E 11/4 E-11, Islamabad, 44000",
                 "Phone Number": "0333 5999859",
                 "Rating": 5.0,
@@ -20833,7 +20833,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "Senan Ahmed Architects, Office 29, 3rd Floor, Al-Anayat Plaza, G-11 Markaz G-11, Islamabad, 46000",
                 "Phone Number": "0333 5521508",
                 "Rating": 4.0,
@@ -21250,7 +21250,7 @@ const rawData = [
         "Website": "http://www.sharc-ad.com/",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "SHARC Architecture & Design, House 11, Street 79, G-6/4 G 6/4 Islamabad, 44000",
                 "Phone Number": "0300 5175568",
                 "Rating": 4.8,
@@ -21362,7 +21362,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "Shujauddin Architects, H# 500, 1 Street 4, F-11, Islamabad",
                 "Phone Number": "0319 4757697",
                 "Rating": 5.0,
@@ -21579,7 +21579,7 @@ const rawData = [
         "Website": "http://www.skipper.com.pk/",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "M2R6 FJX Skipper, Sagheer Market, F-10/4 F 10/4 F-10, Islamabad",
                 "Phone Number": "(051) 2224218",
                 "Rating": 5.0,
@@ -21767,7 +21767,7 @@ const rawData = [
         "Website": "http://www.sbi.com.pk/",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "Office Number 3, 2nd floor, Smart Construction, Shalimar Plaza, F-10, Islamabad, 44000",
                 "Phone Number": "0333 0606661",
                 "Rating": 5.0,
@@ -22308,7 +22308,7 @@ const rawData = [
         "Category": "Building designer",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "MXGV WG2 Suhail & Fawad, F 11/1 F-11, Islamabad",
                 "Phone Number": "(051) 2292706",
                 "Rating": 4.4,
@@ -23053,7 +23053,7 @@ const rawData = [
         "Website": "https://thearchitizer.com/",
         "Locations": [
             {
-                "City": "F-11",
+                "City": "Islamabad",
                 "Address": "The Architizer, Hilal Rd, F-11 Markaz F 11 Markaz F-11, Islamabad, 44000",
                 "Phone Number": "0331 9124482",
                 "Rating": 5.0,
@@ -23260,7 +23260,7 @@ const rawData = [
         "Website": "https://thelinez.pk/",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "THE LINEZ Architecture and interior design, Plot # 02, F-10/3, 10th Avenue, F 10/3 F-10, Islamabad, Islamabad Capital Territory 44000, Islamabad, 04403",
                 "Phone Number": "0314 9009432",
                 "Rating": 4.8,
@@ -23490,7 +23490,7 @@ const rawData = [
         "Category": "Corporate office",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "3rd floor, Tikon Architects, Rehman Plaza, Office no 14, G-11 Markaz G 11 Markaz G-11, Islamabad",
                 "Phone Number": "0345 4132628",
                 "Rating": 4.0,
@@ -24368,7 +24368,7 @@ const rawData = [
         "Category": "Architecture firm",
         "Locations": [
             {
-                "City": "G-11",
+                "City": "Islamabad",
                 "Address": "G11, WAA architecture interior planning-BIM services /Revit training - skill, 2 Street 34, G-11/2 Islamabad, 44000",
                 "Phone Number": "0331 2619269",
                 "Rating": 5.0,
@@ -24642,7 +24642,7 @@ const rawData = [
         "Website": "https://www.instagram.com/yaranatelier?igsh=MXJyZHlsZmRydnNhNw%3D%3D&utm_source=qr",
         "Locations": [
             {
-                "City": "F-10",
+                "City": "Islamabad",
                 "Address": "Office # 201, 2nd Floor, Yaran   Atelier, Capital Business Centre, F-10 Markaz Islamabad",
                 "Phone Number": "0347 5253291",
                 "Rating": 5.0,
