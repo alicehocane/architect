@@ -348,15 +348,15 @@ const faqItems = [
   },
   { 
     question: "Do you handle site execution and construction?", 
-    answer: "We provide 'Executive Supervision.' While we partner with elite contractors, our studio remains the technical lead on-site to ensure every measurement and material specification is executed to zero-tolerance standards." 
+    answer: "We offer \"Executive Supervision\". Even though we work with top contractors, our studio is still in charge of the technical side of things on site to make sure that every measurement and material specification is met with no room for error." 
   },
   { 
     question: "What is your approach to luxury in the Pakistani market?", 
-    answer: "Luxury is an outcome of technical precision. We prioritize acoustic privacy, high-performance thermal envelopes, and seamless spatial logic over superficial decoration. A well-engineered building is the ultimate luxury." 
+    answer: "Technical accuracy leads to luxury. We care more about soundproofing, high-performance thermal envelopes, and flawless spatial logic than we do about pretty decorations. The best luxury is a well-built building." 
   },
   { 
     question: "Can you review plans designed by another architect?", 
-    answer: "Yes, we can review plans created by other architects. Our focus is on ensuring technical precision, sustainability, and performance. We provide detailed feedback and recommendations to enhance the design's effectiveness and feasibility." 
+    answer: "Yes, we can look over blueprints made by other architects. We are mostly concerned with making sure that everything is technically accurate, lasts a long time, and works well. We give you extensive feedback and suggestions on how to make the design more effective and possible." 
   }
 ];
 
