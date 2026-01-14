@@ -15,9 +15,23 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ onCategoryClick }) => {
     return CATEGORIES.slice(0, visibleCount);
   }, [visibleCount]);
 
-  useEffect(() => {
+
+ useEffect(() => {
+    // 1. DYNAMIC META CONTENT
+    document.title = "Architectural Specialties & Design Services Pakistan | Architectorly";
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Browse Pakistan's largest directory of specialized design services. Find PCATP architects, interior designers, urban planners, and landscape experts near you.");
+
+    // 2. STRUCTURED DATA (JSON-LD)
     const script = document.createElement('script');
     script.type = 'application/ld+json';
+    
     const listSchema = {
       "@context": "https://schema.org",
       "@type": "ItemList",
@@ -46,7 +60,13 @@ const CategoriesPage: React.FC<CategoriesPageProps> = ({ onCategoryClick }) => {
 
     script.text = JSON.stringify([listSchema, faqSchema]);
     document.head.appendChild(script);
-    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
+
+    // 3. CLEANUP ON UNMOUNT
+    return () => { 
+      if (document.head.contains(script)) {
+        document.head.removeChild(script); 
+      }
+    };
   }, []);
 
   return (
