@@ -34,22 +34,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
   ];
 
   useEffect(() => {
-    // Dynamic SEO Metadata
-    const pageTitle = `${architect["Shop Name"]} | Best Architects in ${primaryCity} - DesignDirectory`;
-    const pageDesc = `View the professional profile and regional branch details for ${architect["Shop Name"]} in ${primaryCity}. Rated ${architect.globalRating?.toFixed(1)} for architectural excellence in Pakistan.`;
-    
-    document.title = pageTitle;
-    
-    let metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', pageDesc);
-    } else {
-      metaDescription = document.createElement('meta');
-      metaDescription.setAttribute('name', 'description');
-      metaDescription.setAttribute('content', pageDesc);
-      document.head.appendChild(metaDescription);
-    }
-
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
