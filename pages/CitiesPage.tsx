@@ -20,6 +20,18 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
   };
 
   useEffect(() => {
+    // 1. DYNAMIC META CONTENT
+    document.title = "Top Architects in Pakistan by City | Lahore, Karachi, Islamabad | Architectorly";
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Find and compare the best architecture firms across Pakistan. Detailed directories for Lahore, Karachi, Islamabad, and 48+ other cities with verified ratings.");
+
+    // 2. STRUCTURED DATA (JSON-LD)
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
@@ -51,7 +63,13 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
 
     script.text = JSON.stringify([listSchema, faqSchema]);
     document.head.appendChild(script);
-    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
+
+    // 3. CLEANUP
+    return () => { 
+      if (document.head.contains(script)) {
+        document.head.removeChild(script); 
+      }
+    };
   }, []);
 
   return (

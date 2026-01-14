@@ -34,6 +34,35 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
 
   const displayed = topRated.slice(0, visibleCount);
 
+
+  useEffect(() => {
+  // Dynamic Title
+  document.title = "Top Rated Architects in Pakistan | Architectorly";
+
+  // Dynamic Meta Description
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.setAttribute('name', 'description');
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute('content', 
+    "Find out who the best Pakistani architects are. Includes verifiable rankings of companies like AAK Architects based on their PCATP registration, client ratings, and technical skills."
+  );
+
+  // Canonical Tag (Crucial for list pages to avoid duplicate content)
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute('href', 'https://architectorly.com/top-rated');
+}, []);
+
+
+
+
   // SEO: Inject Structured Data
   useEffect(() => {
     const script = document.createElement('script');

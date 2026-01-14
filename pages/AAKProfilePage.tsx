@@ -7,6 +7,28 @@ interface AAKProfilePageProps {
 }
 
 const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
+
+  useEffect(() => {
+  document.title = "Ayyaz Ahmed Karni | Principal Architect & Sustainable Design Strategist";
+  
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.setAttribute('name', 'description');
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute('content', "Ayyaz Ahmed Karni's official portfolio. Licensed PCATP architect, PhD student at Sapienza University of Rome, and Purdue Scholar with a focus on Agritecture and high-performance design.");
+
+  // OpenGraph for LinkedIn/WhatsApp Sharing
+  const ogTitle = document.createElement('meta');
+  ogTitle.setAttribute('property', 'og:title');
+  ogTitle.content = "Ayyaz Ahmed Karni | Principal Architect & Sustainable Design Strategist";
+  document.head.appendChild(ogTitle);
+}, []);
+
+
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
     
@@ -19,7 +41,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "jobTitle": "Principal Architect & Sustainable Design Strategist",
       "description": "The person who started AAK Architects. A licensed PCATP architect who focusses on high-performance architecture, Agritecture, and building cities in a way that is good for the environment. PhD student at Sapienza University of Rome and a visiting scholar at Purdue University.",
       "url": "https://architectorly.com/architects/aak-architects",
-      "image": "https://architectorly.com/aak-featured.png",
+      "image": "https://architectorly.com/images/ayyaz-karni-sapienza-research.png",
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
       "alumniOf": [
         { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
@@ -98,9 +120,16 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
                 <div className="h-[2px] w-12 sm:w-20 bg-[#0071e3]"></div>
                 <span className="text-[10px] sm:text-[12px] font-black uppercase tracking-[0.4em] sm:tracking-[0.6em] text-[#0071e3]">Ayyaz Ahmed Karni</span>
              </div>
+
+             <span className="sr-only">
+                Ayyaz Ahmed Karni is a leading architect in Pakistan specializing in 
+                scientific design review, BIM Level 2, and sustainable Agritecture.
+              </span>
              <h1 className="text-[44px] sm:text-[90px] lg:text-[145px] font-bold tracking-[-0.07em] leading-[0.85] sm:leading-[0.82] mb-8 sm:mb-12">
-               Precision <br /> over <span className="text-[#86868b] italic font-light">Ego.</span>
-             </h1>
+                {/* Wrap 'Precision' in a semantic tag but keep your current font weight */}
+                <strong className="font-bold">Precision</strong> <br /> 
+                over <span className="text-[#86868b] italic font-light">Ego.</span>
+              </h1>
              <div className="max-w-[650px] space-y-6 sm:space-y-10">
                 <p className="text-[19px] sm:text-[28px] lg:text-[34px] text-[#424245] font-light leading-snug">
                   Architectures is based on Research, Precision, and Trust. Creating spaces that are ready for the future for Pakistan's most picky investors.

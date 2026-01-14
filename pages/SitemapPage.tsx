@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { CITIES, ALL_ARCHITECTS } from '../data';
 import { Architect } from '../types';
 
@@ -7,6 +7,37 @@ interface SitemapPageProps {
 }
 
 const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
+  useEffect(() => {
+    // 1. DYNAMIC META CONTENT
+    document.title = "Sitemap | Complete Directory Index - Architectorly Pakistan";
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', "Browse our complete index of architecture firms, cities, and professional categories across Pakistan. The definitive map for all Architectorly resources.");
+
+    // 2. SEARCH ENGINE SCHEMA (SiteNavigationElement)
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    const sitemapSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "Architectorly Pakistan Site Structure",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Top Rated Architects", "url": "https://architectorly.com/top-rated" },
+        { "@type": "ListItem", "position": 2, "name": "Cities Directory", "url": "https://architectorly.com/cities" },
+        { "@type": "ListItem", "position": 3, "name": "Cost Estimator Tool", "url": "https://architectorly.com/estimate-calculator" }
+      ]
+    };
+    script.text = JSON.stringify(sitemapSchema);
+    document.head.appendChild(script);
+
+    return () => { if (document.head.contains(script)) document.head.removeChild(script); };
+  }, []);
+
   const navigateTo = (e: React.MouseEvent, url: string) => {
     e.preventDefault();
     window.history.pushState({}, '', url);
@@ -34,9 +65,11 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
         <span className="text-[13px] font-bold text-[#0066cc] uppercase tracking-[0.2em] mb-4 block">Index & Directory</span>
         <h1 className="text-[48px] sm:text-[64px] font-bold tracking-tight text-[#1d1d1f] mb-4">Site Map.</h1>
         <p className="text-[21px] text-[#86868b] font-light max-w-[800px]">
-          A full list of all the buildings in Pakistan, organized by region and type of work.
+          A comprehensive digital index of architectural practices, regional hubs, and technical resources across Pakistan.
         </p>
       </header>
+
+      {/* [Image of a website architecture diagram showing sitemap hierarchy] */}
 
       <section className="mb-24">
         <h2 className="text-[17px] font-bold text-[#1d1d1f] mb-8 pb-4 border-b border-[#d2d2d7]">Directory Hubs</h2>
@@ -108,7 +141,7 @@ const SitemapPage: React.FC<SitemapPageProps> = ({ onCityClick }) => {
         <div className="bg-[#f5f5f7] rounded-[2rem] p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
             <h3 className="font-bold text-[17px] text-[#1d1d1f] mb-1">Missing your practice?</h3>
-            <p className="text-[14px] text-[#86868b]">We are always checking and adding new top-notch architecture businesses.</p>
+            <p className="text-[14px] text-[#86868b]">Join our verified network of high-performance architectural firms in Pakistan.</p>
           </div>
           <a href="https://api.whatsapp.com/send/?phone=923038001804" className="bg-[#0071e3] text-white px-6 py-3 rounded-full text-[14px] font-bold hover:bg-[#0077ed] transition-all">Submit Your Firm</a>
         </div>

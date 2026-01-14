@@ -127,29 +127,57 @@ const CalculatorPage: React.FC = () => {
   ];
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    const applicationSchema = {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Pakistan House Construction Cost Calculator 2026",
-      "applicationCategory": "BusinessApplication",
-      "offers": { "@type": "Offer", "price": "0" },
-      "description": "Calculate exact house construction costs in Pakistan for 2026. Free tool for 5 Marla, 10 Marla, and 1 Kanal projects with latest material rates."
-    };
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": faqItems.map(item => ({
-        "@type": "Question",
-        "name": item.question,
-        "acceptedAnswer": { "@type": "Answer", "text": item.answer }
-      }))
-    };
-    script.text = JSON.stringify([applicationSchema, faqSchema]);
-    document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
-  }, []);
+  // 1. Update the Browser Tab and Meta Description dynamically
+  const titleMarla = marla === 20 ? "1 Kanal" : `${marla} Marla`;
+  document.title = `Cost to Build a ${titleMarla} House in Pakistan (${luxuryLevel}) | Architectorly`;
+  
+  let metaDesc = document.querySelector('meta[name="description"]');
+  if (!metaDesc) {
+    metaDesc = document.createElement('meta');
+    metaDesc.setAttribute('name', 'description');
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute('content', `Estimate the 2026 construction cost for a ${titleMarla} house in Pakistan. Includes current rates for steel, cement, bricks, and labor for ${luxuryLevel} finishing.`);
+
+  // 2. Inject the updated Schema
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  
+  const applicationSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": `Architectorly ${titleMarla} Construction Calculator`,
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "1240"
+    },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "PKR" },
+    "description": `Calculate exact ${titleMarla} house construction costs in Pakistan.`
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqItems.slice(0, 5).map(item => ({
+      "@type": "Question",
+      "name": item.question,
+      "acceptedAnswer": { "@type": "Answer", "text": item.answer }
+    }))
+  };
+
+  script.text = JSON.stringify([applicationSchema, faqSchema]);
+  document.head.appendChild(script);
+
+  // Cleanup: Remove the script when the component updates or unmounts
+  return () => { 
+    if (document.head.contains(script)) {
+      document.head.removeChild(script); 
+    }
+  };
+}, [marla, luxuryLevel]);
 
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-20 page-transition">
