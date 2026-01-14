@@ -195,7 +195,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
             <div className="flex-1 space-y-8 sm:space-y-12 text-center lg:text-left">
               <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] sm:text-[12px] font-black uppercase tracking-widest">Global Laboratory</span>
-              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Unparalleled Insight <br className="hidden sm:block" /> <span className="text-[#86868b]">Proven Expertise.</span></h2>
+              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Intelligence <br className="hidden sm:block" /> <span className="text-[#86868b]">Excellence.</span></h2>
               <div className="text-[17px] sm:text-[21px] text-[#424245] font-light max-w-none space-y-6">
                 <p>
                   Ayyaz Ahmed Karni is a PhD researcher at Sapienza University of Rome and a Visiting Scholar at Purdue University. He turns worldwide urban science into solutions that may be built in Pakistan.
