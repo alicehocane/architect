@@ -971,7 +971,7 @@ const rawData = [
         "Locations": [
             {
                 "City": "Sahiwal",
-                "Address": "Office #.15 Basement Floor, Access Architects Pk | Best Construction & Architect Company In Sahiwal, Super Market, Church Rd, Sahiwal, 57000",
+                "Address": "Office #.15 Basement Floor, Access Architects Pk",
                 "Phone Number": "0300 2561834",
                 "Rating": 5.0,
                 "Map URL": "https://www.google.com/maps/dir//office+%23.15+Basement+Floor,+ACCESS+ARCHITECTS+PK+%7C+Best+Construction+%26+Architect+Company+in+Sahiwal,+Super+Market,+Church+Rd,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b77422d63047:0xa127b8b30b1833?sa=X&ved=1t:57443&ictx=111"
@@ -1174,7 +1174,7 @@ const rawData = [
         "Locations": [
             {
                 "City": "Gulshan-e-Iqbal Islamabad",
-                "Address": "Office #211, Adnan and Humaira Architects | Architectual Design Services | Interior Designs | Best Architects In Islamabad, Park Avenue, markaz F-11, Islamabad, 44000",
+                "Address": "Office #211, Adnan and Humaira Architects | Architectual Design Services | Interior Designs",
                 "Phone Number": "0333 5076780",
                 "Rating": 4.9,
                 "Reviews": 43.0,
@@ -1595,7 +1595,7 @@ const rawData = [
         "Locations": [
             {
                 "City": "Faisalabad",
-                "Address": "Ahtisham Architect & Associates (Aaa) Best Architect In Faisalabad Pakistan, At Ittefaq Commercial Market, Chak 208 Rd, Opposite Model City 1, Faisalabad, 38000",
+                "Address": "Ahtisham Architect & Associates (Aaa)",
                 "Phone Number": "0316 8840305",
                 "Rating": 4.9,
                 "Map URL": "https://www.google.com/maps/dir//Ahtisham+Architect+%26+Associates+(AAA)+Best+Architect+in+Faisalabad+Pakistan,+at+Ittefaq+Commercial+Market,+Chak+208+Rd,+opposite+Model+City+1,+Faisalabad,+38000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922430cdac6327d:0x43edeb7ab08bed6b?sa=X&ved=1t:57443&ictx=111"
@@ -3381,7 +3381,7 @@ const rawData = [
         "Locations": [
             {
                 "City": "Pakpattan",
-                "Address": "Arch Home Architects & Builders - Best Architects & Builders In Pakistan, Girls College Rd, Opposite Batala School, Sahiwal, 57000",
+                "Address": "Arch Home Architects & Builders",
                 "Phone Number": "0309 6856800",
                 "Rating": 4.9,
                 "Map URL": "https://www.google.com/maps/dir//ARCH+HOME+Architects+%26+Builders+-+Best+Architects+%26+Builders+in+Pakistan,+Girls+College+Rd,+opposite+Batala+School,+Sahiwal,+57000/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922b9d9680d68ef:0x2f1430f38a670283?sa=X&ved=1t:57443&ictx=111"
@@ -3432,7 +3432,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Arch Notion | Best Architects & Engineers",
+        "Shop Name": "Arch Notion",
         "Category": "Architecture firm",
         "Website": "http://www.archnotion.com/",
         "Locations": [
@@ -5494,7 +5494,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Arcodesk Pakistan | Best Architectural Services In Gujranwala",
+        "Shop Name": "Arcodesk Pakistan",
         "Category": "Architect",
         "Website": "http://www.arcodesk.com/",
         "Locations": [
@@ -5742,7 +5742,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Arsh Arc Associates - Best Architects In Islamabad & Rawalpindi, Pakistan",
+        "Shop Name": "Arsh Arc Associates",
         "Category": "Architect",
         "Website": "http://www.arsharcassociates.com/",
         "Locations": [
@@ -6957,49 +6957,6 @@ const rawData = [
                 "Address": "9868 H2W Beautifull Disign, Kotri, 74600",
                 "Phone Number": "0309 1887908",
                 "Map URL": "https://www.google.com/maps/dir//9868%2BH2W+Beautifull+Disign,+Kotri,+74600/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x394c7b95e74b4589:0xc65921272c557b55?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "Best Architects In Islamabad",
-        "Category": "Architecture firm",
-        "Website": "https://my4walls.com/best-architects-in-islamabad/",
-        "Locations": [
-            {
-                "City": "Lasbela",
-                "Address": "First Floor, Best Architects in Islamabad, One Piccadilly, Gulberg Greens, Islamabad, 45551",
-                "Phone Number": "(051) 2745665",
-                "Rating": 4.6,
-                "Reviews": 5.0,
-                "Map URL": "https://www.google.com/maps/dir//First+Floor,+Best+Architects+in+Islamabad,+One+Piccadilly,+Gulberg+Greens,+Islamabad,+45551/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x38dfeb355b30c5ab:0xc223662174ffa51b?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "Best Builders & Interior",
-        "Category": "Interior architect office",
-        "Website": "http://bestbuildersandinteriors.com/",
-        "Locations": [
-            {
-                "City": "Faisalabad",
-                "Address": "C5Xc 8Qw Best Builders & Interior, Street 5, Abdullah Gardens Abdullah Garden, Faisalabad",
-                "Phone Number": "0311 0731111",
-                "Rating": 4.6,
-                "Map URL": "https://www.google.com/maps/dir//C5XC%2B8QW+Best+Builders+%26+Interior,+Street+5,+Abdullah+Gardens+Abdullah+Garden,+Faisalabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x3922691029581c13:0x1b3ff9d4247b4509?sa=X&ved=1t:57443&ictx=111"
-            }
-        ]
-    },
-    {
-        "Shop Name": "Best Home Design",
-        "Category": "Architectural designer",
-        "Locations": [
-            {
-                "City": "Jauharabad",
-                "Address": "77Qp 4Xp Best Home Design, 4 Block Jauharabad",
-                "Phone Number": "0308 2367302",
-                "Rating": 5.0,
-                "Reviews": 1.0,
-                "Map URL": "https://www.google.com/maps/dir//77QP%2B4XP+Best+Home+Design,+4+Block+Jauharabad/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x39213d63542f8687:0x16068c4e8b3df9c3?sa=X&ved=1t:57443&ictx=111"
             }
         ]
     },
@@ -12761,7 +12718,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Hunains Architect | Best Architectural Designer & 3D Visualizer Lahore",
+        "Shop Name": "Hunains Architect",
         "Category": "Architect",
         "Website": "https://sites.google.com/view/muhammadhunainshahid",
         "Locations": [
@@ -13989,7 +13946,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Jdcr Arcade Best Architect",
+        "Shop Name": "Jdcr Arcade",
         "Category": "Architecture firm",
         "Locations": [
             {
@@ -15568,7 +15525,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Mahar Architects - Best Architect In Burewala",
+        "Shop Name": "Mahar Architects",
         "Category": "Architectural designer",
         "Locations": [
             {
@@ -20341,7 +20298,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Sah Design-Best Architecture Firm",
+        "Shop Name": "Sah Design",
         "Category": "Architecture firm",
         "Locations": [
             {
@@ -25160,7 +25117,7 @@ const rawData = [
         ]
     },
     {
-        "Shop Name": "Zigar Khan & Associates- Best Architects In Islamabad",
+        "Shop Name": "Zigar Khan & Associates",
         "Category": "Architect",
         "Locations": [
             {
