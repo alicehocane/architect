@@ -241,7 +241,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
                <div className="aspect-[4/5] bg-[#1d1d1f] rounded-[3rem] sm:rounded-[4.5rem] relative overflow-hidden shadow-2xl group">
 
                   <img 
-                    src="./images/ayyaz-karni-sapienza-research.png"
+                    src="/ayyaz-karni-sapienza-research.png"
                     alt="Ayyaz Ahmed Karni conducting PhD research on Sustainable Urban Planning at Sapienza University of Rome" 
                     loading="lazy"
                     className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
