@@ -41,7 +41,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "jobTitle": "Principal Architect & Sustainable Design Strategist",
       "description": "The person who started AAK Architects. A licensed PCATP architect who focusses on high-performance architecture, Agritecture, and building cities in a way that is good for the environment. PhD student at Sapienza University of Rome and a visiting scholar at Purdue University.",
       "url": "https://architectorly.com/architects/aak-architects",
-      "image": "https://architectorly.com/images/aak-featured.png",
+      "image": "https://architectorly.com/aak-featured.png",
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
       "alumniOf": [
         { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
@@ -241,7 +241,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
                <div className="aspect-[4/5] bg-[#1d1d1f] rounded-[3rem] sm:rounded-[4.5rem] relative overflow-hidden shadow-2xl group">
 
                   <img 
-                    src="/images/ayyaz-karni-sapienza-research.jpg"
+                    src="/ayyaz-karni-sapienza-research.jpg"
                     alt="Ayyaz Ahmed Karni conducting PhD research on Sustainable Urban Planning at Sapienza University of Rome" 
                     loading="lazy"
                     className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
