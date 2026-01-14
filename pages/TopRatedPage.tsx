@@ -37,7 +37,7 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
 
   useEffect(() => {
   // Dynamic Title
-  document.title = "The best architects in Pakistan | Architectorly";
+  document.title = "Top Rated Architects in Pakistan | Architectorly";
 
   // Dynamic Meta Description
   let metaDesc = document.querySelector('meta[name="description"]');
