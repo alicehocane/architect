@@ -23,7 +23,9 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
       "alumniOf": [
         { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
-        { "@type": "CollegeOrUniversity", "name": "Purdue University" }
+        { "@type": "CollegeOrUniversity", "name": "Purdue University" },
+        { "@type": "CollegeOrUniversity", "name": "Riphah International University" },
+        { "@type": "CollegeOrUniversity", "name": "COMSATS University Islamabad" }
       ]
     };
     const faqSchema = {
@@ -42,20 +44,10 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
 
   const whatsappInquiry = "https://api.whatsapp.com/send/?phone=923215201830&text=Hello%20Ayyaz%2C%20I%20saw%20your%20Master%20Folio.%20I'm%20looking%20for%20a%20Scientific%20Design%20Review%20for%20my%20upcoming%20project.";
 
-  // Dynamic Portfolio Data reflecting the provided images
-  const portfolio = [
-    { title: "Global Food Horizon", category: "Commercial Architecture", area: "Corporate HQ", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1000&auto=format&fit=crop" },
-    { title: "Gloria Residency", category: "Mixed-Use Development", area: "Urban Living", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop" },
-    { title: "The Geometric Villa", category: "Residential Masterpiece", area: "DHA District", img: "https://images.unsplash.com/photo-1600585154340-be6199f7e009?q=80&w=1000&auto=format&fit=crop" },
-    { title: "Bake & Brew Atelier", category: "Boutique Interior", area: "Commercial Studio", img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop" },
-    { title: "Brick & Louver House", category: "Contemporary Residential", area: "Climate Responsive", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop" },
-    { title: "Transitional Manor", category: "Luxury Estate", area: "Private Commission", img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=1000&auto=format&fit=crop" }
-  ];
-
   const testimonials = [
-    { name: "Sikandar Malik", role: "CEO, Global Food Horizon", quote: "Ayyaz doesn't just design buildings; he engineers assets. His PhD-backed approach to thermal efficiency saved us millions in long-term HVAC costs." },
-    { name: "Arshad Khan", role: "Lead Developer, Gloria Residency", quote: "The level of BIM precision provided by AAK Architects is unprecedented in the Pakistani market. Zero clash on site meant zero delays during execution." },
-    { name: "Fatima Jamil", role: "Private Estate Owner", quote: "Sophisticated, minimalist, and deeply research-oriented. A truly international studio experience right here in Pakistan. My home performs better than I ever expected." }
+    { name: "Sikandar Malik", role: "CEO, Private Client", quote: "Ayyaz doesn't just design structures; he also builds things that are valuable. His PhD-backed method for improving thermal efficiency saved us millions of dollars in HVAC costs." },
+    { name: "Arshad Khan", role: "Lead Developer, Private Client", quote: "AAK Architects offers a level of BIM accuracy that has never been seen before in Pakistan. There were no problems on site, thus there were no delays throughout execution." },
+    { name: "Fatima Jamil", role: "Private Estate Owner", quote: "Complex, simple, and based on a lot of study. A real international studio experience right here in Pakistan. My home works better than I thought it would. Nice Expereince overall." }
   ];
 
 
@@ -168,42 +160,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* 4. MASTER FOLIO - REPLACES PREVIOUS SECTION */}
-      <section className="py-24 sm:py-32 bg-[#f5f5f7]">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 sm:mb-24 gap-8">
-            <div>
-              <span className="text-[12px] font-black text-[#0066cc] uppercase tracking-[0.4em] mb-4 block">Selected Works</span>
-              <h2 className="text-[36px] sm:text-[64px] font-bold tracking-tight text-[#1d1d1f]">Master Folio.</h2>
-            </div>
-            <p className="text-[17px] sm:text-[20px] text-[#86868b] font-light max-w-[450px]">
-              A curation of projects emphasizing structural logic, environmental synthesis, and uncompromising material execution.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-            {portfolio.map((project, i) => (
-              <div key={i} className="group flex flex-col">
-                <div className="aspect-[4/5] bg-[#d2d2d7] rounded-[2.5rem] overflow-hidden mb-8 shadow-2xl relative">
-                  <img 
-                    src={project.img} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-out opacity-90 group-hover:opacity-100"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8 sm:p-12">
-                    <span className="text-white/60 text-[10px] font-black uppercase tracking-widest mb-2">{project.area}</span>
-                    <h4 className="text-white text-[24px] font-bold">{project.title}</h4>
-                  </div>
-                </div>
-                <div className="px-2">
-                  <span className="text-[11px] font-black text-[#0071e3] uppercase tracking-widest block mb-2">{project.category}</span>
-                  <h3 className="text-[20px] font-bold text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors">{project.title}</h3>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 5. CLIENT FEEDBACK - THE BOARDROOM */}
       <section className="py-24 sm:py-32 bg-white">
@@ -239,7 +195,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
             <div className="flex-1 space-y-8 sm:space-y-12 text-center lg:text-left">
               <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] sm:text-[12px] font-black uppercase tracking-widest">Global Laboratory</span>
-              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Research of the highest quality. <br className="hidden sm:block" /> <span className="text-[#86868b]">Mastery in the area.</span></h2>
+              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Intelligence <br className="hidden sm:block" /> <span className="text-[#86868b]">Excellence.</span></h2>
               <div className="text-[17px] sm:text-[21px] text-[#424245] font-light max-w-none space-y-6">
                 <p>
                   Ayyaz Ahmed Karni is a PhD researcher at Sapienza University of Rome and a Visiting Scholar at Purdue University. He turns worldwide urban science into solutions that may be built in Pakistan.
@@ -392,15 +348,15 @@ const faqItems = [
   },
   { 
     question: "Do you handle site execution and construction?", 
-    answer: "We provide 'Executive Supervision.' While we partner with elite contractors, our studio remains the technical lead on-site to ensure every measurement and material specification is executed to zero-tolerance standards." 
+    answer: "We offer \"Executive Supervision\". Even though we work with top contractors, our studio is still in charge of the technical side of things on site to make sure that every measurement and material specification is met with no room for error." 
   },
   { 
     question: "What is your approach to luxury in the Pakistani market?", 
-    answer: "Luxury is an outcome of technical precision. We prioritize acoustic privacy, high-performance thermal envelopes, and seamless spatial logic over superficial decoration. A well-engineered building is the ultimate luxury." 
+    answer: "Technical accuracy leads to luxury. We care more about soundproofing, high-performance thermal envelopes, and flawless spatial logic than we do about pretty decorations. The best luxury is a well-built building." 
   },
   { 
     question: "Can you review plans designed by another architect?", 
-    answer: "Yes, we can review plans created by other architects. Our focus is on ensuring technical precision, sustainability, and performance. We provide detailed feedback and recommendations to enhance the design's effectiveness and feasibility." 
+    answer: "Yes, we can look over blueprints made by other architects. We are mostly concerned with making sure that everything is technically accurate, lasts a long time, and works well. We give you extensive feedback and suggestions on how to make the design more effective and possible." 
   }
 ];
 
