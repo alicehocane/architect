@@ -69,6 +69,20 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
 
   useEffect(() => {
     if (!city) return;
+
+    // 1. DYNAMIC META CONTENT
+    const titleText = `Best Architects in ${city.name} | Top Rated Design Firms`;
+    document.title = titleText;
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', `Connect with verified, PCATP-registered architects in ${city.name}. View brand ratings, office locations, and contact details for the top ${architects.length} design studios in your area.`);
+
+    // 2. STRUCTURED DATA (JSON-LD)
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
@@ -109,7 +123,13 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
 
     script.text = JSON.stringify([listSchema, breadcrumbSchema, faqSchema]);
     document.head.appendChild(script);
-    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
+
+    // 3. CLEANUP
+    return () => { 
+      if (document.head.contains(script)) {
+        document.head.removeChild(script); 
+      }
+    };
   }, [city, architects, cityFaqs]);
 
   if (!city) return <div className="p-20 text-center text-[#86868b]">City profile not found.</div>;
