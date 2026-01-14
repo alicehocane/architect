@@ -41,7 +41,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "jobTitle": "Principal Architect & Sustainable Design Strategist",
       "description": "The person who started AAK Architects. A licensed PCATP architect who focusses on high-performance architecture, Agritecture, and building cities in a way that is good for the environment. PhD student at Sapienza University of Rome and a visiting scholar at Purdue University.",
       "url": "https://architectorly.com/architects/aak-architects",
-      "image": "https://architectorly.com/aak-featured.png",
+      "image": "https://architectorly.com/images/ayyaz-karni-sapienza-research.png",
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
       "alumniOf": [
         { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
@@ -239,14 +239,6 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
             </div>
             <div className="flex-1 w-full lg:max-w-[520px]">
                <div className="aspect-[4/5] bg-[#1d1d1f] rounded-[3rem] sm:rounded-[4.5rem] relative overflow-hidden shadow-2xl group">
-
-                  <img 
-                    src="/images/ayyaz-karni-sapienza-research.png"
-                    alt="Ayyaz Ahmed Karni conducting PhD research on Sustainable Urban Planning at Sapienza University of Rome" 
-                    loading="lazy"
-                    className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
-                  />
-
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600/30 via-transparent to-black/80 z-10"></div>
                   <div className="absolute inset-0 flex flex-col justify-end p-8 sm:p-16 z-20">
                      <span className="text-[9px] font-black uppercase tracking-[0.4em] text-blue-400 mb-4 sm:mb-6 block">International Scholar</span>
