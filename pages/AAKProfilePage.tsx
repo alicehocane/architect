@@ -23,7 +23,9 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
       "knowsAbout": ["Sustainable Design", "Agritecture", "Urban Metabolism", "BIM Level 2", "Climate-Responsive Architecture"],
       "alumniOf": [
         { "@type": "CollegeOrUniversity", "name": "Sapienza University of Rome" },
-        { "@type": "CollegeOrUniversity", "name": "Purdue University" }
+        { "@type": "CollegeOrUniversity", "name": "Purdue University" },
+        { "@type": "CollegeOrUniversity", "name": "Riphah International University" },
+        { "@type": "CollegeOrUniversity", "name": "COMSATS University Islamabad" }
       ]
     };
     const faqSchema = {
@@ -41,6 +43,13 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
   }, []);
 
   const whatsappInquiry = "https://api.whatsapp.com/send/?phone=923215201830&text=Hello%20Ayyaz%2C%20I%20saw%20your%20Master%20Folio.%20I'm%20looking%20for%20a%20Scientific%20Design%20Review%20for%20my%20upcoming%20project.";
+
+  const testimonials = [
+    { name: "Sikandar Malik", role: "CEO, Private Client", quote: "Ayyaz doesn't just design structures; he also builds things that are valuable. His PhD-backed method for improving thermal efficiency saved us millions of dollars in HVAC costs." },
+    { name: "Arshad Khan", role: "Lead Developer, Private Client", quote: "AAK Architects offers a level of BIM accuracy that has never been seen before in Pakistan. There were no problems on site, thus there were no delays throughout execution." },
+    { name: "Fatima Jamil", role: "Private Estate Owner", quote: "Complex, simple, and based on a lot of study. A real international studio experience right here in Pakistan. My home works better than I thought it would. Nice Expereince overall." }
+  ];
+
 
   return (
     <div className="page-transition bg-white min-h-screen text-[#1d1d1f] pb-24 lg:pb-0">
@@ -151,34 +160,29 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* 4. THE TRUST PROTOCOL */}
-      <section className="py-16 sm:py-32 bg-[#1d1d1f] text-white overflow-hidden relative rounded-t-[3rem] sm:rounded-t-none">
-        <div className="absolute inset-0 opacity-[0.05]">
-          <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px]"></div>
-        </div>
-        
-        <div className="max-w-[1100px] mx-auto px-6 relative z-10">
-          <div className="mb-12 sm:mb-24 text-center md:text-left">
-            <span className="text-blue-400 font-black uppercase tracking-[0.4em] text-[10px] sm:text-[12px] mb-4 sm:mb-6 block underline underline-offset-8 decoration-blue-500/50">Design Intelligence</span>
-            <h2 className="text-[34px] sm:text-[56px] lg:text-[76px] font-bold tracking-tight mb-6 sm:mb-8 leading-[1.1] sm:leading-[1.05]">Protecting your <br /> <span className="text-blue-500">Long-term Asset.</span></h2>
-            <p className="text-[17px] sm:text-[22px] lg:text-[26px] text-white/50 font-light max-w-[700px]">
-              Every square foot is designed to work. We connect PhD research from around the world with local building skills.
-            </p>
+
+      {/* 5. CLIENT FEEDBACK - THE BOARDROOM */}
+      <section className="py-24 sm:py-32 bg-white">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-20 sm:mb-32">
+            <span className="text-[12px] font-black text-blue-600 uppercase tracking-[0.4em] mb-6 block">The Boardroom</span>
+            <h2 className="text-[36px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f]">Client Feedback.</h2>
           </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            {[
-              { title: 'Research-Backed', desc: 'Planning derived from PhD simulations at Sapienza Rome & Purdue USA.', icon: 'M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' },
-              { title: 'Cost-Aware', desc: 'Strategic material mapping to prevent on-site budget leakage.', icon: 'M2 20h20M12 4v16M7 15l5-5 5 5' },
-              { title: 'Climate-Ready', desc: 'Engineered for thermal flux, reducing energy overheads by up to 35%.', icon: 'M13 2L3 14h9l-1 8 10-12h-9l1-8z' },
-              { title: 'BIM Execution', desc: 'BIM Level 2 ensuring zero-clash structural precision across all trades.', icon: 'M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z' }
-            ].map((feature, i) => (
-              <div key={i} className="group p-8 sm:p-10 rounded-[2.5rem] sm:rounded-[3rem] bg-white/5 border border-white/10 hover:bg-blue-600 transition-all duration-500">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-6 sm:mb-8 group-hover:bg-white group-hover:text-blue-600 transition-all">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d={feature.icon}/></svg>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 sm:gap-16">
+            {testimonials.map((t, i) => (
+              <div key={i} className="relative flex flex-col items-center text-center group">
+                <div className="text-[80px] sm:text-[120px] font-serif text-[#f5f5f7] absolute -top-12 sm:-top-20 z-0 select-none group-hover:text-blue-50 transition-colors">“</div>
+                <div className="relative z-10 pt-10">
+                  <p className="text-[19px] sm:text-[22px] text-[#424245] font-light leading-relaxed italic mb-10">
+                    "{t.quote}"
+                  </p>
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-1px bg-blue-600 mb-6"></div>
+                    <h4 className="text-[16px] font-bold text-[#1d1d1f] uppercase tracking-widest">{t.name}</h4>
+                    <span className="text-[12px] font-bold text-[#86868b] uppercase tracking-widest mt-1">{t.role}</span>
+                  </div>
                 </div>
-                <h4 className="text-[20px] sm:text-[24px] font-bold mb-3 sm:mb-4">{feature.title}</h4>
-                <p className="text-white/40 group-hover:text-white/80 text-[14px] sm:text-[16px] leading-relaxed font-light">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -191,7 +195,7 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
             <div className="flex-1 space-y-8 sm:space-y-12 text-center lg:text-left">
               <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] sm:text-[12px] font-black uppercase tracking-widest">Global Laboratory</span>
-              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Research of the highest quality. <br className="hidden sm:block" /> <span className="text-[#86868b]">Mastery in the area.</span></h2>
+              <h2 className="text-[34px] sm:text-[52px] lg:text-[68px] font-bold tracking-tight text-[#1d1d1f] leading-[1.1] sm:leading-[1.05]">Intelligence <br className="hidden sm:block" /> <span className="text-[#86868b]">Excellence.</span></h2>
               <div className="text-[17px] sm:text-[21px] text-[#424245] font-light max-w-none space-y-6">
                 <p>
                   Ayyaz Ahmed Karni is a PhD researcher at Sapienza University of Rome and a Visiting Scholar at Purdue University. He turns worldwide urban science into solutions that may be built in Pakistan.
@@ -255,30 +259,30 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
         </div>
       </section>
 
-      {/* 7. FINAL CTA */}
-      <section className="px-6 py-16 sm:py-32">
-        <div className="max-w-[1200px] mx-auto p-10 sm:p-24 lg:p-32 rounded-[3rem] sm:rounded-[5.5rem] bg-[#1d1d1f] text-white text-center shadow-3xl overflow-hidden relative group">
-           <div className="absolute inset-0 bg-gradient-to-br from-[#0071e3]/40 via-transparent to-purple-600/30 opacity-60 group-hover:scale-105 transition-transform duration-[8s]"></div>
+      {/* 7. REDESIGNED CTA - MORE COMPACT */}
+      <section className="px-6 py-12 sm:py-24">
+        <div className="max-w-[1200px] mx-auto p-10 sm:p-16 lg:p-24 rounded-[3.5rem] bg-[#1d1d1f] text-white text-center shadow-3xl overflow-hidden relative group">
+           <div className="absolute inset-0 bg-gradient-to-br from-[#0071e3]/40 via-transparent to-purple-600/30 opacity-60"></div>
            <div className="relative z-10">
-             <h2 className="text-[38px] sm:text-[80px] lg:text-[110px] font-bold tracking-[-0.06em] mb-8 sm:mb-12 leading-[1] sm:leading-[0.92]">Build with <br /> <span className="italic font-light text-white/50">Calculated Confidence.</span></h2>
-             <p className="text-[18px] sm:text-[28px] lg:text-[34px] text-white/70 font-light mb-12 sm:mb-20 max-w-[900px] mx-auto leading-relaxed">
-               Talk to a design lead who thinks of architecture as a strict field of engineering. Allow us to begin your legacy.
+             <h2 className="text-[36px] sm:text-[64px] font-bold tracking-tight mb-6 leading-none">Calculated <span className="italic font-light text-white/50">Confidence.</span></h2>
+             <p className="text-[17px] sm:text-[22px] text-white/70 font-light mb-10 max-w-[700px] mx-auto leading-relaxed">
+               Engage with a design lead who treats architecture as a rigorous engineering discipline. Let's begin your legacy.
              </p>
-             <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
+             <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
                <a 
                  href={whatsappInquiry}
-                 className="w-full sm:w-auto px-10 sm:px-16 py-5 sm:py-8 bg-white text-[#1d1d1f] rounded-[1.5rem] sm:rounded-[2.5rem] font-bold hover:bg-[#f5f5f7] transition-all active:scale-95 text-[17px] sm:text-[20px] shadow-2xl"
+                 className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-6 bg-white text-[#1d1d1f] rounded-[1.25rem] font-bold hover:bg-[#f5f5f7] transition-all active:scale-95 text-[16px] sm:text-[18px] shadow-2xl"
                >
-                 Request Quote
+                 Request Audit
                </a>
                <button 
                  onClick={onBackClick}
-                 className="w-full sm:w-auto px-10 sm:px-16 py-5 sm:py-8 bg-transparent border-2 border-white/20 text-white rounded-[1.5rem] sm:rounded-[2.5rem] font-bold hover:bg-white/10 transition-all text-[17px] sm:text-[20px] backdrop-blur-md"
+                 className="w-full sm:w-auto px-10 sm:px-14 py-4 sm:py-6 bg-transparent border-2 border-white/20 text-white rounded-[1.25rem] font-bold hover:bg-white/10 transition-all text-[16px] sm:text-[18px] backdrop-blur-md"
                >
                  Back to Directory
                </button>
              </div>
-             <p className="mt-12 sm:mt-16 text-[10px] sm:text-[12px] text-white/30 font-black uppercase tracking-[0.4em] sm:tracking-[0.5em]">Licensed PCATP • PhD (c) Rome • Purdue Scholar</p>
+             <p className="mt-10 text-[10px] sm:text-[11px] text-white/30 font-black uppercase tracking-[0.4em] sm:tracking-[0.5em]">Licensed PCATP • PhD (c) Rome • Purdue Scholar</p>
            </div>
         </div>
       </section>
@@ -327,6 +331,10 @@ const faqItems = [
     answer: "We focus on high-end homes, eco-friendly city planning, and architectural consulting based on research. We focus on projects that need accurate technical work, tactics that work with the climate, and investments that will be safe for a long time." 
   },
   { 
+    question: "How does your PhD research benefit private capital investments?", 
+    answer: "My research at Sapienza University focuses on 'Urban Metabolism'—optimizing energy and resource flows. We apply these scientific models to reduce electricity overheads by up to 35% through thermal flux mapping and passive climate synthesis." 
+  },
+  { 
     question: "Is AAK Architects a good choice for long-term investment projects??", 
     answer: "Yes, for sure. We think of architecture as a business choice. By combining BIM Level 2 with scientific thermal modelling, we improve the technical design of your property, which lowers operating costs and raises its market value." 
   },
@@ -337,6 +345,18 @@ const faqItems = [
   { 
     question: "Can I get a free estimate?", 
     answer: "Yes. AAK Architects will give you a free initial estimate and technical review. Before you agree to a full commission, this session is meant to help you understand the scope, practicality, and technical problems that may arise." 
+  },
+  { 
+    question: "Do you handle site execution and construction?", 
+    answer: "We offer \"Executive Supervision\". Even though we work with top contractors, our studio is still in charge of the technical side of things on site to make sure that every measurement and material specification is met with no room for error." 
+  },
+  { 
+    question: "What is your approach to luxury in the Pakistani market?", 
+    answer: "Technical accuracy leads to luxury. We care more about soundproofing, high-performance thermal envelopes, and flawless spatial logic than we do about pretty decorations. The best luxury is a well-built building." 
+  },
+  { 
+    question: "Can you review plans designed by another architect?", 
+    answer: "Yes, we can look over blueprints made by other architects. We are mostly concerned with making sure that everything is technically accurate, lasts a long time, and works well. We give you extensive feedback and suggestions on how to make the design more effective and possible." 
   }
 ];
 
