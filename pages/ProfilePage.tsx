@@ -34,6 +34,26 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
   ];
 
   useEffect(() => {
+  // 1. Update Title
+  document.title = `${architect["Shop Name"]} - Top Architects in ${primaryCity}`;
+
+  // 2. Update Description
+  let metaDescription = document.querySelector('meta[name="description"]');
+  
+  // Create tag if it doesn't exist
+  if (!metaDescription) {
+    metaDescription = document.createElement('meta');
+    metaDescription.setAttribute('name', 'description');
+    document.head.appendChild(metaDescription);
+  }
+  
+  metaDescription.setAttribute('content', `Looking for ${architect["Shop Name"]}? Located in ${primaryCity}, they specialize in ${architect.Category || 'Architectural Design'}. Contact them today.`);
+
+}, [architect, primaryCity]);
+
+
+
+  useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
