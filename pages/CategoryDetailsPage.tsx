@@ -76,20 +76,35 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
 
   useEffect(() => {
     if (!category) return;
+
+    // 1. DYNAMIC META CONTENT
+    const titleText = `Best ${category.name}s in Pakistan Verified Rankings | Architectorly`;
+    document.title = titleText;
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', `Looking for expert ${category.name}s in Pakistan? View ${category.count} verified firms, compare ratings, and contact top professionals for your ${category.name.toLowerCase()} project.`);
+
+    // 2. STRUCTURED DATA (JSON-LD)
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
     const collectionSchema = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      "name": `Best ${category.name}s in Pakistan`,
+      "name": titleText,
       "description": `A curated list of ${category.count} top-rated ${category.name} professionals currently practicing in Pakistan.`,
       "mainEntity": {
         "@type": "ItemList",
         "itemListElement": architects.slice(0, 15).map((a, i) => ({
           "@type": "ListItem",
           "position": i + 1,
-          "url": `https://architectorly.com/architects/${a.slug}`
+          "url": `https://architectorly.com/architects/${a.slug}`,
+          "name": a["Shop Name"]
         }))
       }
     };
@@ -100,17 +115,20 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
       "mainEntity": categoryFaqs.map(faq => ({
         "@type": "Question",
         "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer
-        }
+        "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
       }))
     };
 
     script.text = JSON.stringify([collectionSchema, faqSchema]);
     document.head.appendChild(script);
-    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
-  }, [category, architects, categoryFaqs]);
+
+    // 3. CLEANUP
+    return () => { 
+      if (document.head.contains(script)) {
+        document.head.removeChild(script); 
+      }
+    };
+  }, [category, categorySlug, architects, categoryFaqs]);
 
   if (!category) return <div className="p-20 text-center text-[#86868b]">Specialty not found.</div>;
 
