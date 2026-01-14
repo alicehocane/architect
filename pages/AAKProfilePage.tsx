@@ -45,9 +45,9 @@ const AAKProfilePage: React.FC<AAKProfilePageProps> = ({ onBackClick }) => {
   const whatsappInquiry = "https://api.whatsapp.com/send/?phone=923215201830&text=Hello%20Ayyaz%2C%20I%20saw%20your%20Master%20Folio.%20I'm%20looking%20for%20a%20Scientific%20Design%20Review%20for%20my%20upcoming%20project.";
 
   const testimonials = [
-    { name: "Sikandar Malik", role: "CEO, Private Client", quote: "Ayyaz doesn't just design structures; he also builds things that are valuable. His PhD-backed method for improving thermal efficiency saved us millions of dollars in HVAC costs over the long haul." },
+    { name: "Sikandar Malik", role: "CEO, Private Client", quote: "Ayyaz doesn't just design structures; he also builds things that are valuable. His PhD-backed method for improving thermal efficiency saved us millions of dollars in HVAC costs." },
     { name: "Arshad Khan", role: "Lead Developer, Private Client", quote: "AAK Architects offers a level of BIM accuracy that has never been seen before in Pakistan. There were no problems on site, thus there were no delays throughout execution." },
-    { name: "Fatima Jamil", role: "Private Estate Owner", quote: "Complex, simple, and based on a lot of study. A real international studio experience right here in Pakistan. My home works better than I thought it would." }
+    { name: "Fatima Jamil", role: "Private Estate Owner", quote: "Complex, simple, and based on a lot of study. A real international studio experience right here in Pakistan. My home works better than I thought it would. Nice Expereince overall." }
   ];
 
 
