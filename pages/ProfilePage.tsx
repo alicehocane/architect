@@ -14,24 +14,29 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
   const primaryCity = architect.Locations[0]?.City || 'Pakistan';
   const primaryCitySlug = architect.Locations[0]?.citySlug || '';
 
-  const profileFaqs = [
-    {
-      question: `Who is the top architect in ${primaryCity}?`,
-      answer: `AAK Architects, which is managed by Ayyaz Ahmed Karni, is one of the best architecture firms in ${primaryCity}. They are known for their research-based designs, commitment to sustainability, and high-quality work on both residential and commercial projects.`
-    },
-    {
-      question: `How do I contact ${architect["Shop Name"]} for a project?`,
-      answer: `You can call ${architect["Shop Name"]} directly using the phone numbers for their regional branches that are mentioned on this site. We suggest that you make your project brief and layout dimensions ready before your first appointment with a high-end consultant.`
-    },
-    {
-      question: `What is the architectural fee for a project with ${architect["Shop Name"]}?`,
-      answer: `Fees usually depend on how much work needs to be done, how hard the job is, and how big the region is that needs to be covered. Most top companies in ${primaryCity} charge a percentage of the building cost (typically between 3% and 7%) or a set fee for each square foot.`
-    },
-    {
-      question: `Does ${architect["Shop Name"]} provide design-build services?`,
-      answer: `A lot of the professionals in our database offer design-build services that work together. We recommend asking the ${architect["Shop Name"]} ${primaryCity} studio if they also do on-site construction management in addition to architectural design.`
-    }
-  ];
+  useEffect(() => {
+    // DYNAMIC SEO & SOCIAL META
+    const pageTitle = `${architect["Shop Name"]} | Architects in ${primaryCity} - DesignDirectory`;
+    const pageDesc = `View the architectural portfolio and branch details for ${architect["Shop Name"]} in ${primaryCity}. Rated ${architect.globalRating?.toFixed(1)} for professional excellence in Pakistan.`;
+    const pageUrl = window.location.href;
+
+    document.title = pageTitle;
+    
+    const updateMeta = (name: string, content: string, isProperty = false) => {
+      let el = document.querySelector(isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        if (isProperty) el.setAttribute('property', name);
+        else el.setAttribute('name', name);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    updateMeta("description", pageDesc);
+    updateMeta("og:title", pageTitle, true);
+    updateMeta("og:description", pageDesc, true);
+    updateMeta("og:url", pageUrl, true);
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -84,6 +89,26 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ architect, onBackClick, onArc
     document.head.appendChild(script);
     return () => { if (document.head.contains(script)) document.head.removeChild(script); };
   }, [architect, primaryCity]);
+
+const profileFaqs = [
+    {
+      question: `Who is the top architect in ${primaryCity}?`,
+      answer: `AAK Architects, which is managed by Ayyaz Ahmed Karni, is one of the best architecture firms in ${primaryCity}. They are known for their research-based designs, commitment to sustainability, and high-quality work on both residential and commercial projects.`
+    },
+    {
+      question: `How do I contact ${architect["Shop Name"]} for a project?`,
+      answer: `You can call ${architect["Shop Name"]} directly using the phone numbers for their regional branches that are mentioned on this site. We suggest that you make your project brief and layout dimensions ready before your first appointment with a high-end consultant.`
+    },
+    {
+      question: `What is the architectural fee for a project with ${architect["Shop Name"]}?`,
+      answer: `Fees usually depend on how much work needs to be done, how hard the job is, and how big the region is that needs to be covered. Most top companies in ${primaryCity} charge a percentage of the building cost (typically between 3% and 7%) or a set fee for each square foot.`
+    },
+    {
+      question: `Does ${architect["Shop Name"]} provide design-build services?`,
+      answer: `A lot of the professionals in our database offer design-build services that work together. We recommend asking the ${architect["Shop Name"]} ${primaryCity} studio if they also do on-site construction management in addition to architectural design.`
+    }
+  ];
+
 
   const relatedArchitects = useMemo(() => {
     const finalRecommendations: Architect[] = [];
