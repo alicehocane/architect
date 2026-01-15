@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { CITIES, ALL_ARCHITECTS } from '../data';
 import { Architect } from '../types';
 import ArchitectCard from '../components/ArchitectCard';
@@ -60,6 +60,59 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
     setVisibleArchitectsCount(prev => Math.min(prev + PAGE_SIZE_ARCHITECTS, filteredArchitects.length));
   };
 
+  useEffect(() => {
+  // 1. DATA CONFIGURATION
+  const pageTitle = "Architectorly | Pakistan's Premier Architecture & Design Directory";
+  const pageDesc = "Connect with the best architects in Pakistan. Discover top-rated PCATP-licensed firms, browse regional hubs, and use our 2026 construction cost estimator.";
+  const pageImage = "https://www.architectorly.com/images/og-main-banner.jpg"; // Ensure this image exists in your public/images folder
+  const pageUrl = "https://www.architectorly.com/";
+
+  // 2. STANDARD SEO & OPEN GRAPH
+  document.title = pageTitle;
+  const updateTag = (name: string, content: string, isProperty: boolean = false) => {
+    const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
+    let el = document.querySelector(selector);
+    if (!el) {
+      el = document.createElement('meta');
+      el.setAttribute(isProperty ? 'property' : 'name', name);
+      document.head.appendChild(el);
+    }
+    el.setAttribute('content', content);
+  };
+
+  updateTag("description", pageDesc);
+  updateTag("og:title", pageTitle, true);
+  updateTag("og:description", pageDesc, true);
+  updateTag("og:image", pageImage, true);
+  updateTag("og:url", pageUrl, true);
+  updateTag("og:type", "website", true);
+  updateTag("twitter:card", "summary_large_image");
+
+  // 3. STRUCTURED DATA (JSON-LD)
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Architectorly Pakistan",
+    "url": pageUrl,
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${pageUrl}?search={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+  script.text = JSON.stringify(websiteSchema);
+  document.head.appendChild(script);
+
+  return () => {
+    if (document.head.contains(script)) {
+      document.head.removeChild(script);
+    }
+  };
+}, []);
+
+  
   return (
     <div className="page-transition">
       <section className="pt-24 pb-32 px-6 text-center overflow-hidden">
