@@ -139,7 +139,7 @@ export default function CityPage({ params }: PageProps) {
         <div className="lg:col-span-1">
            <h3 className="text-[24px] font-bold text-[#1d1d1f] mb-4">Building in {city.name}?</h3>
            <p className="text-[17px] text-[#86868b] leading-relaxed">
-             Hiring a local architect ensures your design fits the local climate and follows city building rules.
+             Hiring a local architect ensures your design fits the local climate and follows city building rule.
            </p>
         </div>
         <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
