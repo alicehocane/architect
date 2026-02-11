@@ -1,4 +1,4 @@
-
+"use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { ALL_ARCHITECTS, CITIES } from '../data';
 import { Architect, CityInfo } from '../types';
