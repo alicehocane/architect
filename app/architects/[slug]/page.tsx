@@ -2,7 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getArchitectBySlug, getArchitectsByCity } from '@/data';
+// 1. IMPORT ALL_ARCHITECTS HERE
+import { getArchitectBySlug, getArchitectsByCity, ALL_ARCHITECTS } from '@/data';
 import ArchitectCard from '@/components/ArchitectCard';
 import FAQAccordion from '@/components/FAQAccordion';
 
@@ -10,8 +11,14 @@ interface PageProps {
   params: { slug: string };
 }
 
-// 1. GENERATE METADATA SERVER-SIDE
-// This solves the issue of "Discovered - currently not indexed" because Googlebot sees the title/desc immediately.
+// 2. ADD THIS FUNCTION TO FIX THE 404 ERROR
+export async function generateStaticParams() {
+  return ALL_ARCHITECTS.map((architect) => ({
+    slug: architect.slug,
+  }));
+}
+
+// 3. GENERATE METADATA SERVER-SIDE
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const architect = getArchitectBySlug(params.slug);
   

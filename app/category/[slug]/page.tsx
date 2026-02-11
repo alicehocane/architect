@@ -11,6 +11,13 @@ interface PageProps {
   params: { slug: string };
 }
 
+// 1. ADD THIS FUNCTION TO FIX THE 404 ERROR
+export async function generateStaticParams() {
+  return Array.from(CATEGORY_MAP.keys()).map((slug) => ({
+    slug: slug,
+  }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const category = CATEGORY_MAP.get(params.slug);
   if (!category) return { title: 'Category Not Found' };
