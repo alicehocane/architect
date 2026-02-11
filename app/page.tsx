@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { CITIES, ALL_ARCHITECTS } from '../data';
 import ArchitectList from '../components/ArchitectList';
 import FAQAccordion from '../components/FAQAccordion';
+import HomeSearchBar from '../components/HomeSearchBar';
 
 export const metadata = {
   title: "Architectorly | Find the Best Architects in Pakistan",
@@ -63,10 +64,7 @@ export default function HomePage() {
           </p>
           
           <div className="relative max-w-[660px] mx-auto group">
-            <Link href="/cities" className="block w-full h-[72px] bg-white rounded-[28px] border border-[#d2d2d7]/50 shadow-[0_15px_45px_rgba(0,0,0,0.08)] group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.12)] flex items-center px-8 text-[21px] text-[#86868b] transition-all">
-              <svg className="w-6 h-6 mr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-              Search by city, firm, or category...
-            </Link>
+            <HomeSearchBar />
           </div>
         </div>
       </section>

@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from './Header';
 import SearchPalette from './SearchPalette';
 import AIChat from './AIChat';
 import { Architect } from '../types';
+import { SearchProvider, useSearch } from '../context/SearchContext';
 
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+function ClientLayoutContent({ children }: { children: React.ReactNode }) {
+  const { isSearchOpen, openSearch, closeSearch } = useSearch();
   const router = useRouter();
 
   const handleArchitectSelect = (architect: Architect) => {
@@ -18,19 +19,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     } else {
       router.push(`/architects/${architect.slug}`);
     }
-    setIsSearchOpen(false);
+    closeSearch();
   };
 
   const handleCitySelect = (slug: string) => {
     router.push(`/city/${slug}`);
-    setIsSearchOpen(false);
+    closeSearch();
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfbfd]">
       <Header 
         onHomeClick={() => router.push('/')} 
-        onSearchClick={() => setIsSearchOpen(true)}
+        onSearchClick={openSearch}
       />
       
       <main className="flex-1">
@@ -108,11 +109,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       <SearchPalette 
         isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
+        onClose={closeSearch}
         onSelectArchitect={handleArchitectSelect}
         onSelectCity={handleCitySelect}
       />
       <AIChat />
     </div>
+  );
+}
+
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <SearchProvider>
+      <ClientLayoutContent>
+        {children}
+      </ClientLayoutContent>
+    </SearchProvider>
   );
 }
