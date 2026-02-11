@@ -15,7 +15,7 @@ const HomeSearchBar: React.FC = () => {
       <svg className="w-6 h-6 mr-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
       </svg>
-      Search by city, firm, or category...
+      Search by Architects, Firms...
     </button>
   );
 };
