@@ -20,51 +20,37 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
   };
 
   useEffect(() => {
-    // 1. DYNAMIC META CONTENT
-    document.title = "Top Architects in Pakistan by City | Lahore, Karachi, Islamabad | Architectorly";
+    // Dynamic Title
+    document.title = "Cities with Top Architects | Architectorly";
     
+    // Dynamic Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', "Find and compare the best architecture firms across Pakistan. Detailed directories for Lahore, Karachi, Islamabad, and 48+ other cities with verified ratings.");
+    metaDesc.setAttribute('content', "Browse our list of cities. Find verified architects in Lahore, Karachi, Islamabad, Multan, and more.");
 
-    // 2. STRUCTURED DATA (JSON-LD)
+    // JSON-LD
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
     const listSchema = {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "name": "Architectural Hubs in Pakistan",
-      "description": "Explore top architects and design firms across all major cities of Pakistan including Lahore, Karachi, Islamabad, and more.",
+      "name": "Cities on Architectorly",
       "itemListElement": CITIES.map((city, i) => ({
         "@type": "ListItem",
         "position": i + 1,
-        "name": `Architects in ${city.name}`,
-        "url": `https://architectorly.com/city/${city.slug}`
+        "name": city.name,
+        "url": `https://www.architectorly.com/city/${city.slug}`
       }))
     };
 
-    const faqSchema = {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": cityFaqs.map(faq => ({
-        "@type": "Question",
-        "name": faq.question,
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": faq.answer
-        }
-      }))
-    };
-
-    script.text = JSON.stringify([listSchema, faqSchema]);
+    script.text = JSON.stringify(listSchema);
     document.head.appendChild(script);
 
-    // 3. CLEANUP
     return () => { 
       if (document.head.contains(script)) {
         document.head.removeChild(script); 
@@ -75,12 +61,12 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-20 page-transition">
       <div className="mb-20 text-center">
-        <span className="text-[13px] font-black text-[#0066cc] uppercase tracking-[0.3em] mb-6 block">Regional Network</span>
+        <span className="text-[14px] font-black text-[#0066cc] uppercase tracking-[0.3em] mb-6 block">Locations</span>
         <h1 className="text-[48px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f] mb-6 leading-tight">
           Explore Pakistan.
         </h1>
-        <p className="text-[20px] sm:text-[26px] text-[#86868b] font-light max-w-[600px] mx-auto">
-          From the vibrant hubs of Lahore to the industrial power of Faisalabad, find local expertise in every corner.
+        <p className="text-[21px] sm:text-[24px] text-[#86868b] font-light max-w-[600px] mx-auto">
+          Find the best designers in your area. We cover every major city.
         </p>
       </div>
 
@@ -88,7 +74,7 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
         {displayedCities.map((city) => (
           <div 
             key={city.slug}
-            className="group relative flex flex-col justify-between p-10 rounded-[2.5rem] bg-white border border-[#d2d2d7]/60 hover:border-[#0071e3] hover:shadow-[0_20px_50px_rgba(0,0,0,0.06)] transition-all duration-500 cursor-pointer animate-in fade-in zoom-in-95"
+            className="group relative flex flex-col justify-between p-10 rounded-[2.5rem] bg-white border border-[#d2d2d7]/60 hover:border-[#0071e3] hover:shadow-xl transition-all duration-500 cursor-pointer"
             onClick={() => onCityClick(city.slug)}
           >
             <div>
@@ -98,13 +84,13 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
                 </div>
                 <div className="text-right">
                   <span className="block text-[22px] font-bold text-[#1d1d1f]">{city.count}</span>
-                  <span className="block text-[11px] font-bold text-[#86868b] uppercase tracking-wider">Practices</span>
+                  <span className="block text-[11px] font-bold text-[#86868b] uppercase tracking-wider">Firms</span>
                 </div>
               </div>
               <h3 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors">{city.name}</h3>
             </div>
             <div className="mt-12 flex items-center justify-between">
-              <span className="text-[16px] font-semibold text-[#0066cc]">Explore Directory</span>
+              <span className="text-[16px] font-semibold text-[#0066cc]">View List</span>
               <div className="w-10 h-10 rounded-full bg-[#f5f5f7] flex items-center justify-center group-hover:bg-[#0071e3] group-hover:text-white transition-all">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
               </div>
@@ -119,8 +105,8 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
             onClick={handleLoadMore}
             className="px-12 py-5 rounded-full bg-[#1d1d1f] text-white text-[19px] font-bold hover:bg-[#424245] transition-all active:scale-95 shadow-2xl flex items-center gap-3"
           >
-            Load More Cities
-            <span className="opacity-50 font-normal text-[14px]">({CITIES.length - visibleCount} remaining)</span>
+            Show More Cities
+            <span className="opacity-50 font-normal text-[14px]">({CITIES.length - visibleCount} more)</span>
           </button>
         </div>
       )}
@@ -129,18 +115,18 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
       <section className="mb-32 py-20 border-t border-[#d2d2d7]/40">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div className="space-y-6">
-            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f]">The Importance of Local Expertise</h2>
+            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f]">Why Location Matters</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              In Pakistan, architectural requirements vary significantly from one province to another. A studio based in <strong>Islamabad</strong> is well-versed in CDA regulations, while a firm in <strong>Karachi</strong> understands the unique structural challenges posed by coastal humidity and SBCA bylaws.
+              Every city in Pakistan has its own building rules. A designer in <strong>Islamabad</strong> knows CDA laws. A designer in <strong>Karachi</strong> knows SBCA laws.
             </p>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              By looking through our city-specific hubs, you can be confident that you are getting in touch with people who not only have design skills but also know how to handle local approvals and site management well.
+              Hiring someone local saves you time. They know how to get your house map approved quickly. They can also visit your construction site easily to check the work.
             </p>
           </div>
           <div className="space-y-6">
-            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f]">Major Design Hubs</h2>
+            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f]">Major Hubs</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed">
-              Our directory shows the main architectural clusters in Pakistan. Lahore and Karachi are still the biggest centers for technical innovation, but new markets such as <strong>Gujranwala</strong> and <strong>Multan</strong> are seeing a surge in high-performance residential developments.
+              Most of the top architecture firms are in the big cities. But new talent is rising in places like <strong>Gujranwala</strong> and <strong>Multan</strong>.
             </p>
             <ul className="grid grid-cols-2 gap-4 text-[15px] text-[#86868b] font-medium">
               <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-[#0071e3]"></div> Lahore (Punjab)</li>
@@ -153,7 +139,7 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
       </section>
 
       <section className="mb-32">
-        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12 text-center md:text-left">Regional Architectural FAQs</h2>
+        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12 text-center md:text-left">Common Questions</h2>
         <FAQAccordion items={cityFaqs} />
       </section>
     </div>
@@ -162,28 +148,20 @@ const CitiesPage: React.FC<CitiesPageProps> = ({ onCityClick }) => {
 
 const cityFaqs = [
   {
-    question: "Which city in Pakistan has the best architects?",
-    answer: "Lahore and Karachi have long been home to the best-rated architecture firms in Pakistan. Islamabad, on the other hand, is noted for its high-end residential design and long-term planning. Architectorly helps you uncover top talent in all major cities by grading them based on how well they've done in their field."
+    question: "Which city has the best architects?",
+    answer: "Lahore and Karachi have the most firms because they are big cities. Islamabad also has very modern designers. But you can find great talent in almost every city on our list."
   },
   {
-    question: "How can I find a local architect for my project?",
-    answer: "You can use the city filter on this page to see all the confirmed practices in your region. Local architects are generally selected since they have better connections with local development agencies like LDA, CDA, or DHA when it comes to getting plans approved."
+    question: "How do I find an architect near me?",
+    answer: "Just click on your city name above. You will see a list of verified professionals in your area. You can see their phone numbers and office addresses."
   },
   {
-    question: "Do architects in smaller cities provide the same quality as those in Lahore?",
-    answer: "Quality is subjective, yet many top companies from big cities now have outposts in smaller places like Sialkot, Rahim Yar Khan, and Jhelum. You can use our directory to check a company's \"Global Rating\" at all of its locations to make sure they are all the same."
+    question: "Does it cost more to hire someone from another city?",
+    answer: "Usually, yes. If an architect has to travel to visit your site, they might charge extra fees. It is often cheaper and easier to hire someone local."
   },
   {
-    question: "How does the location of a firm affect my project costs?",
-    answer: "If you hire a company from another city, you may have to pay extra for site visits and moving. To save money and make sure better on-site supervision, we suggest picking a company that has a real branch in your city."
-  },
-  {
-    question: "Are there architectural services available in Northern Pakistan?",
-    answer: "Yes, we are actively keeping track of businesses in Abbottabad and Peshawar. These architects are experts in building on hills and making buildings that work well in colder climates."
-  },
-  {
-    question: "Can I find commercial designers in industrial cities like Faisalabad?",
-    answer: "Yes, of course. Faisalabad and Gujranwala are industrial cities with companies that specialize in factory design, commercial warehouses, and industrial urbanism."
+    question: "Do you have architects in small cities?",
+    answer: "Yes. We are adding more firms from smaller cities like Sialkot, Jhelum, and Rahim Yar Khan every week. We want to cover all of Pakistan."
   }
 ];
 

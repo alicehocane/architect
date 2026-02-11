@@ -57,54 +57,53 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
 
   const categoryFaqs = useMemo(() => [
     {
-      question: `How do I find the best ${categoryName} in Pakistan?`,
-      answer: `To find the best ${categoryName}, Look through our carefully chosen selection of the best pros. We suggest looking for companies who have excellent ratings around the world, a significant presence in your area, and a portfolio that fits the needs of your project. Verified practices like AAK Architects are highlighted because they always do great work.`
+      question: `How do I find the best ${categoryName}?`,
+      answer: `Check our list of top-rated professionals. Look for firms with good reviews and a portfolio that matches your style. AAK Architects is also a top recommendation.`
     },
     {
-      question: `What is the typical cost of hiring a professional ${categoryName}?`,
-      answer: `Costs vary depending on the firm's reputation and project complexity. Most ${categoryName}s In Pakistan, they charge either a percentage of the overall cost of building (usually 3% to 8%) or a set amount per square foot. After the first meeting, it's a good idea to ask for a thorough quote.`
+      question: `How much does a ${categoryName} cost?`,
+      answer: `Fees vary. Most professionals charge a percentage of the project cost (3% to 8%) or a fixed rate per square foot. Ask for a quote before you start.`
     },
     {
-      question: `Are the ${categoryName}s listed here verified for quality?`,
-      answer: `Yes, Architectorly only works with top-notch studios that have real studios and a history of success. We give preference to companies who follow professional standards and are registered with the appropriate Pakistani design and planning bodies.`
+      question: `Are these ${categoryName}s verified?`,
+      answer: `Yes. We check phone numbers and office addresses. We only list active firms to help you find reliable experts.`
     },
     {
-      question: `Can a specialized ${categoryName} help with sustainable design?`,
-      answer: `Of course. Many of the best ${categoryName}s, like AAK Architects, focus on design strategies that are based on research and are good for the environment. They use advanced modelling to make your property more energy-efficient and increase its long-term value.`
+      question: `Can a ${categoryName} save me money?`,
+      answer: `Yes. Good design prevents costly mistakes during construction. It also adds value to your property in the long run.`
     }
   ], [categoryName]);
 
   useEffect(() => {
     if (!category) return;
 
-    // 1. DYNAMIC META CONTENT
-    const titleText = `Best ${category.name}s in Pakistan Verified Rankings | Architectorly`;
-    document.title = titleText;
-    
+    // 1. Dynamic Title
+    document.title = `${category.name}s in Pakistan | Architectorly`;
+
+    // 2. Dynamic Meta Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', `Looking for expert ${category.name}s in Pakistan? View ${category.count} verified firms, compare ratings, and contact top professionals for your ${category.name.toLowerCase()} project.`);
+    metaDesc.setAttribute('content', `Find the best ${category.name}s in Pakistan. Verified professionals in Lahore, Karachi, Islamabad, and more.`);
 
-    // 2. STRUCTURED DATA (JSON-LD)
+    // 3. Structured Data
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     
     const collectionSchema = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      "name": titleText,
+      "name": `Best ${category.name}s in Pakistan`,
       "description": `A curated list of ${category.count} top-rated ${category.name} professionals currently practicing in Pakistan.`,
       "mainEntity": {
         "@type": "ItemList",
         "itemListElement": architects.slice(0, 15).map((a, i) => ({
           "@type": "ListItem",
           "position": i + 1,
-          "url": `https://architectorly.com/architects/${a.slug}`,
-          "name": a["Shop Name"]
+          "url": `https://www.architectorly.com/architects/${a.slug}`
         }))
       }
     };
@@ -115,20 +114,17 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
       "mainEntity": categoryFaqs.map(faq => ({
         "@type": "Question",
         "name": faq.question,
-        "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
       }))
     };
 
     script.text = JSON.stringify([collectionSchema, faqSchema]);
     document.head.appendChild(script);
-
-    // 3. CLEANUP
-    return () => { 
-      if (document.head.contains(script)) {
-        document.head.removeChild(script); 
-      }
-    };
-  }, [category, categorySlug, architects, categoryFaqs]);
+    return () => { if(document.head.contains(script)) document.head.removeChild(script); };
+  }, [category, architects, categoryFaqs]);
 
   if (!category) return <div className="p-20 text-center text-[#86868b]">Specialty not found.</div>;
 
@@ -139,15 +135,15 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
         className="flex items-center gap-2 text-[#0066cc] mb-12 hover:underline text-[17px] font-medium group"
       >
         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        All Specialties
+        All Categories
       </button>
 
       <div className="mb-20">
         <h1 className="text-[48px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f] mb-4 leading-none">
-          Elite <span className="text-[#0066cc]">{category.name}s</span>
+          Best <span className="text-[#0066cc]">{category.name}s.</span>
         </h1>
         <p className="text-[21px] sm:text-[24px] text-[#86868b] font-light max-w-[700px] leading-snug">
-          Browsing {category.count} verified practices specializing in {category.name.toLowerCase()} across Pakistan’s major cities.
+          Find verified {category.name.toLowerCase()} professionals. See ratings, reviews, and contact info.
         </p>
       </div>
 
@@ -169,7 +165,7 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
             onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
             className="px-12 py-5 rounded-full bg-[#1d1d1f] text-white text-[19px] font-bold hover:bg-[#424245] transition-all active:scale-95 shadow-2xl flex items-center gap-3"
           >
-            Show more {category.name.toLowerCase()} firms
+            Show more firms
             <span className="opacity-50 font-normal text-[14px]">({architects.length - visibleCount} more)</span>
           </button>
         </div>
@@ -177,12 +173,12 @@ const CategoryDetailsPage: React.FC<CategoryDetailsPageProps> = ({ categorySlug,
       
       {architects.length === 0 && (
         <div className="bg-[#f5f5f7] rounded-[3rem] p-24 text-center border border-dashed border-[#d2d2d7]">
-          <p className="text-[21px] text-[#86868b] font-light">No practices currently categorized under "{category.name}".</p>
+          <p className="text-[21px] text-[#86868b] font-light">No professionals found for "{category.name}".</p>
         </div>
       )}
 
       <section className="mt-32 pt-20 border-t border-[#d2d2d7]/50 mb-32">
-        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Industry Insights: {category.name}s</h2>
+        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Common Questions</h2>
         <div className="max-w-[800px]">
           <FAQAccordion items={categoryFaqs} />
         </div>

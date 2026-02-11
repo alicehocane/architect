@@ -1,33 +1,38 @@
 import React from 'react';
-import { Architect, BranchLocation } from '../types';
+import Link from 'next/link';
+import { Architect } from '../types';
 
 interface ArchitectCardProps {
   architect: Architect;
-  onClick: (architect: Architect) => void;
   cityContextSlug?: string;
   isRecommended?: boolean;
+  onClick?: (architect: Architect) => void;
 }
 
-const ArchitectCard: React.FC<ArchitectCardProps> = ({ architect, onClick, cityContextSlug, isRecommended }) => {
-  // Try to find the branch matching the current city context
+const ArchitectCard: React.FC<ArchitectCardProps> = ({ architect, cityContextSlug, isRecommended, onClick }) => {
   const matchedBranch = cityContextSlug 
     ? architect.Locations.find(l => l.citySlug === cityContextSlug) 
     : null;
 
-  // Use the local branch's rating if it exists, otherwise fall back to the brand's global rating
   const ratingToDisplay = matchedBranch?.Rating || architect.globalRating;
-  
-  // FIX: Prioritize matched branch phone, then fall back to the primary location phone number
   const phoneToDisplay = matchedBranch?.["Phone Number"] || architect.Locations[0]?.["Phone Number"];
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick(architect);
+    }
+  };
+
   return (
-    <div 
-      className={`group bg-white rounded-[2.5rem] border ${isRecommended ? 'border-[#0071e3] ring-1 ring-[#0071e3]/20' : 'border-[#d2d2d7]/60'} p-8 transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:-translate-y-2 cursor-pointer flex flex-col justify-between overflow-hidden min-h-[340px] h-full relative`}
-      onClick={() => onClick(architect)}
+    <Link 
+      href={`/architects/${architect.slug}`}
+      onClick={handleClick}
+      className={`group bg-white rounded-[2.5rem] border ${isRecommended ? 'border-[#0071e3] ring-1 ring-[#0071e3]/20' : 'border-[#d2d2d7]/60'} p-8 transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,0,0,0.1)] hover:-translate-y-2 cursor-pointer flex flex-col justify-between overflow-hidden min-h-[340px] h-full relative block`}
     >
       {isRecommended && (
         <div className="absolute top-0 left-0 right-0 bg-[#0071e3] text-white text-[10px] font-black uppercase tracking-[0.2em] py-1.5 text-center">
-          Architectorly Recommended
+          DesignDirectory Recommended
         </div>
       )}
       
@@ -75,7 +80,7 @@ const ArchitectCard: React.FC<ArchitectCardProps> = ({ architect, onClick, cityC
           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

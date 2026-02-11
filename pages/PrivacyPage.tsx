@@ -2,31 +2,29 @@ import React, { useEffect } from 'react';
 
 const PrivacyPage: React.FC = () => {
   useEffect(() => {
-    // 1. DYNAMIC META CONTENT
+    // 1. Dynamic Meta Title
     document.title = "Privacy Policy | Architectorly Pakistan";
     
+    // 2. Dynamic Meta Description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', "Read the Privacy Policy for Architectorly Pakistan. Learn how we handle professional data and user privacy within our architectural directory.");
+    metaDesc.setAttribute('content', "Read the Privacy Policy for Architectorly. We keep your data safe and do not sell your information. Learn more.");
 
-    // 2. SEO ROBOTS SIGNAL
-    // Usually, we want Privacy pages indexed, but not as a top priority.
-    // If you want to keep search results focused on your architects, you can use "noindex, follow"
+    // 3. SEO Robots
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) {
       robots = document.createElement('meta');
       robots.setAttribute('name', 'robots');
       document.head.appendChild(robots);
     }
-    robots.setAttribute('content', 'index, follow');
+    robots.setAttribute('content', 'noindex, follow'); 
 
     return () => {
-      // Cleanup is not strictly necessary for standard meta, 
-      // but good practice if you have unique tags.
+      // Cleanup optional
     };
   }, []);
 
@@ -34,38 +32,38 @@ const PrivacyPage: React.FC = () => {
     <div className="max-w-[800px] mx-auto px-6 py-32 page-transition">
       <h1 className="text-[48px] font-bold tracking-tight text-[#1d1d1f] mb-12">Privacy Policy.</h1>
       
-      <div className="prose prose-lg prose-slate space-y-12">
+      <div className="prose prose-lg prose-slate space-y-12 text-[#424245]">
         <section>
           <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">1. Information We Collect</h2>
-          <p className="text-[#424245] leading-relaxed">
-            Architectorly gathers information that is available to the public through professional registries and data that companies choose to provide. This covers business names, contact information, office locations, and professional specialties.
+          <p className="leading-relaxed">
+            <strong>Architectorly</strong> collects basic information to help you find architects. This includes the names, phone numbers, and addresses of design firms. Most of this information is already public. We also look at how people use our website to make it run faster.
           </p>
         </section>
 
         <section>
-          <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">2. How We Use Data</h2>
-          <p className="text-[#424245] leading-relaxed">
-            Data is used exclusively to facilitate connections between architectural service seekers and verified professionals. We utilize anonymized usage patterns to improve our AI-driven recommendation engine and user experience.
+          <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">2. How We Use It</h2>
+          <p className="leading-relaxed">
+            We use data for one reason: to connect homeowners with architects. We do not sell your personal search history or contact details to spam marketing companies. Your privacy is important to us.
           </p>
         </section>
 
         <section>
-          <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">3. Professional Listings & Rights</h2>
-          <p className="text-[#424245] leading-relaxed">
-            All listed professionals retain the right to modify, update, or request the removal of their information at any time. We are committed to maintaining 100% accuracy across all professional profiles.
+          <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">3. For Architects</h2>
+          <p className="leading-relaxed">
+            If your firm is listed on Architectorly, you have control over your profile. You can ask us to update your phone number, change your address, or remove your listing at any time. We want our directory to be accurate.
           </p>
         </section>
 
         <section>
-          <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">4. Data Protection</h2>
-          <p className="text-[#424245] leading-relaxed">
-            We implement standard security measures to protect the integrity of the data stored on our platform. Architectorly does not sell or lease professional data to third-party marketing agencies.
+          <h2 className="text-[24px] font-bold text-[#1d1d1f] mb-4">4. Website Safety</h2>
+          <p className="leading-relaxed">
+            We use standard security tools to keep our website safe for everyone. We protect our database to ensure that the information remains correct and trustworthy.
           </p>
         </section>
 
         <section className="pt-12 border-t border-[#d2d2d7]/50">
           <p className="text-[14px] text-[#86868b]">
-            Last updated: January 14, 2026. For privacy inquiries, please contact the Architectorly team.
+            Last Updated: January 1, 2025.
           </p>
         </section>
       </div>

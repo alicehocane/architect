@@ -9,7 +9,7 @@ export const getAIRecommendation = async (query: string) => {
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `You are an expert architecture consultant for Architectorly Pakistan.
+      contents: `You are an expert architecture consultant for DesignDirectory Pakistan.
       
       User is looking for an architect: "${query}"
       

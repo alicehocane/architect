@@ -17,7 +17,6 @@ import SearchPalette from './components/SearchPalette';
 import { Architect } from './types';
 import { getSitemapXML } from './sitemap';
 
-
 type Page = 
   | { type: 'home' } 
   | { type: 'city'; slug: string } 
@@ -37,11 +36,11 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>({ type: 'home' });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-  // Synchronize state with URL Pathname
+  // Synchronize state with URL Path (History API)
   const handleRouting = async () => {
     const path = window.location.pathname;
     
-    if (path === '/' || !path) {
+    if (path === '/' || path === '') {
       setCurrentPage({ type: 'home' });
     } else if (path.startsWith('/city/')) {
       const slug = path.split('/')[2];
@@ -83,7 +82,7 @@ const App: React.FC = () => {
   useEffect(() => {
     window.addEventListener('popstate', handleRouting);
     handleRouting(); // Initial load
-
+    
     // Developer helper: Generate sitemap XML for copy-paste
     (window as any).getLatestSitemap = () => {
       console.log('--- GENERATING SITEMAP XML ---');
@@ -91,7 +90,6 @@ const App: React.FC = () => {
       console.log('--- END OF SITEMAP XML ---');
       return "Copied XML to console! Check your developer tools (F12).";
     };
-
 
     return () => window.removeEventListener('popstate', handleRouting);
   }, []);
@@ -112,7 +110,9 @@ const App: React.FC = () => {
     else if (page.type === 'privacy') url = '/privacy';
     else if (page.type === 'terms') url = '/terms';
     
+    // Update Browser History (Clean URL)
     window.history.pushState({}, '', url);
+    
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -131,11 +131,11 @@ const App: React.FC = () => {
     script.text = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Architectorly Pakistan",
-      "url": "https://architectorly.com",
+      "name": "Architectorly",
+      "url": "https://www.architectorly.com",
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://architectorly.com/search?q={search_term_string}",
+        "target": "https://www.architectorly.com/search?q={search_term_string}",
         "query-input": "required name=search_term_string"
       }
     });
@@ -204,74 +204,67 @@ const App: React.FC = () => {
       <footer className="bg-[#f5f5f7] pt-16 pb-8 px-6 mt-20 border-t border-[#d2d2d7]/40" role="contentinfo">
         <div className="max-w-[1024px] mx-auto">
           <nav className="flex items-center gap-2 mb-10 text-[12px] text-[#424245]" aria-label="Breadcrumb">
-            <button onClick={() => navigateTo({ type: 'home' })} className="hover:text-black transition-colors">Architecture Directory</button>
+            <button onClick={() => navigateTo({ type: 'home' })} className="hover:text-black transition-colors">Architectorly</button>
             <svg className="w-3 h-3 text-[#86868b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             <span className="text-[#86868b]">
               {currentPage.type === 'home' ? 'Pakistan Hub' : currentPage.type.charAt(0).toUpperCase() + currentPage.type.slice(1)}
             </span>
           </nav>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-14">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-12 mb-14 text-left">
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Directory Services</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
-                <li><button onClick={() => navigateTo({ type: 'home' })} className="hover:underline hover:text-black">All Architectural Firms</button></li>
-                <li><button onClick={() => navigateTo({ type: 'top-rated' })} className="hover:underline hover:text-black">Top Rated Architects</button></li>
-                <li><button onClick={() => navigateTo({ type: 'cities' })} className="hover:underline hover:text-black">Browse by City</button></li>
-                <li><button onClick={() => navigateTo({ type: 'categories' })} className="hover:underline hover:text-black">Professional Specialties</button></li>
-                <li><button onClick={() => navigateTo({ type: 'calculator' })} className="hover:underline hover:text-black text-left">Construction Cost Calculator</button></li>
-
+                <li><button onClick={() => navigateTo({ type: 'home' })} className="hover:underline hover:text-black text-left w-full">All Architectural Firms</button></li>
+                <li><button onClick={() => navigateTo({ type: 'top-rated' })} className="hover:underline hover:text-black text-left w-full">Top Rated Architects</button></li>
+                <li><button onClick={() => navigateTo({ type: 'categories' })} className="hover:underline hover:text-black text-left w-full">Professional Specialties</button></li>
+                <li><button onClick={() => navigateTo({ type: 'calculator' })} className="hover:underline hover:text-black text-left w-full">Construction Cost Calculator</button></li>
               </ul>
             </nav>
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Major Design Hubs</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'lahore' })} className="hover:underline hover:text-black">Architects in Lahore</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'karachi' })} className="hover:underline hover:text-black">Architects in Karachi</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'islamabad' })} className="hover:underline hover:text-black">Architects in Islamabad</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'rawalpindi' })} className="hover:underline hover:text-black">Architects in Rawalpindi</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'faisalabad' })} className="hover:underline hover:text-black">Architects in Faisalabad</button></li>
-
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'lahore' })} className="hover:underline hover:text-black text-left w-full">Architects in Lahore</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'karachi' })} className="hover:underline hover:text-black text-left w-full">Architects in Karachi</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'islamabad' })} className="hover:underline hover:text-black text-left w-full">Architects in Islamabad</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'rawalpindi' })} className="hover:underline hover:text-black text-left w-full">Architects in Rawalpindi</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'faisalabad' })} className="hover:underline hover:text-black text-left w-full">Architects in Faisalabad</button></li>
               </ul>
             </nav>
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Regional Branches</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'multan' })} className="hover:underline hover:text-black">Architects in Multan</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'gujranwala' })} className="hover:underline hover:text-black">Architects in Gujranwala</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'attock' })} className="hover:underline hover:text-black">Architects in Attock</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'rahim-yar-khan' })} className="hover:underline hover:text-black text-left">Architects in Rahim Yar Khan</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'kasur' })} className="hover:underline hover:text-black">Architects in Kasur</button></li>
-
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'multan' })} className="hover:underline hover:text-black text-left w-full">Architects in Multan</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'gujranwala' })} className="hover:underline hover:text-black text-left w-full">Architects in Gujranwala</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'attock' })} className="hover:underline hover:text-black text-left w-full">Architects in Attock</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'rahim-yar-khan' })} className="hover:underline hover:text-black text-left w-full">Architects in Rahim Yar Khan</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'kasur' })} className="hover:underline hover:text-black text-left w-full">Architects in Kasur</button></li>
               </ul>
             </nav>
             <nav className="space-y-4">
               <h4 className="text-[11px] font-bold text-[#1d1d1f] uppercase tracking-[0.12em]">Emerging Markets</h4>
               <ul className="text-[12px] text-[#424245] space-y-3">
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'mandi-bahauddin' })} className="hover:underline hover:text-black text-left">Architects in Mandi Bahauddin</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sahiwal' })} className="hover:underline hover:text-black">Architects in Sahiwal</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'bahawalpur' })} className="hover:underline hover:text-black">Architects in Bahawalpur</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'jhelum' })} className="hover:underline hover:text-black">Architects in Jhelum</button></li>
-                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sialkot' })} className="hover:underline hover:text-black">Architects in Sialkot</button></li>
-
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'mandi-bahauddin' })} className="hover:underline hover:text-black text-left w-full">Architects in Mandi Bahauddin</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sahiwal' })} className="hover:underline hover:text-black text-left w-full">Architects in Sahiwal</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'bahawalpur' })} className="hover:underline hover:text-black text-left w-full">Architects in Bahawalpur</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'jhelum' })} className="hover:underline hover:text-black text-left w-full">Architects in Jhelum</button></li>
+                <li><button onClick={() => navigateTo({ type: 'city', slug: 'sialkot' })} className="hover:underline hover:text-black text-left w-full">Architects in Sialkot</button></li>
               </ul>
             </nav>
           </div>
 
           <div className="pt-8 border-t border-[#d2d2d7]/50 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <p className="text-[11px] text-[#86868b]">Copyright © 2026 Architectorly Pakistan.</p>
-              <div className="flex gap-4 text-[11px] text-[#424245]">
-                <button onClick={() => navigateTo({ type: 'privacy' })} className="hover:underline">Privacy Policy</button>
-                <span className="text-[#d2d2d7]">|</span>
-                <button onClick={() => navigateTo({ type: 'terms' })} className="hover:underline">Terms of Service</button>
-                <span className="text-[#d2d2d7]">|</span>
-                <button onClick={() => navigateTo({ type: 'about' })} className="hover:underline">About Us</button>
-                <span className="text-[#d2d2d7]">|</span>
-                <button onClick={() => navigateTo({ type: 'sitemap' })} className="hover:underline">Architectural Site Map</button>
+            <div className="flex flex-col md:flex-row md:items-center gap-4 text-left">
+              <p className="text-[11px] text-[#86868b]">Copyright © 2024 Architectorly Pakistan. Professional Directory for elite architects.</p>
+              <div className="flex flex-wrap gap-4 text-[11px] text-[#424245]">
+                <button onClick={() => navigateTo({ type: 'privacy' })} className="hover:underline text-left">Privacy Policy</button>
+                <span className="text-[#d2d2d7] hidden sm:inline">|</span>
+                <button onClick={() => navigateTo({ type: 'terms' })} className="hover:underline text-left">Terms of Service</button>
+                <span className="text-[#d2d2d7] hidden sm:inline">|</span>
+                <button onClick={() => navigateTo({ type: 'sitemap' })} className="hover:underline text-left">Architectural Site Map</button>
               </div>
             </div>
-            <div className="flex items-center gap-2 cursor-default select-none">
+            <div className="flex items-center gap-2 cursor-default select-none md:justify-end">
                <span className="text-[11px] font-medium text-[#1d1d1f]">Pakistan (English)</span>
                <svg className="w-4 h-4 text-[#86868b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             </div>

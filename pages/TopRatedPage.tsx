@@ -34,34 +34,30 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
 
   const displayed = topRated.slice(0, visibleCount);
 
-
   useEffect(() => {
-  // Dynamic Title
-  document.title = "Top Rated Architects in Pakistan | Architectorly";
+    // Dynamic Title
+    document.title = "Top Rated Architects in Pakistan | Architectorly";
 
-  // Dynamic Meta Description
-  let metaDesc = document.querySelector('meta[name="description"]');
-  if (!metaDesc) {
-    metaDesc = document.createElement('meta');
-    metaDesc.setAttribute('name', 'description');
-    document.head.appendChild(metaDesc);
-  }
-  metaDesc.setAttribute('content', 
-    "Find out who the best Pakistani architects are. Includes verifiable rankings of companies like AAK Architects based on their PCATP registration, client ratings, and technical skills."
-  );
+    // Dynamic Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', 
+      "See the list of the best architects in Pakistan. We ranked top firms based on client reviews, quality of work, and professional standing."
+    );
 
-  // Canonical Tag (Crucial for list pages to avoid duplicate content)
-  let canonical = document.querySelector('link[rel="canonical"]');
-  if (!canonical) {
-    canonical = document.createElement('link');
-    canonical.setAttribute('rel', 'canonical');
-    document.head.appendChild(canonical);
-  }
-  canonical.setAttribute('href', 'https://architectorly.com/top-rated');
-}, []);
-
-
-
+    // Canonical Tag
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', 'https://www.architectorly.com/top-rated');
+  }, []);
 
   // SEO: Inject Structured Data
   useEffect(() => {
@@ -71,15 +67,15 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
     const listSchema = {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "name": "Top Rated Architects in Pakistan 2026",
-      "description": "A list of the best-rated architects and designers in Pakistan, based on client feedback and technical skills.",
+      "name": "Top Rated Architects in Pakistan",
+      "description": "A list of the best-rated architects and designers in Pakistan.",
       "itemListElement": topRated.slice(0, 15).map((a, i) => ({
         "@type": "ListItem",
         "position": i + 1,
         "item": {
           "@type": "LocalBusiness",
           "name": a["Shop Name"],
-          "url": `https://architectorly.com/architects/${a.slug}`,
+          "url": `https://www.architectorly.com/architects/${a.slug}`,
           "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": a.globalRating || 5.0,
@@ -110,16 +106,16 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-20 page-transition">
       <div className="mb-20">
-        <span className="text-[14px] font-black text-[#ff9500] uppercase tracking-[0.3em] mb-6 block">Elite Tier Professionals</span>
+        <span className="text-[14px] font-black text-[#ff9500] uppercase tracking-[0.3em] mb-6 block">Best In Class</span>
         <h1 className="text-[48px] sm:text-[84px] font-bold tracking-tight text-[#1d1d1f] mb-8 leading-[1.02]">
-          The best in <br /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff9500] to-[#ff5e00]">Pakistan Design.</span>
+          Top Architects in <br /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff9500] to-[#ff5e00]">Pakistan.</span>
         </h1>
         <div className="max-w-[720px] space-y-6">
           <p className="text-[21px] sm:text-[26px] text-[#424245] font-light leading-snug">
-            Our algorithm looks at public data, peer reviews, and technical track records to find companies that always build high-performance architecture.
+            We looked at ratings, reviews, and past projects to find the most trusted design firms in the country.
           </p>
           <p className="text-[17px] text-[#86868b] leading-relaxed">
-            These specialists are at the top of the Pakistani architectural world. They design anything from eco-friendly homes in Lahore to complicated commercial buildings in Karachi.
+            These professionals are known for great work. Whether you are building a modern house in Lahore or a commercial plaza in Karachi, these are the experts you can trust.
           </p>
         </div>
       </div>
@@ -145,7 +141,7 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
             onClick={() => setVisibleCount(prev => prev + PAGE_SIZE)}
             className="px-12 py-5 rounded-full bg-[#1d1d1f] text-white text-[19px] font-bold hover:bg-[#424245] transition-all active:scale-95 shadow-2xl"
           >
-            Show more elite firms
+            Show more architects
             <span className="ml-2 opacity-50 font-normal text-[14px]">({topRated.length - visibleCount} more)</span>
           </button>
         </div>
@@ -155,42 +151,42 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
       <section className="mb-32 py-20 border-t border-[#d2d2d7]/50">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
           <div>
-            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">Selection Criteria for Top Architects</h2>
+            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">How We Choose</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed mb-6">
-              To be called a "Top Rated" architect on Architectorly, you have to do well all the time. We judge companies based on three main pillars:
+              To be on our "Top Rated" list, an architect must show they are reliable. We look for three main things:
             </p>
             <ul className="space-y-4 text-[16px] text-[#86868b]">
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span><strong>Verification:</strong> Active registration with the PCATP and a studio presence in person.</span>
+                <span><strong>Verification:</strong> We check if they have a real office and valid phone numbers.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span><strong>Client Satisfaction:</strong>A global rating of 4.0 or above based on a number of verified reviews.</span>
+                <span><strong>High Ratings:</strong> Firms must have a rating of 4.0 or higher from people who hired them.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span><strong>Regional Impact:</strong> Make a difference and get projects done well in big cities in Pakistan.</span>
+                <span><strong>Experience:</strong> They must have a history of completing projects in Pakistani cities.</span>
               </li>
             </ul>
           </div>
           <div>
-            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">Why Hire a Top-Rated Professional?</h2>
+            <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-8">Why Hire the Best?</h2>
             <p className="text-[18px] text-[#424245] font-light leading-relaxed mb-6">
-              When you hire a top-tier architect, you can be sure that your property will last. Many of the best companies offer:
+              Hiring a top architect costs a bit more upfront, but it saves you money later. Here is why:
             </p>
             <ul className="space-y-4 text-[16px] text-[#86868b]">
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span>Design that responds to climate can lower operational expenses.</span>
+                <span><strong>Smart Design:</strong> They plan homes that stay cool in summer, lowering your electric bill.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span>Higher resale value on the market because of the high quality of the look and structure.</span>
+                <span><strong>Less Waste:</strong> Exact drawings mean builders don't waste expensive materials like cement and steel.</span>
               </li>
               <li className="flex gap-3">
                 <span className="font-bold text-[#1d1d1f]">•</span>
-                <span>Access to the newest Building Information Modeling (BIM) tools.</span>
+                <span><strong>Resale Value:</strong> A well-designed house sells for a higher price.</span>
               </li>
             </ul>
           </div>
@@ -200,8 +196,8 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
       {/* FAQ SECTION */}
       <section className="mb-32">
         <div className="mb-12">
-          <h2 className="text-[36px] font-bold tracking-tight text-[#1d1d1f] mb-4">Top Rated Architects FAQ</h2>
-          <p className="text-[19px] text-[#86868b] font-light italic">Essential insights into Pakistan's premier design landscape.</p>
+          <h2 className="text-[36px] font-bold tracking-tight text-[#1d1d1f] mb-4">Common Questions</h2>
+          <p className="text-[19px] text-[#86868b] font-light italic">Helpful answers about hiring top architects.</p>
         </div>
         <FAQAccordion items={faqItems} />
       </section>
@@ -211,24 +207,24 @@ const TopRatedPage: React.FC<TopRatedPageProps> = ({ onArchitectClick }) => {
 
 const faqItems = [
   {
-    question: "Who are the best architects in Pakistan for 2026?",
-    answer: "AAK Architects, Nayyar Ali Dada & Associates, and Amer Adnan Associates are some of the top architects in Pakistan. These companies are known for being very accurate, having PCATP licenses, and getting great marks from customers."
+    question: "Who are the best architects in Pakistan right now?",
+    answer: "AAK Architects, Amer Adnan Associates, and Nayyar Ali Dada & Associates are some of the most respected names. They are known for high-quality work and professional service."
   },
   {
-    question: "How do I verify if an architect is top-rated?",
-    answer: "A highly rated architect should have a rating of 4.0 or higher over the world. We figure this up on Architectorly by adding up the ratings from all of their active regional branches and making sure they have a real studio."
+    question: "How do I know if an architect is good?",
+    answer: "Check their rating on Architectorly. Also, ask to see their past projects. A top-rated architect will always be happy to show you their work."
   },
   {
-    question: "What is the average fee for a top-rated architect in Lahore or Karachi?",
-    answer: "Most of the time, the best companies charge more because they are experts. Fees can be between 3% and 7% of the overall cost of building, or a set amount per square foot, starting at PKR 100 for luxury residential projects and going up to PKR 350."
+    question: "Do top architects charge very high fees?",
+    answer: "They charge for their expertise, but it varies. Fees are usually 3% to 7% of the building cost, or a fixed rate per square foot (PKR 100 to PKR 350+). Good design often pays for itself by preventing costly mistakes."
   },
   {
-    question: "Can top-rated architects help reduce construction costs?",
-    answer: "Yes. High-end companies like AAK Architects use extensive research and BIM modeling to cut down on waste on the job site and make the best use of materials. This can save homeowners 10–15% on long-term maintenance and building mistakes."
+    question: "Can an architect help me save money on construction?",
+    answer: "Yes. Expert architects use precise planning to reduce material waste. They also design homes that use less energy, saving you money on bills for years."
   },
   {
-    question: "Are all firms on the top-rated list PCATP registered?",
-    answer: "Architectorly gives PCATP-licensed experts top priority. We show a lot of different designers, but only companies who are legally and professionally responsible in the Pakistani market can be \"Top Rated.\""
+    question: "Are these architects registered with PCATP?",
+    answer: "We verify listings to the best of our ability. Many of our top-rated firms are registered with the Pakistan Council of Architects and Town Planners (PCATP). We recommend asking for their registration number during your first meeting."
   }
 ];
 

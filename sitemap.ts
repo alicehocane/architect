@@ -3,9 +3,10 @@ import { ALL_ARCHITECTS, CITIES, CATEGORIES } from './data';
 /**
  * Programmatic Sitemap Engine
  * Returns an array of URL objects for XML generation.
+ * Updated to support Clean URL Routing (History API).
  */
 export const generateSitemapData = () => {
-  const baseUrl = 'https://architectorly.com';
+  const baseUrl = 'https://designdirectory.pk';
   const today = new Date().toISOString().split('T')[0];
   
   const staticPages = [

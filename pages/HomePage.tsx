@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { CITIES, ALL_ARCHITECTS } from '../data';
 import { Architect } from '../types';
 import ArchitectCard from '../components/ArchitectCard';
+import FAQAccordion from '../components/FAQAccordion';
 
 interface HomePageProps {
   onCityClick: (citySlug: string) => void;
@@ -16,6 +17,72 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
   const [visibleCitiesCount, setVisibleCitiesCount] = useState(PAGE_SIZE_CITIES);
   const [visibleArchitectsCount, setVisibleArchitectsCount] = useState(PAGE_SIZE_ARCHITECTS);
   
+  // SEO & Schema Injection
+  useEffect(() => {
+    // 1. Update Title & Meta
+    document.title = "Architectorly | Find the Best Architects in Pakistan";
+    const pageDesc = "Looking for top architects in Pakistan? Architectorly helps you find verified home designers, map makers, and construction firms in Lahore, Karachi, and Islamabad.";
+    
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', pageDesc);
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = "description";
+      meta.content = pageDesc;
+      document.head.appendChild(meta);
+    }
+
+    // 2. Inject JSON-LD Schema
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    
+    const schemaData = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "Architectorly",
+          "url": "https://www.architectorly.com",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.architectorly.com/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "name": "Architectorly",
+          "url": "https://www.architectorly.com",
+          "logo": "https://www.architectorly.com/logo.png",
+          "description": "Pakistan's leading digital directory for architects, interior designers, and construction professionals.",
+          "sameAs": [
+            "https://www.facebook.com/architectorly",
+            "https://www.instagram.com/architectorly"
+          ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": homeFaqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        }
+      ]
+    };
+
+    script.text = JSON.stringify(schemaData);
+    document.head.appendChild(script);
+
+    return () => { 
+      if(document.head.contains(script)) document.head.removeChild(script); 
+    };
+  }, []);
+
   const displayedCities = useMemo(() => {
     return CITIES.slice(0, visibleCitiesCount);
   }, [visibleCitiesCount]);
@@ -60,69 +127,16 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
     setVisibleArchitectsCount(prev => Math.min(prev + PAGE_SIZE_ARCHITECTS, filteredArchitects.length));
   };
 
-  useEffect(() => {
-  // 1. DATA CONFIGURATION
-  const pageTitle = "Architectorly | Pakistan's Premier Architecture & Design Directory";
-  const pageDesc = "Connect with the best architects in Pakistan. Discover top-rated PCATP-licensed firms, browse regional hubs, and use our 2026 construction cost estimator.";
-  const pageImage = "https://www.architectorly.com/images/og-main-banner.jpg"; // Ensure this image exists in your public/images folder
-  const pageUrl = "https://www.architectorly.com/";
-
-  // 2. STANDARD SEO & OPEN GRAPH
-  document.title = pageTitle;
-  const updateTag = (name: string, content: string, isProperty: boolean = false) => {
-    const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-    let el = document.querySelector(selector);
-    if (!el) {
-      el = document.createElement('meta');
-      el.setAttribute(isProperty ? 'property' : 'name', name);
-      document.head.appendChild(el);
-    }
-    el.setAttribute('content', content);
-  };
-
-  updateTag("description", pageDesc);
-  updateTag("og:title", pageTitle, true);
-  updateTag("og:description", pageDesc, true);
-  updateTag("og:image", pageImage, true);
-  updateTag("og:url", pageUrl, true);
-  updateTag("og:type", "website", true);
-  updateTag("twitter:card", "summary_large_image");
-
-  // 3. STRUCTURED DATA (JSON-LD)
-  const script = document.createElement('script');
-  script.type = 'application/ld+json';
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Architectorly Pakistan",
-    "url": pageUrl,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${pageUrl}?search={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
-  };
-  script.text = JSON.stringify(websiteSchema);
-  document.head.appendChild(script);
-
-  return () => {
-    if (document.head.contains(script)) {
-      document.head.removeChild(script);
-    }
-  };
-}, []);
-
-  
   return (
     <div className="page-transition">
       <section className="pt-24 pb-32 px-6 text-center overflow-hidden">
         <div className="max-w-[800px] mx-auto">
           <h1 className="text-[52px] sm:text-[88px] font-bold tracking-[-0.035em] leading-[1.02] text-[#1d1d1f] mb-8">
-            Design for the <br className="hidden sm:block" /> 
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#5e5ce6]">future of Pakistan.</span>
+            Build your dream <br className="hidden sm:block" /> 
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0066cc] to-[#5e5ce6]">with Architectorly.</span>
           </h1>
           <p className="text-[20px] sm:text-[26px] text-[#86868b] font-light leading-snug mb-14 max-w-[620px] mx-auto">
-            Get in touch with the best architects in the country. Get the best architecture right at your fingertips.
+            Connect with the best architects in Pakistan. Simple, fast, and free.
           </p>
           
           <div className="relative max-w-[660px] mx-auto group">
@@ -146,7 +160,7 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
       {!search && (
         <section className="max-w-[1024px] mx-auto px-6 mb-32">
           <div className="mb-10">
-            <h2 className="text-[34px] font-bold tracking-tight text-[#1d1d1f]">Browse by City</h2>
+            <h2 className="text-[34px] font-bold tracking-tight text-[#1d1d1f]">Popular Cities</h2>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -205,13 +219,16 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
                   Let’s Build Something <br className="hidden sm:block" /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300">Meaningful.</span>
                 </h2>
                 <p className="text-[20px] sm:text-[22px] text-white/70 font-light leading-relaxed mb-12 max-w-[620px]">
-                  If you want an architect that is smart about design, does a lot of research, and is clear on how to carry out a project, 
+                  If you’re looking for an architect who combines design intelligence, research depth, and execution clarity, 
                   <span className="text-white font-semibold"> AAK Architects</span> is ready to collaborate.
                 </p>
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                   <a 
                     href="/architects/aak-architects"
-                    onClick={(e) => { e.preventDefault(); window.history.pushState({}, '', '/architects/aak-architects'); window.dispatchEvent(new PopStateEvent('popstate')); }}
+                    onClick={(e) => { 
+                      e.preventDefault(); 
+                      onArchitectClick({ slug: 'aak-architects' } as any); 
+                    }}
                     className="w-full sm:w-auto px-10 py-5 bg-white text-[#1d1d1f] rounded-2xl font-bold text-[18px] hover:bg-[#f5f5f7] transition-all active:scale-95 shadow-xl shadow-white/5 text-center"
                   >
                     View Practice Profile
@@ -227,7 +244,13 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
                   </a>
                 </div>
               </div>
-              
+              <div className="flex-shrink-0 hidden lg:block">
+                <div className="w-80 h-80 rounded-[3rem] bg-gradient-to-br from-white/10 to-transparent border border-white/5 backdrop-blur-2xl flex items-center justify-center">
+                   <svg className="w-32 h-32 text-white/10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                     <path d="M6 22V4c0-.5.2-1 .6-1.4.4-.4.9-.6 1.4-.6h4c.5 0 1 .2 1.4.6.4.4.6.9.6 1.4v18"/><path d="M6 18h12"/><path d="M12 18v4"/><path d="M18 22V7c0-.5-.2-1-.6-1.4-.4-.4-.9-.6-1.4-.6h-4c-.5 0-1 .2-1.4.6-.4.4-.6.9-.6 1.4v15"/>
+                   </svg>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -267,8 +290,65 @@ const HomePage: React.FC<HomePageProps> = ({ onCityClick, onArchitectClick }) =>
           </div>
         )}
       </section>
+
+      {/* SEO CONTENT SECTION - 8th Grade Reading Level */}
+      <section className="max-w-[1024px] mx-auto px-6 mb-32 py-20 border-t border-[#d2d2d7]/50">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+          <div className="space-y-6">
+            <h2 className="text-[32px] font-bold text-[#1d1d1f]">Why Use Architectorly?</h2>
+            <p className="text-[18px] text-[#424245] font-light leading-relaxed">
+              Finding the right architect in Pakistan used to be hard. You had to ask friends or drive around looking for signs. <strong>Architectorly</strong> makes it simple. We list the best professionals in one place.
+            </p>
+            <p className="text-[18px] text-[#424245] font-light leading-relaxed">
+              We check every firm before they join our list. This means you can trust the people you find here. Whether you need a map for a small house or a design for a big plaza, we have the right expert for you.
+            </p>
+          </div>
+          <div className="space-y-6">
+            <h2 className="text-[32px] font-bold text-[#1d1d1f]">How It Works</h2>
+            <ul className="space-y-4 text-[18px] text-[#424245] font-light">
+              <li className="flex gap-3">
+                <span className="font-bold text-[#0071e3]">•</span>
+                <span><strong>Search:</strong> Type in your city name, like "Lahore" or "Multan".</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-[#0071e3]">•</span>
+                <span><strong>Compare:</strong> Look at their ratings and past work. See who fits your style.</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-bold text-[#0071e3]">•</span>
+                <span><strong>Connect:</strong> Click to call them directly. No middleman. No hidden fees.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ SECTION */}
+      <section className="max-w-[800px] mx-auto px-6 mb-32">
+        <h2 className="text-[32px] font-bold text-[#1d1d1f] mb-10 text-center">Frequently Asked Questions</h2>
+        <FAQAccordion items={homeFaqs} />
+      </section>
     </div>
   );
 };
+
+const homeFaqs = [
+  {
+    question: "Is Architectorly free to use?",
+    answer: "Yes, Architectorly is 100% free for homeowners. You can search for architects, view their profiles, and get their phone numbers without paying anything."
+  },
+  {
+    question: "Are the architects on this list verified?",
+    answer: "We try our best to verify every firm. We check their office address and phone numbers. Many of our top-rated architects are also registered with PCATP."
+  },
+  {
+    question: "Can I find map makers and engineers here?",
+    answer: "Yes. Our directory includes architects, structural engineers, interior designers, and map makers. You can find help for any part of your building project."
+  },
+  {
+    question: "Do you cover all cities in Pakistan?",
+    answer: "We cover major cities like Lahore, Karachi, Islamabad, and Rawalpindi. We are also adding more firms from smaller cities like Gujrat, Sahiwal, and Jhelum every day."
+  }
+];
 
 export default HomePage;

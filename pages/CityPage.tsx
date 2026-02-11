@@ -50,20 +50,20 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
 
   const cityFaqs = useMemo(() => [
     {
-      question: `Who is the best architect in ${city?.name || 'this city'} for residential projects?`,
-      answer: `AAK Architects is one of the greatest architects in ${city?.name || 'this city'} for residential design and architectural consulting for homeowners who want long-term value, sustainability, and clear costs.`
+      question: `Who are the best architects in ${city?.name || 'this city'}?`,
+      answer: `Our list shows the top-rated firms. AAK Architects is highly recommended for modern home designs and professional service in ${city?.name || 'this city'}.`
     },
     {
       question: `How do I hire an architect in ${city?.name || 'this city'}?`,
-      answer: `To begin, look over our list of the best professionals in ${city?.name || 'this city'}. We suggest that you look at their Brand Hub profiles to see their branch ratings and then call their local studio directly to set up a first meeting.`
+      answer: `Browse the list above, check their ratings, and click to view their profile. You can call them directly from their page to discuss your plot and requirements.`
     },
     {
-      question: `What are the average architectural fees in ${city?.name || 'this city'}?`,
-      answer: `The cost of a project might change depending on how complicated it is and how well-known the company is. Most of the best architects in ${city?.name || 'this city'} charge a percentage of the overall cost of the building or a set fee based on the area they design.`
+      question: `What are the fees for architects in ${city?.name || 'this city'}?`,
+      answer: `Most firms charge a percentage of the construction cost (3% to 7%) or a fixed rate per square foot. We recommend asking for a clear quote before you start.`
     },
     {
-      question: `Are these architects registered?`,
-      answer: `Architectorly gives priority to practices that have legitimate professional registrations. During your first meeting, we suggest checking each professional's unique registration status, like whether they are a member of PCATP.`
+      question: `Can they help with local authority approvals?`,
+      answer: `Yes. Architects listed here are familiar with building bylaws in ${city?.name || 'this city'}. They can help prepare the drawings needed for official approval.`
     }
   ], [city]);
 
@@ -71,8 +71,7 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
     if (!city) return;
 
     // 1. DYNAMIC META CONTENT
-    const titleText = `Best Architects in ${city.name} | Top Rated Design Firms`;
-    document.title = titleText;
+    document.title = `Architects in ${city.name} | Best Home Designers`;
     
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
@@ -80,7 +79,7 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       metaDesc.setAttribute('name', 'description');
       document.head.appendChild(metaDesc);
     }
-    metaDesc.setAttribute('content', `Connect with verified, PCATP-registered architects in ${city.name}. View brand ratings, office locations, and contact details for the top ${architects.length} design studios in your area.`);
+    metaDesc.setAttribute('content', `Find the best architects in ${city.name}. See phone numbers, office addresses, and ratings for top home designers and construction firms.`);
 
     // 2. STRUCTURED DATA (JSON-LD)
     const script = document.createElement('script');
@@ -89,12 +88,20 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
     const listSchema = {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "name": `Top Architects in ${city.name}`,
+      "name": `Architects in ${city.name}`,
       "itemListElement": architects.slice(0, 10).map((a, i) => ({
         "@type": "ListItem",
         "position": i + 1,
-        "name": a["Shop Name"],
-        "url": `https://architectorly.com/architects/${a.slug}`
+        "item": {
+          "@type": "LocalBusiness",
+          "name": a["Shop Name"],
+          "url": `https://www.architectorly.com/architects/${a.slug}`,
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": city.name,
+            "addressCountry": "PK"
+          }
+        }
       }))
     };
 
@@ -102,8 +109,8 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://architectorly.com/" },
-        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://architectorly.com/cities" },
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.architectorly.com" },
+        { "@type": "ListItem", "position": 2, "name": "Cities", "item": "https://www.architectorly.com/cities" },
         { "@type": "ListItem", "position": 3, "name": city.name }
       ]
     };
@@ -124,7 +131,6 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
     script.text = JSON.stringify([listSchema, breadcrumbSchema, faqSchema]);
     document.head.appendChild(script);
 
-    // 3. CLEANUP
     return () => { 
       if (document.head.contains(script)) {
         document.head.removeChild(script); 
@@ -134,28 +140,22 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
 
   if (!city) return <div className="p-20 text-center text-[#86868b]">City profile not found.</div>;
 
-  const navigateBack = (e: React.MouseEvent) => {
-    e.preventDefault();
-    onBackClick();
-  };
-
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-12 page-transition">
-      <a 
-        href="/cities"
-        onClick={navigateBack}
+      <button 
+        onClick={onBackClick}
         className="flex items-center gap-2 text-[#0066cc] mb-12 hover:underline text-[17px] font-medium group"
       >
         <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         Explore more cities
-      </a>
+      </button>
 
       <div className="mb-20">
         <h1 className="text-[48px] sm:text-[72px] font-bold tracking-tight text-[#1d1d1f] mb-4 leading-none">
-          Design in <span className="text-[#0066cc]">{city.name}</span>
+          Architects in <span className="text-[#0066cc]">{city.name}</span>
         </h1>
         <p className="text-[21px] sm:text-[24px] text-[#86868b] font-light max-w-[700px]">
-          Discover elite practices with active design studios and registered regional branches in {city.name}.
+          Find verified home designers and construction experts in your city.
         </p>
       </div>
 
@@ -173,7 +173,7 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
 
       {architects.length === 0 ? (
         <div className="bg-[#f5f5f7] rounded-[3rem] p-20 text-center mb-32 border border-dashed border-[#d2d2d7]">
-          <p className="text-[21px] text-[#86868b] font-light">We are verifying more professional studios in {city.name}.</p>
+          <p className="text-[21px] text-[#86868b] font-light">We are verifying more professional studios in {city.name} soon.</p>
         </div>
       ) : (
         visibleCount < architects.length && (
@@ -182,15 +182,44 @@ const CityPage: React.FC<CityPageProps> = ({ citySlug, onArchitectClick, onBackC
               onClick={() => setVisibleCount(prev => Math.min(prev + PAGE_SIZE, architects.length))}
               className="px-12 py-5 rounded-full bg-[#1d1d1f] text-white text-[19px] font-bold hover:bg-[#424245] transition-all active:scale-95 shadow-2xl flex items-center gap-3"
             >
-              Show More in {city.name}
+              Show more architects
               <span className="opacity-50 font-normal text-[14px]">({architects.length - visibleCount} more)</span>
             </button>
           </div>
         )
       )}
 
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 border-t border-[#d2d2d7]/30 pt-20 mb-32">
+        <div className="lg:col-span-1">
+           <h3 className="text-[24px] font-bold text-[#1d1d1f] mb-4">Building in {city.name}?</h3>
+           <p className="text-[17px] text-[#86868b] leading-relaxed">
+             Hiring a local architect ensures your design fits the local climate and follows city building rules.
+           </p>
+        </div>
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+           <div className="flex gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#0066cc] flex-shrink-0">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+              </div>
+              <div>
+                <h4 className="font-bold text-[#1d1d1f]">Local Approvals</h4>
+                <p className="text-[15px] text-[#86868b]">Experts who know the bylaws for {city.name} Development Authorities.</p>
+              </div>
+           </div>
+           <div className="flex gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#0066cc] flex-shrink-0">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+              </div>
+              <div>
+                <h4 className="font-bold text-[#1d1d1f]">Climate Smart</h4>
+                <p className="text-[15px] text-[#86868b]">Designs that keep your home cool in {city.name}'s weather.</p>
+              </div>
+           </div>
+        </div>
+      </div>
+
       <section className="mb-32">
-        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Expert Guide to {city.name}</h2>
+        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Common Questions</h2>
         <div className="max-w-[800px]">
           <FAQAccordion items={cityFaqs} />
         </div>
