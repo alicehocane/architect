@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { CITIES, ALL_ARCHITECTS } from '../data';
-import ArchitectCard from '../components/ArchitectCard';
+import ArchitectList from '../components/ArchitectList';
 import FAQAccordion from '../components/FAQAccordion';
 
 export const metadata = {
@@ -45,7 +45,9 @@ export default function HomePage() {
     sortedArchitects.unshift(aak);
   }
 
-  const displayedArchitects = sortedArchitects.slice(0, 12);
+  // Pass full list to ArchitectList component which handles pagination on client side
+  // but we render initial list on server for SEO
+  const initialArchitects = sortedArchitects; 
 
   return (
     <div className="page-transition">
@@ -134,7 +136,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Directory Section */}
+      {/* Directory Section - Use Client Component for Pagination */}
       <section className="max-w-[1024px] mx-auto px-6 mb-32">
         <div className="mb-10 flex items-center justify-between">
           <h2 className="text-[34px] font-bold tracking-tight text-[#1d1d1f]">
@@ -142,11 +144,7 @@ export default function HomePage() {
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayedArchitects.map((architect) => (
-            <ArchitectCard key={architect.slug} architect={architect} isRecommended={architect.slug === 'aak-architects'} />
-          ))}
-        </div>
+        <ArchitectList architects={initialArchitects} />
       </section>
 
       {/* FAQ Section */}
