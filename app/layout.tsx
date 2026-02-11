@@ -1,7 +1,6 @@
-"use client"
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Header from "../components/Header";
+import ClientLayout from "../components/ClientLayout";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -54,18 +53,9 @@ export default function RootLayout({
         `}} />
       </head>
       <body className={inter.className}>
-        <div className="min-h-screen flex flex-col bg-[#fbfbfd]">
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          
-          <footer className="bg-[#f5f5f7] pt-16 pb-8 px-6 mt-20 border-t border-[#d2d2d7]/40">
-            <div className="max-w-[1024px] mx-auto text-center sm:text-left">
-              <p className="text-[11px] text-[#86868b]">Copyright © 2025 Architectorly Pakistan. Professional Directory for elite architects.</p>
-            </div>
-          </footer>
-        </div>
+        <ClientLayout>
+          {children}
+        </ClientLayout>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { getAIRecommendation } from '../services/geminiService';
 import { ChatMessage } from '../types';
