@@ -51,7 +51,7 @@ const SearchPalette: React.FC<SearchPaletteProps> = ({ isOpen, onClose, onSelect
             ref={inputRef}
             type="text"
             className="flex-1 bg-transparent border-none text-[21px] outline-none placeholder-[#86868b] text-[#1d1d1f]"
-            placeholder="Search firms, cities, or categories..."
+            placeholder="Search Architects, firms ..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
