@@ -6,7 +6,7 @@ import { ALL_ARCHITECTS, CITIES, CATEGORIES } from './data';
  * Updated to support Clean URL Routing (History API).
  */
 export const generateSitemapData = () => {
-  const baseUrl = 'https://designdirectory.pk';
+  const baseUrl = 'https://www.architectorly.com';
   const today = new Date().toISOString().split('T')[0];
   
   const staticPages = [

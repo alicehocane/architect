@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://designdirectory.pk/sitemap.xml
+Sitemap: https://www.architectorly.com/sitemap.xml

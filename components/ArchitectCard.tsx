@@ -32,7 +32,7 @@ const ArchitectCard: React.FC<ArchitectCardProps> = ({ architect, cityContextSlu
     >
       {isRecommended && (
         <div className="absolute top-0 left-0 right-0 bg-[#0071e3] text-white text-[10px] font-black uppercase tracking-[0.2em] py-1.5 text-center">
-          DesignDirectory Recommended
+          Architectorly Recommended
         </div>
       )}
       
