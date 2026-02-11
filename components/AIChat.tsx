@@ -33,7 +33,7 @@ const AIChat: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-8 right-8 z-[100]">
+    <div className="fixed bottom-8 right-8 z-[100] hidden">
       {isOpen ? (
         <div className="bg-white rounded-3xl shadow-2xl w-[320px] sm:w-[400px] h-[500px] border border-[#d2d2d7] flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-300">
           <div className="apple-glass border-b border-[#e5e5e7] p-4 flex justify-between items-center">
