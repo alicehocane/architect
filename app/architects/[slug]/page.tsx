@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-// 1. IMPORT ALL_ARCHITECTS HERE
 import { getArchitectBySlug, getArchitectsByCity, ALL_ARCHITECTS } from '@/data';
 import ArchitectCard from '@/components/ArchitectCard';
 import FAQAccordion from '@/components/FAQAccordion';
@@ -11,14 +10,14 @@ interface PageProps {
   params: { slug: string };
 }
 
-// 2. ADD THIS FUNCTION TO FIX THE 404 ERROR
+// 1. Generate Static Paths (Fixes 404s)
 export async function generateStaticParams() {
   return ALL_ARCHITECTS.map((architect) => ({
     slug: architect.slug,
   }));
 }
 
-// 3. GENERATE METADATA SERVER-SIDE
+// 2. Generate Metadata
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const architect = getArchitectBySlug(params.slug);
   
@@ -48,13 +47,13 @@ export default function ArchitectProfilePage({ params }: PageProps) {
   const primaryCitySlug = architect.Locations[0]?.citySlug || '';
   const hasMultipleLocations = architect.Locations.length > 1;
 
-  // JSON-LD Schema Generation
+  // JSON-LD Schema
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": `https://www.architectorly.com/architects/${architect.slug}`,
     "name": architect["Shop Name"],
-    "image": "https://www.architectorly.com/logo.png", // Fallback or dynamic image
+    "image": "https://www.architectorly.com/logo.png",
     "telephone": architect.Locations[0]?.["Phone Number"],
     "url": `https://www.architectorly.com/architects/${architect.slug}`,
     "address": { 
@@ -161,6 +160,14 @@ export default function ArchitectProfilePage({ params }: PageProps) {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* --- ADDED THE MISSING FAQ SECTION HERE --- */}
+      <section className="mb-24 border-t border-[#d2d2d7]/50 pt-16">
+        <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Common Questions</h2>
+        <div className="max-w-[800px]">
+          <FAQAccordion items={profileFaqs} />
         </div>
       </section>
 
