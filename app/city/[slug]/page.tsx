@@ -11,6 +11,14 @@ interface PageProps {
   params: { slug: string };
 }
 
+// 1. THIS FUNCTION FIXES THE 404 ERROR
+// It tells Next.js exactly which cities to build (Attock, Jamshoro, Thatta)
+export async function generateStaticParams() {
+  return Array.from(CITY_MAP.keys()).map((slug) => ({
+    slug: slug,
+  }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const city = CITY_MAP.get(params.slug);
   if (!city) return { title: 'City Not Found' };
@@ -26,7 +34,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default function CityPage({ params }: PageProps) {
   const city = CITY_MAP.get(params.slug);
-  if (!city) notFound();
+  
+  // If the city is not in your data.ts, show 404
+  if (!city) {
+    notFound();
+  }
 
   // Logic to sort and recommend AAK
   const list = getArchitectsByCity(params.slug);
@@ -39,7 +51,7 @@ export default function CityPage({ params }: PageProps) {
 
   const aakInCityIndex = sortedLocal.findIndex(a => a.slug === 'aak-architects');
   let architects: Architect[] = [];
-  
+   
   if (aakInCityIndex > -1) {
     const [aak] = sortedLocal.splice(aakInCityIndex, 1);
     architects = [aak, ...sortedLocal];
@@ -83,10 +95,10 @@ export default function CityPage({ params }: PageProps) {
         "@type": "LocalBusiness",
         "name": a["Shop Name"],
         "url": `https://www.architectorly.com/architects/${a.slug}`,
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": city.name,
-          "addressCountry": "PK"
+        "address": { 
+          "@type": "PostalAddress", 
+          "addressLocality": city.name, 
+          "addressCountry": "PK" 
         }
       }
     }))
