@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Architectorly is Pakistan's #1 directory for architects and home designers. Search verified professionals in Lahore, Karachi, and Islamabad.",
   metadataBase: new URL('https://www.architectorly.com'),
   alternates: {
-    canonical: '/',
+    canonical: './',
   },
   openGraph: {
     type: 'website',
