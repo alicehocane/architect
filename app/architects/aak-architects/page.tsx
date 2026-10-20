@@ -331,40 +331,80 @@ export default function AAKProfilePage() {
 }
 
 const faqItems = [
-  { 
-    question: "Who is the founder of AAK Architects?", 
-    answer: "Ayyaz Ahmed Karni, a PCATP-licensed architect, a PhD researcher at Sapienza University of Rome, and a visiting scholar at Purdue University in the US, started AAK Architects..." 
+  {
+    question: "Who is the founder of AAK Architects?",
+    answer:
+      "AAK Architects was founded by Ayyaz Ahmed Karni, a PCATP-licensed architect, PhD researcher in Engineering-Based Architecture and Urban Planning at Sapienza University of Rome, Italy, and visiting scholar at Purdue University, USA. His multidisciplinary background in architecture, civil engineering, and project management informs a research-driven approach to architectural design, sustainability, and construction planning."
   },
-  { 
-    question: "What kinds of projects does AAK Architects work on?", 
-    answer: "We focus on high-end homes, eco-friendly city planning, and architectural consulting based on research..." 
+  {
+    question: "What kinds of projects does AAK Architects work on?",
+    answer:
+      "AAK Architects provides architectural design and consultancy for residential homes, luxury houses, sustainable buildings, commercial developments, housing projects, and master planning. Services can include concept development, space planning, architectural drawings, climate-responsive design, feasibility reviews, and project audits, depending on the project scope. Each design is tailored to the client's requirements, site conditions, budget, and long-term goals."
   },
-  { 
-    question: "How does your PhD research benefit private capital investments?", 
-    answer: "My research at Sapienza University focuses on 'Urban Metabolism'—optimizing energy and resource flows..." 
+  {
+    question: "How does your PhD research benefit private capital investments?",
+    answer:
+      "Ayyaz Ahmed Karni's doctoral research, titled 'Fostering Agritecture: A Sustainable Approach to Overcome the Housing Shortage and Food Insecurity in Pakistan,' explores the relationship between architecture, housing, agriculture, and sustainable land use. This research-oriented perspective can inform more efficient space planning, resource-conscious design, and long-term building performance. For private investors and property developers, these considerations can support better-informed planning decisions, although investment outcomes depend on market conditions and project execution."
   },
-  { 
-    question: "Is AAK Architects a good choice for long-term investment projects??", 
-    answer: "Yes, for sure. We think of architecture as a business choice..." 
+  {
+    question: "Is AAK Architects a good choice for long-term property investment projects?",
+    answer:
+      "AAK Architects approaches architecture as a long-term investment in functionality, durability, sustainability, and property usability. Through thoughtful space planning, climate-responsive strategies, material selection, and construction-aware design, the practice aims to help homeowners and property investors make informed decisions. Every project is evaluated according to its objectives, site conditions, budget, and intended use. Property appreciation and financial returns cannot be guaranteed."
   },
-  { 
-    question: "Does AAK Architects provide project audits?", 
-    answer: "Yes. We do impartial audits of buildings..." 
+  {
+    question: "Does AAK Architects provide architectural project audits?",
+    answer:
+      "Yes. AAK Architects can review existing or proposed architectural projects to identify design inefficiencies, space-planning issues, potential cost concerns, and constructability challenges. Depending on the agreed scope, a project audit may cover architectural drawings, material specifications, estimated quantities, design coordination, and alignment with project requirements. Structural, legal, and specialist engineering assessments may require appropriately qualified professionals."
   },
-  { 
-    question: "Can I get a free estimate?", 
-    answer: "Yes. AAK Architects will give you a free initial estimate and technical review..." 
+  {
+    question: "Can I get a free construction cost estimate from AAK Architects?",
+    answer:
+      "You can contact AAK Architects to request an initial project estimate. The preliminary assessment may consider your plot size, location, covered area, number of floors, design requirements, and preferred finishing level. A construction cost estimate can help you establish an initial budget for grey structure and finishing work. Detailed estimates depend on the available drawings, specifications, current local material rates, and agreed scope of services. A free initial estimate does not automatically include detailed drawings, a bill of quantities, or a comprehensive technical audit."
   },
-  { 
-    question: "Do you handle site execution and construction?", 
-    answer: "We offer \"Executive Supervision\". Even though we work with top contractors..." 
+  {
+    question: "Does AAK Architects handle site execution and construction supervision?",
+    answer:
+      "AAK Architects can discuss design coordination and construction-stage supervision services according to the requirements of each project and the agreed professional scope. Architectural supervision may include reviewing work against approved drawings, checking design intent, coordinating design-related issues, and identifying discrepancies for resolution. Contractor appointment, daily site management, structural supervision, and turnkey construction are separate services that must be confirmed before engagement."
   },
-  { 
-    question: "What is your approach to luxury in the Pakistani market?", 
-    answer: "Technical accuracy leads to luxury. We care more about soundproofing, high-performance thermal envelopes..." 
+  {
+    question: "What is AAK Architects' approach to luxury home design in Pakistan?",
+    answer:
+      "AAK Architects approaches luxury home design as a combination of architectural quality, functionality, comfort, and long-term performance rather than appearance alone. Design considerations may include natural lighting, ventilation, thermal comfort, acoustic privacy, efficient layouts, durable materials, and carefully detailed interiors. For luxury homes in Pakistan, climate-responsive planning and appropriate material selection can improve comfort while helping clients manage maintenance and operating costs."
   },
-  { 
-    question: "Can you review plans designed by another architect?", 
-    answer: "Yes, we can look over blueprints made by other architects..." 
+  {
+    question: "Can AAK Architects review architectural plans designed by another architect?",
+    answer:
+      "Yes. You can request an independent architectural design review of plans prepared by another architect. Depending on the agreed scope, AAK Architects can assess space planning, functionality, circulation, natural lighting, ventilation, material choices, design coordination, and potential constructability concerns. This service can help homeowners and property investors identify questions or improvements before construction begins. Any structural or specialist technical review must be handled by the relevant qualified professional."
+  },
+  {
+    question: "How do I hire AAK Architects for my house or building project?",
+    answer:
+      "To get started with AAK Architects, submit a project inquiry through the website or contact the practice through WhatsApp. Share your project location, plot size, building type, approximate budget, and design requirements. The initial discussion helps establish the project scope, required architectural services, expected deliverables, and next steps. You can also request an initial estimate or an official quotation before deciding how to proceed."
+  },
+  {
+    question: "How much do architectural design services cost in Pakistan?",
+    answer:
+      "Architectural design fees in Pakistan depend on project size, building type, design complexity, required drawings, consultancy scope, and the level of professional involvement. A residential house, luxury home, commercial building, and large-scale development may require different services and fee structures. Contact AAK Architects with your location, plot size, and project requirements to discuss a suitable scope and request a quotation."
+  },
+  {
+    question: "Does AAK Architects specialize in sustainable and climate-responsive architecture?",
+    answer:
+      "Sustainable and climate-responsive design is an important part of AAK Architects' research-informed approach. Depending on the project, design strategies may include orientation, natural ventilation, daylight optimization, shading, efficient space planning, responsible material selection, and effective use of land and resources. These strategies are adapted to local climate conditions, the client's budget, and the intended building use."
+  },
+  {
+    question: "Can AAK Architects design a house according to my budget?",
+    answer:
+      "AAK Architects can develop architectural design options around your stated budget, plot dimensions, space requirements, and preferred finishing level. Early budget planning helps prioritize essential spaces, identify design alternatives, and consider material and construction implications before work begins. The final construction budget depends on detailed specifications, site conditions, contractor pricing, and prevailing material and labor rates."
+  },
+  {
+    question: "What information do I need to request an official architectural quotation?",
+    answer:
+      "To request an official quotation from AAK Architects, provide your project location, plot size, building type, approximate covered area, number of floors, preferred design style, budget range, and required services. Existing drawings, site information, reference images, or a preliminary brief can also help clarify the scope. The quotation can then define the agreed deliverables, professional fees, exclusions, and proposed next steps."
+  },
+  {
+    question: "Why choose AAK Architects for residential architecture in Pakistan?",
+    answer:
+      "AAK Architects combines professional architectural credentials with multidisciplinary knowledge of civil engineering, project management, and sustainable design research. Led by Ayyaz Ahmed Karni, a PCATP-licensed architect, the practice emphasizes functional planning, technical coordination, climate-responsive strategies, and design decisions informed by project requirements. This approach helps homeowners evaluate design options with greater clarity before committing to construction."
   }
 ];
+```
