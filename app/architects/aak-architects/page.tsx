@@ -407,4 +407,3 @@ const faqItems = [
       "AAK Architects combines professional architectural credentials with multidisciplinary knowledge of civil engineering, project management, and sustainable design research. Led by Ayyaz Ahmed Karni, a PCATP-licensed architect, the practice emphasizes functional planning, technical coordination, climate-responsive strategies, and design decisions informed by project requirements. This approach helps homeowners evaluate design options with greater clarity before committing to construction."
   }
 ];
-```
