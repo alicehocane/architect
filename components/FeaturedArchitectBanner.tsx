@@ -19,16 +19,16 @@ export default function FeaturedArchitectBanner({
   const isDismissedRef = useRef(false);
 
   useEffect(() => {
-    // Prevent re-showing if already dismissed in the current session
-    if (sessionStorage.getItem(`dismissed_${slug}`)) {
+    if (typeof window !== 'undefined' && sessionStorage.getItem(`dismissed_${slug}`)) {
       return;
     }
 
     const timer = setTimeout(() => {
       if (!isDismissedRef.current) {
         setIsRendered(true);
-        // Small delay to trigger smooth transition after mount
-        requestAnimationFrame(() => setIsVisible(true));
+        requestAnimationFrame(() => {
+          setIsVisible(true);
+        });
       }
     }, delayMs);
 
@@ -38,27 +38,26 @@ export default function FeaturedArchitectBanner({
   const handleClose = () => {
     setIsVisible(false);
     isDismissedRef.current = true;
-    sessionStorage.setItem(`dismissed_${slug}`, 'true');
-    setTimeout(() => setIsRendered(false), 400);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem(`dismissed_${slug}`, 'true');
+    }
+    setTimeout(() => setIsRendered(false), 350);
   };
 
-  // Touch handlers for upward swipe dismissal
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchStartY(e.touches[0].clientY);
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (touchStartY === null) return;
-    const currentY = e.touches[0].clientY;
-    const diff = currentY - touchStartY;
-    // Only allow swiping upwards
+    const diff = e.touches[0].clientY - touchStartY;
     if (diff < 0) {
       setSwipeOffset(diff);
     }
   };
 
   const handleTouchEnd = () => {
-    if (swipeOffset < -45) {
+    if (swipeOffset < -35) {
       handleClose();
     } else {
       setSwipeOffset(0);
@@ -72,21 +71,21 @@ export default function FeaturedArchitectBanner({
     <div
       role="status"
       aria-live="polite"
-      className="fixed top-4 inset-x-0 z-50 flex justify-center px-4 pointer-events-none"
+      className="fixed top-20 sm:top-24 inset-x-0 z-[100] flex justify-center px-4 pointer-events-none"
     >
       <div
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         style={{
-          transform: `translateY(${isVisible ? swipeOffset : -120}px)`,
+          transform: `translate3d(0, ${isVisible ? swipeOffset : -160}px, 0)`,
           opacity: isVisible ? 1 : 0,
         }}
-        className="pointer-events-auto w-full max-w-[500px] bg-white/90 dark:bg-[#1d1d1f]/90 backdrop-blur-2xl border border-black/10 dark:border-white/10 rounded-[28px] p-4 shadow-[0_20px_45px_rgba(0,0,0,0.12)] transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] select-none"
+        className="pointer-events-auto w-full max-w-[440px] bg-white/90 dark:bg-[#1d1d1f]/95 backdrop-blur-2xl border border-black/[0.08] dark:border-white/10 rounded-[24px] p-3.5 shadow-[0_16px_40px_rgba(0,0,0,0.12)] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] select-none"
       >
-        <div className="flex items-center gap-3.5">
-          {/* Subtle Studio Badge / Status Indicator */}
-          <div className="relative flex-shrink-0 w-11 h-11 rounded-2xl bg-[#f5f5f7] dark:bg-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white">
+        <div className="flex items-center gap-3">
+          {/* Studio Icon Badge */}
+          <div className="relative flex-shrink-0 w-10 h-10 rounded-xl bg-[#f5f5f7] dark:bg-white/10 flex items-center justify-center text-[#1d1d1f] dark:text-white">
             <svg
               className="w-5 h-5 text-[#0071e3]"
               viewBox="0 0 24 24"
@@ -100,37 +99,34 @@ export default function FeaturedArchitectBanner({
               <path d="M9 9h1M9 13h1M9 17h1" />
             </svg>
             <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#0071e3]"></span>
             </span>
           </div>
 
-          {/* Editorial / Curated Discovery Copy */}
+          {/* Text Content */}
           <div className="flex-1 min-w-0 pr-1">
-            <div className="flex items-center gap-2 mb-0.5">
-              <span className="text-[11px] font-semibold tracking-wider uppercase text-[#86868b]">
-                Verified Studio
-              </span>
-              <span className="text-[11px] text-[#86868b]">•</span>
-              <span className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                Active Inquiries
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-[10px] font-bold tracking-wider uppercase text-[#0066cc] bg-blue-50 dark:bg-blue-950/60 px-1.5 py-0.5 rounded-md">
+                Featured Practice
               </span>
             </div>
-            <p className="text-[14px] font-medium text-[#1d1d1f] dark:text-white truncate">
+            <p className="text-[14px] font-semibold text-[#1d1d1f] dark:text-white truncate">
               AAK Architects
             </p>
             <p className="text-[12px] text-[#86868b] truncate leading-tight">
-              High-performance design & energy-efficient residential execution.
+              High-performance architectural & energy design studio
             </p>
           </div>
 
-          {/* Action + Close */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Action Button & Close */}
+          <div className="flex items-center gap-1.5 flex-shrink-0">
             <Link
               href="/architects/aak-architects"
-              className="px-3.5 py-1.5 rounded-full bg-[#0071e3] text-white text-[13px] font-medium hover:bg-[#0077ed] active:scale-95 transition-transform"
+              onClick={handleClose}
+              className="px-3.5 py-1.5 rounded-full bg-[#0071e3] text-white text-[13px] font-medium hover:bg-[#0077ed] active:scale-95 transition-all shadow-sm"
             >
-              Explore
+              View
             </Link>
             <button
               onClick={handleClose}
@@ -145,9 +141,9 @@ export default function FeaturedArchitectBanner({
           </div>
         </div>
 
-        {/* Mobile Swipe-Up Pill Indicator */}
-        <div className="sm:hidden flex justify-center mt-2.5 -mb-1">
-          <div className="w-8 h-1 rounded-full bg-black/15 dark:bg-white/20" />
+        {/* Mobile Swipe Grab Bar */}
+        <div className="sm:hidden flex justify-center mt-2 -mb-0.5">
+          <div className="w-8 h-1 rounded-full bg-black/10 dark:bg-white/20" />
         </div>
       </div>
     </div>
