@@ -310,7 +310,7 @@ export default function AAKProfilePage() {
         <div className="bg-[#1d1d1f]/95 backdrop-blur-2xl p-2.5 rounded-[2.5rem] shadow-2xl flex items-center justify-between border border-white/10">
           <Link 
             href="/"
-            className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+            className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m15 18-6-6 6-6"/></svg>
           </Link>
@@ -320,7 +320,7 @@ export default function AAKProfilePage() {
           </div>
           <a 
             href={whatsappInquiry}
-            className="w-10 h-10 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
+            className="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform"
           >
            <svg 
               xmlns="http://www.w3.org/2000/svg" 
@@ -332,7 +332,7 @@ export default function AAKProfilePage() {
               strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
-              className="lucide lucide-message-circle w-5 h-5 fill-current" 
+              className="lucide lucide-message-circle w-8 h-8 fill-current" 
               aria-hidden="true"
             >
               <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />

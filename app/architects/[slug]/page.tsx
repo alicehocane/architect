@@ -83,12 +83,27 @@ export default function ArchitectProfilePage({ params }: PageProps) {
     }
   ];
 
-  const relatedArchitects = primaryCitySlug 
-    ? getArchitectsByCity(primaryCitySlug)
+  const relatedArchitects = (() => {
+    const list: Architect[] = [];
+
+    // 1. Fetch AAK and push it first (unless the current page is AAK)
+    const aak = getArchitectBySlug('aak-architects');
+    if (aak && aak.slug !== architect.slug) {
+      list.push(aak);
+    }
+
+    // 2. Fetch other architects in the city, excluding current architect and AAK
+    if (primaryCitySlug) {
+      const cityList = getArchitectsByCity(primaryCitySlug)
         .filter(a => a.slug !== architect.slug && a.slug !== 'aak-architects')
-        .sort((a, b) => (b.globalRating || 0) - (a.globalRating || 0))
-        .slice(0, 3)
-    : [];
+        .sort((a, b) => (b.globalRating || 0) - (a.globalRating || 0));
+
+      list.push(...cityList);
+    }
+
+    // 3. Keep top 3 recommendations
+    return list.slice(0, 3);
+  })();
 
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-12 pb-32 page-transition">
@@ -181,7 +196,12 @@ export default function ArchitectProfilePage({ params }: PageProps) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {relatedArchitects.map((related) => (
-              <ArchitectCard key={related.slug} architect={related} cityContextSlug={primaryCitySlug} />
+              <ArchitectCard 
+  key={related.slug} 
+  architect={related} 
+  cityContextSlug={primaryCitySlug} 
+  isRecommended={related.slug === 'aak-architects'} 
+/>
             ))}
           </div>
         </section>
