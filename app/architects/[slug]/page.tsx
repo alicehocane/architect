@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { getArchitectBySlug, getArchitectsByCity, ALL_ARCHITECTS } from '@/data';
 import ArchitectCard from '@/components/ArchitectCard';
 import FAQAccordion from '@/components/FAQAccordion';
+import FeaturedArchitectBanner from '@/components/FeaturedArchitectBanner';
 
 interface PageProps {
   params: { slug: string };
@@ -120,6 +121,13 @@ export default function ArchitectProfilePage({ params }: PageProps) {
 
   return (
     <div className="max-w-[1024px] mx-auto px-6 py-12 pb-32 page-transition">
+
+      {/* 9-second subtle dropdown notification (only for other profiles) */}
+      {architect.slug !== 'aak-architects' && (
+        <FeaturedArchitectBanner slug="aak-architects" delayMs={9000} />
+      )}
+
+      
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
