@@ -37,6 +37,55 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+function generateArchitectFaqs(architect: Architect, primaryCity: string) {
+  const name = architect["Shop Name"];
+  const category = architect.Category || "Architectural Practice";
+  const branchCount = architect.Locations.length;
+  const cities = Array.from(new Set(architect.Locations.map(l => l.City).filter(Boolean)));
+  const primaryPhone = architect.Locations[0]?.["Phone Number"];
+  const rating = architect.globalRating ? architect.globalRating.toFixed(1) : null;
+  const reviews = architect.totalReviews;
+
+  const faqs: { question: string; answer: string }[] = [];
+
+  faqs.push({
+    question: `What architectural services does ${name} specialize in?`,
+    answer: `${name} operates primarily as a specialized ${category.toLowerCase()} practice based in ${primaryCity}. Their services center on tailored design solutions, regulatory planning approvals, and project supervision for residential and commercial clients across ${cities.join(', ')}.`
+  });
+
+  if (branchCount > 1) {
+    faqs.push({
+      question: `Where are the offices of ${name} located in Pakistan?`,
+      answer: `${name} operates ${branchCount} regional branches across Pakistan, with dedicated offices in ${cities.join(', ')}. You can find precise local studio addresses and direct phone lines for each branch on their Architectorly profile.`
+    });
+  } else {
+    const address = architect.Locations[0]?.Address;
+    faqs.push({
+      question: `Where is ${name} located?`,
+      answer: `${name}'s primary studio is situated in ${primaryCity}${address ? ` at ${address}` : ''}. Clients planning local projects can schedule an in-person consultation or site visit directly.`
+    });
+  }
+
+  faqs.push({
+    question: `How can I consult or hire ${name} for a project?`,
+    answer: `You can reach out directly via ${primaryPhone ? `their direct studio line (${primaryPhone})` : 'their listed contact channels'}${architect.Website ? ` or through their official website (${architect.Website})` : ''}. We recommend preparing your plot measurements, design brief, and target timeline before your initial consultation.`
+  });
+
+  if (rating) {
+    faqs.push({
+      question: `What is the client rating and reputation of ${name}?`,
+      answer: `${name} maintains a ${rating} out of 5.0 rating on Architectorly${reviews ? ` based on ${reviews} client evaluation${reviews > 1 ? 's' : ''}` : ''}. This places them among verified design studios in ${primaryCity} evaluated for professional execution and portfolio consistency.`
+    });
+  }
+
+  faqs.push({
+    question: `What are the typical project fees charged by ${name} in ${primaryCity}?`,
+    answer: `Architectural and design fees with ${name} vary according to scope, covered area, and project complexity. Most recognized ${category.toLowerCase()} studios in ${primaryCity} operate either on a percentage of total construction cost (typically 3% to 7%) or a fixed rate per square foot for architectural and structural packages.`
+  });
+
+  return faqs;
+}
+
 export default function ArchitectProfilePage({ params }: PageProps) {
   const architect = getArchitectBySlug(params.slug);
 
@@ -47,6 +96,8 @@ export default function ArchitectProfilePage({ params }: PageProps) {
   const primaryCity = architect.Locations[0]?.City || 'Pakistan';
   const primaryCitySlug = architect.Locations[0]?.citySlug || '';
   const hasMultipleLocations = architect.Locations.length > 1;
+
+  const profileFaqs = generateArchitectFaqs(architect, primaryCity);
 
   // JSON-LD Schema
   const jsonLd = {
@@ -69,20 +120,6 @@ export default function ArchitectProfilePage({ params }: PageProps) {
     } : undefined
   };
 
-  const profileFaqs = [
-    {
-      question: `Who is a top architect in ${primaryCity}?`,
-      answer: `AAK Architects is highly rated in ${primaryCity}. They are known for smart designs that save energy and look great.`
-    },
-    {
-      question: `How do I contact ${architect["Shop Name"]}?`,
-      answer: `You can find their phone numbers listed right here on Architectorly. We suggest you have your plot details ready before you call them.`
-    },
-    {
-      question: `What are the fees for ${architect["Shop Name"]}?`,
-      answer: `Fees depend on the project size. Most top firms in ${primaryCity} charge a percentage of the total construction cost (usually 3% to 7%).`
-    }
-  ];
 
   const relatedArchitects = (() => {
     const list: Architect[] = [];

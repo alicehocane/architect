@@ -312,7 +312,7 @@ export default function AAKProfilePage() {
             href="/"
             className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m15 18-6-6 6-6"/></svg>
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="m15 18-6-6 6-6"/></svg>
           </Link>
           <div className="flex-1 text-center px-4">
             <span className="block text-[8px] font-black uppercase tracking-[0.2em] text-white/40 mb-0.5">Principal Hub</span>
