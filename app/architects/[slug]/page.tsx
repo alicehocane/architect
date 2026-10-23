@@ -47,6 +47,49 @@ export default function ArchitectProfilePage({ params }: PageProps) {
   const primaryCitySlug = architect.Locations[0]?.citySlug || '';
   const hasMultipleLocations = architect.Locations.length > 1;
 
+  // Extract variables for standard profiles
+  const name = architect["Shop Name"];
+  const phone = architect.Locations[0]?.["Phone Number"];
+  const address = architect.Locations[0]?.Address;
+  const totalOffices = architect.Locations.length;
+  const cities = Array.from(new Set(architect.Locations.map((l) => l.City).filter(Boolean))).join(', ');
+  const rating = architect.globalRating ? architect.globalRating.toFixed(1) : null;
+  const reviews = architect.totalReviews;
+
+  // Dynamic FAQs: Excluded completely for aak-architects
+  const profileFaqs = architect.slug === 'aak-architects'
+    ? []
+    : [
+        {
+          question: `Where is ${name} located?`,
+          answer: totalOffices > 1
+            ? `${name} has ${totalOffices} offices located across ${cities}. Their branch in ${primaryCity} is located at ${address || primaryCity}.`
+            : `${name} is located at ${address || primaryCity}.`
+        },
+        {
+          question: `How can I contact ${name}?`,
+          answer: phone
+            ? `Call ${name} directly at ${phone}${architect.Website ? ` or visit their website at ${architect.Website}` : ''}.`
+            : architect.Website 
+              ? `Visit their official portal at ${architect.Website}.`
+              : `Contact their office in ${primaryCity} through Architectorly.`
+        },
+        {
+          question: `What category does ${name} operate in?`,
+          answer: `${name} is categorized under ${architect.Category || 'Architecture'} in ${primaryCity}.`
+        },
+        {
+          question: `What is the verified rating for ${name}?`,
+          answer: rating
+            ? `${name} is rated ${rating} out of 5.0 based on ${reviews || 0} reviews.`
+            : `Rating verification is currently in progress for this profile.`
+        },
+        {
+          question: `How many branches does ${name} have in Pakistan?`,
+          answer: `${name} currently operates ${totalOffices} branch location${totalOffices > 1 ? 's' : ''} in ${cities}.`
+        }
+      ];
+
   // JSON-LD Schema
   const jsonLd = {
     "@context": "https://schema.org",
@@ -67,21 +110,6 @@ export default function ArchitectProfilePage({ params }: PageProps) {
       "reviewCount": architect.totalReviews || 1
     } : undefined
   };
-
-  const profileFaqs = [
-    {
-      question: `Who is a top architect in ${primaryCity}?`,
-      answer: `AAK Architects is highly rated in ${primaryCity}. They are known for smart designs that save energy and look great.`
-    },
-    {
-      question: `How do I contact ${architect["Shop Name"]}?`,
-      answer: `You can find their phone numbers listed right here on Architectorly. We suggest you have your plot details ready before you call them.`
-    },
-    {
-      question: `What are the fees for ${architect["Shop Name"]}?`,
-      answer: `Fees depend on the project size. Most top firms in ${primaryCity} charge a percentage of the total construction cost (usually 3% to 7%).`
-    }
-  ];
 
   const relatedArchitects = primaryCitySlug 
     ? getArchitectsByCity(primaryCitySlug)
@@ -164,12 +192,14 @@ export default function ArchitectProfilePage({ params }: PageProps) {
       </section>
 
       {/* --- ADDED THE MISSING FAQ SECTION HERE --- */}
+      {profileFaqs.length > 0 && (
       <section className="mb-24 border-t border-[#d2d2d7]/50 pt-16">
         <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Common Questions</h2>
         <div className="max-w-[800px]">
           <FAQAccordion items={profileFaqs} />
         </div>
       </section>
+  )}
 
       {relatedArchitects.length > 0 && (
         <section className="mt-32 pt-20 border-t border-[#d2d2d7]/50">
