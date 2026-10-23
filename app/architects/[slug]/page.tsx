@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { getArchitectBySlug, getArchitectsByCity, ALL_ARCHITECTS } from '@/data';
 import ArchitectCard from '@/components/ArchitectCard';
 import FAQAccordion from '@/components/FAQAccordion';
+import { Architect } from '@/types';
 
 interface PageProps {
   params: { slug: string };
@@ -36,6 +37,61 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Dynamic FAQ generator based on actual profile data
+function buildProfileFaqs(architect: Architect, primaryCity: string) {
+  const name = architect["Shop Name"];
+  const category = architect.Category || "Architectural Practice";
+  const branchCount = architect.Locations.length;
+  const cities = Array.from(new Set(architect.Locations.map((l) => l.City).filter(Boolean)));
+  const primaryPhone = architect.Locations[0]?.["Phone Number"];
+  const primaryAddress = architect.Locations[0]?.Address;
+  const rating = architect.globalRating ? architect.globalRating.toFixed(1) : null;
+  const reviews = architect.totalReviews;
+
+  const faqs: { question: string; answer: string }[] = [];
+
+  // FAQ 1: Scope & Services
+  faqs.push({
+    question: `What services does ${name} offer in ${primaryCity}?`,
+    answer: `${name} specializes in ${category.toLowerCase()} services across ${cities.join(', ')}. Their portfolio encompasses architectural planning, structural coordination, and interior solutions customized for residential and commercial clients.`
+  });
+
+  // FAQ 2: Location footprint
+  if (branchCount > 1) {
+    faqs.push({
+      question: `Does ${name} have multiple offices in Pakistan?`,
+      answer: `Yes, ${name} maintains ${branchCount} branch offices located in ${cities.join(', ')}. Direct phone numbers and addresses for each city branch are listed in their studio profile.`
+    });
+  } else {
+    faqs.push({
+      question: `Where is the studio of ${name} located?`,
+      answer: `${name} operates out of ${primaryCity}${primaryAddress ? ` at ${primaryAddress}` : ''}. In-person design consultations and project reviews can be booked directly with their studio team.`
+    });
+  }
+
+  // FAQ 3: Direct contact & hiring
+  faqs.push({
+    question: `How can I contact ${name} for a new project?`,
+    answer: `You can reach their team directly at ${primaryPhone || 'their listed phone number'}${architect.Website ? ` or via their official website (${architect.Website})` : ''}. Having your plot size, city development authority guidelines, and initial design requirements prepared beforehand ensures an efficient consultation.`
+  });
+
+  // FAQ 4: Reputation & Performance
+  if (rating) {
+    faqs.push({
+      question: `How is ${name} rated on Architectorly?`,
+      answer: `${name} holds a verified rating of ${rating} out of 5.0${reviews ? ` across ${reviews} review${reviews > 1 ? 's' : ''}` : ''}, reflecting their execution quality and consistency in ${primaryCity}.`
+    });
+  }
+
+  // FAQ 5: Pricing & Cost Expectations
+  faqs.push({
+    question: `What are the design and consultancy charges for ${name}?`,
+    answer: `Consultancy fees for ${name} depend on covered area, site condition, and project complexity. Recognized ${category.toLowerCase()} firms in ${primaryCity} generally structure fees either on a square-foot basis or as a 3% to 7% percentage of total construction cost.`
+  });
+
+  return faqs;
+}
+
 export default function ArchitectProfilePage({ params }: PageProps) {
   const architect = getArchitectBySlug(params.slug);
 
@@ -47,39 +103,40 @@ export default function ArchitectProfilePage({ params }: PageProps) {
   const primaryCitySlug = architect.Locations[0]?.citySlug || '';
   const hasMultipleLocations = architect.Locations.length > 1;
 
-  // JSON-LD Schema
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `https://www.architectorly.com/architects/${architect.slug}`,
-    "name": architect["Shop Name"],
-    "image": "https://www.architectorly.com/logo.png",
-    "telephone": architect.Locations[0]?.["Phone Number"],
-    "url": `https://www.architectorly.com/architects/${architect.slug}`,
-    "address": { 
-      "@type": "PostalAddress", 
-      "addressLocality": primaryCity, 
-      "addressCountry": "PK" 
-    },
-    "aggregateRating": architect.globalRating ? {
-      "@type": "AggregateRating",
-      "ratingValue": architect.globalRating,
-      "reviewCount": architect.totalReviews || 1
-    } : undefined
-  };
+  const profileFaqs = buildProfileFaqs(architect, primaryCity);
 
-  const profileFaqs = [
+  // JSON-LD Schema: LocalBusiness + FAQPage
+  const jsonLd = [
     {
-      question: `Who is a top architect in ${primaryCity}?`,
-      answer: `AAK Architects is highly rated in ${primaryCity}. They are known for smart designs that save energy and look great.`
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": `https://www.architectorly.com/architects/${architect.slug}`,
+      "name": architect["Shop Name"],
+      "image": "https://www.architectorly.com/logo.png",
+      "telephone": architect.Locations[0]?.["Phone Number"],
+      "url": `https://www.architectorly.com/architects/${architect.slug}`,
+      "address": { 
+        "@type": "PostalAddress", 
+        "addressLocality": primaryCity, 
+        "addressCountry": "PK" 
+      },
+      "aggregateRating": architect.globalRating ? {
+        "@type": "AggregateRating",
+        "ratingValue": architect.globalRating,
+        "reviewCount": architect.totalReviews || 1
+      } : undefined
     },
     {
-      question: `How do I contact ${architect["Shop Name"]}?`,
-      answer: `You can find their phone numbers listed right here on Architectorly. We suggest you have your plot details ready before you call them.`
-    },
-    {
-      question: `What are the fees for ${architect["Shop Name"]}?`,
-      answer: `Fees depend on the project size. Most top firms in ${primaryCity} charge a percentage of the total construction cost (usually 3% to 7%).`
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": profileFaqs.map((faq) => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
     }
   ];
 
@@ -113,7 +170,7 @@ export default function ArchitectProfilePage({ params }: PageProps) {
                 <span className="font-semibold text-[#1d1d1f]">{architect.globalRating?.toFixed(1) || 'N/A'}</span> Rating
               </div>
               <span className="w-1 h-1 rounded-full bg-[#d2d2d7]"></span>
-              <span className="font-medium text-[#1d1d1f]">{architect.Locations.length} Locations</span>
+              <span className="font-medium text-[#1d1d1f]">{architect.Locations.length} {architect.Locations.length === 1 ? 'Location' : 'Locations'}</span>
             </div>
           </div>
           {architect.Website && (
@@ -163,7 +220,6 @@ export default function ArchitectProfilePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* --- ADDED THE MISSING FAQ SECTION HERE --- */}
       <section className="mb-24 border-t border-[#d2d2d7]/50 pt-16">
         <h2 className="text-[32px] font-bold tracking-tight text-[#1d1d1f] mb-12">Common Questions</h2>
         <div className="max-w-[800px]">
