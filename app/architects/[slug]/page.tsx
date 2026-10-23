@@ -5,7 +5,6 @@ import { notFound } from 'next/navigation';
 import { getArchitectBySlug, getArchitectsByCity, ALL_ARCHITECTS } from '@/data';
 import ArchitectCard from '@/components/ArchitectCard';
 import FAQAccordion from '@/components/FAQAccordion';
-import { Architect } from '@/types';
 
 interface PageProps {
   params: { slug: string };
